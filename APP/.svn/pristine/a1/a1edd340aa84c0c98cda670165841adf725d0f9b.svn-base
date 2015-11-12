@@ -1,0 +1,40 @@
+/* Empty. Add your own CSS if you like */
+.padding{
+	padding: 4px !important;
+}
+.color-wh{
+	color: #fff;
+}
+.no-bg{
+	background: none !important;
+}
+.bg_new{
+	background-color: #1F241E !important;
+	border-color:  #1F241E !important;
+}
+.no-border{
+	border:none !important;
+}
+.row{
+	background: #f7f7f7;
+	border: 1px solid #fff;
+	color: #fff;
+	margin: 10px 0;
+}
+.row span, .code{
+	color: #38C4F5;
+}
+.col-demo {
+    padding: 2px;
+    width: 100%;
+    border: 1px solid #fff;
+    border-radius: 2px;
+    background: #f7f7f7;
+    text-align: center;
+}
+.price{
+	color: #ff492b;
+}
+span.date{
+	color: #DC8F8F;
+}

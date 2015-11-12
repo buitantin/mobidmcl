@@ -1,0 +1,40 @@
+<ion-view view-title="Doanh số">
+
+  <ion-content class="padding">
+
+      <div class="row bg_new">
+        <div class="col col-50"><span class="code">123456</span><br><span class="date">20/10/2090</span><br>Tivi LED SAMSUNG UA32J4003AKXXV</div>
+        <div class="col col-center">100.000.000 Đ</div>
+        <div class="col col-center">Thành công</div>
+      </div>
+
+
+      <div class="row bg_new">
+        <div class="col col-50"><span class="code">123456</span><br><span class="date">20/10/2090</span><br>Tivi LED SAMSUNG UA32J4003AKXXV</div>
+        <div class="col col-center">100.000.000 Đ</div>
+        <div class="col col-center">Thành công</div>
+      </div>
+
+
+      <div class="row bg_new">
+        <div class="col col-50"><span class="code">123456</span><br><span class="date">20/10/2090</span><br>Tivi LED SAMSUNG UA32J4003AKXXV</div>
+        <div class="col col-center">100.000.000 Đ</div>
+        <div class="col col-center">Thành công</div>
+      </div>
+
+
+      <div class="row bg_new">
+        <div class="col col-50"><span class="code">123456</span><br><span class="date">20/10/2090</span><br>Tivi LED SAMSUNG UA32J4003AKXXV</div>
+        <div class="col col-center">100.000.000 Đ</div>
+        <div class="col col-center">Thành công</div>
+      </div>
+
+
+      <div class="row bg_new">
+        <div class="col col-50"><span class="code">123456</span><br><span class="date">20/10/2090</span><br>Tivi LED SAMSUNG UA32J4003AKXXV</div>
+        <div class="col col-center">100.000.000 Đ</div>
+        <div class="col col-center">Thành công</div>
+      </div>
+
+  </ion-content>
+</ion-view>

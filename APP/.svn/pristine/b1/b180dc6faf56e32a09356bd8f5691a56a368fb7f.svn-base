@@ -1,0 +1,17 @@
+<ion-tabs class="tabs-icon-top tabs-color-active-positive">
+	<!-- Hot -->
+	<ion-tab title="Thu nhập" icon-off="ion-social-usd-outline" icon-on="ion-social-usd-outline" href="#/tab/thunhap">
+		<ion-nav-view name="tab-thunhap"></ion-nav-view>
+	</ion-tab>
+
+	<!-- home -->
+	<ion-tab title="Doanh Số" icon-off="ion-android-star-outline" icon-on="ion-android-star-outline" href="#/tab/home">
+		<ion-nav-view name="tab-home"></ion-nav-view>
+	</ion-tab>
+
+	<!-- Account Tab -->
+	<ion-tab title="Đăng nhập" icon-off="ion-ios-person" icon-on="ion-ios-person" href="#/tab/account">
+		<ion-nav-view name="tab-account"></ion-nav-view>
+	</ion-tab>
+	
+</ion-tabs>

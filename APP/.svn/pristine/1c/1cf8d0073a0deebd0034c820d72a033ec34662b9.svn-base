@@ -1,0 +1,21 @@
+<ion-view view-title="Đăng nhập">
+  <ion-content class="padding">
+    
+	<div class="card">
+	  <div class="item item-divider">
+	    Tài khoản của bạn
+	  </div>
+	  <div class="item item-text-wrap">
+		  <label class="item item-input">
+		    <input type="text" placeholder="First Name">
+		  </label>
+		  <label class="item item-input">
+		    <input type="text" placeholder="Last Name">
+		  </label>
+		  <button class="button button-full button-positive button-dark">
+	        Đăng nhập
+	      </button>
+	  </div>
+	</div>
+  </ion-content>
+</ion-view>

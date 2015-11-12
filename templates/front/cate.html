@@ -1,0 +1,138 @@
+         
+
+        	
+          	
+			<div class="list titledanhmucsp title-danhmuc ">
+				Danh mục {{my_parent['name']}}
+
+			</div>
+
+
+
+
+
+
+
+			<ion-tabs class="tabs-positive main-sub" >
+				<ion-tab title="" >
+				   	<ion-slide-box on-slide-changed="slideHasChanged($index)" delegate-handle="image-viewer-cate" show-pager='false' >
+						  <ion-slide ng-repeat='total in total_cate '>
+
+						  
+						    	<div class='row' >
+						    
+						    	<br />
+					    			<div class='col' ng-repeat="c in my_cate.slice(total,total+3)">
+					    			  <a href="/danh-muc/{{c['id']}}/{{ValidateData.toAlias(c['name'])}}" title="{{c['name']}}">
+					    				<img style="max-height:116px;max-width:169px" class='auto_images'  src='http://m.dienmaycholon.vn/img/picture/cate/cate_child_{{c["id"]}}.png' title="{{c['name']}}" alt="{{c['name']}}" />	
+
+					    			  </a>
+					    				
+					    			</div>
+					    			
+						    	</div>
+						  </ion-slide>
+					
+						</ion-slide-box>
+
+				  </ion-tab>
+			</ion-tabs>
+<div ng-repeat="cate in my_cate">			
+<div ng-if='listproduct[cate["id"]].length ' >		
+			<div >
+				  <a href="/danh-muc/{{cate['id']}}/{{ValidateData.toAlias(cate['name'])}}" title="{{cate['name']}}" class="list titledanhmucsp title-danhmuc ">
+						{{cate['name']}}
+					</a>
+			</div>
+			<div class="list list-main-sub-product">
+				<div class='row'>
+
+                        <div class='col' ng-repeat='product in listproduct[cate["id"]]'>
+
+                        <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0' >
+
+                         <img title="{{product['name']}}" alt="{{product['name']}}" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
+
+                         </a>
+
+                         
+                          <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class='title_product'>
+
+                             {{product['name']}}
+                          </a>
+
+
+                              <div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="product['rating']" readonly="rating.isReadonly"></star-rating>
+                                <small class=''>
+                                  ({{product['countrating']}})
+                                </small>
+                               
+                              </div>
+
+                              <div ng-if="product['coupons']" >
+                                      
+                                         
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
+                                          </strong>
+                                     
+                                      <div class="coupon-box-2">
+                                                    <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{product['coupons']}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                              </div>
+                                <div ng-if="!product['coupons']" >
+                                  <div ng-if="product['isprice']=='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      </div>
+                                      <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+                                      </strong>
+                                  </div>
+                                   <div ng-if="product['isprice']!='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      
+                                      </div>
+                                      <div>
+                                        <img  class='auto_images'  src='http://dienmaycholon.vn/public/default/img/dau_gia_2.png' />
+                                      </div>
+                                        
+                                  </div>
+                                </div>
+                              
+                        </div>
+                       
+                      </div>
+
+
+
+			</div>
+
+
+  </div>
+
+  </div>
+
+
+
+			<div class="list list-cate-menu">
+				<ul ng-repeat="c in my_cate">
+					
+					<li>
+						<a href="/danh-muc/{{c['id']}}/{{ValidateData.toAlias(c['name'])}}" title="{{c['name']}}">
+					      <span>{{c['name']}}</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+					</li>
+				</ul>
+
+
+			</div>
+
+        
+        

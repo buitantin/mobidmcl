@@ -1,0 +1,116 @@
+
+
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
+				<i class='iconmobile-title-danhmuc-sub'></i>
+				{{my_child['name']}}
+			</div>
+
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
+				Phụ kiện
+				<div>
+					<a class="sosanh" href="">So sánh</a>
+					<a class="tieuchi" href="">Tiêu chí tìm kiếm</a>
+				</div>
+				
+			</div>
+
+
+			<div class="list list-main-sub-product">
+				
+		    	<div class='row' ng-repeat="product in listproduct| limitTo:pageSize">
+	    			<div class="left">
+	    				 <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1' >
+
+			                         <img title="{{product['name']}}" alt="{{product['name']}}" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
+			                         
+                         </a>
+	    			</div>
+    				<div class="right">
+	    				 <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1'  class='title_product ddd'>
+
+		                             {{product['name']}}
+		                          </a>
+
+
+	    				  <div  ng-controller="RatingController as rating">
+                           <star-rating ng-model="product['rating']" readonly="rating.isReadonly"></star-rating>
+                            <small class=''>
+                              ({{product['countrating']}})
+                            </small>
+                           
+                          </div>
+
+
+	    				 <div ng-if="product['coupons']" >
+                                      
+                                         
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
+                                          </strong>
+                                     
+                                      <div class="coupon-box-2">
+                                                    <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{product['coupons']}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                            	  </div>
+                                <div ng-if="!product['coupons']" >
+                                  <div ng-if="product['isprice']=='1'">
+                                     
+
+                                      <div class='button-price button button-clear button-stable'   to-Price="product['saleprice']">
+				    				
+					    				</div>
+					    				
+					    				<strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+					    			
+					    				</strong>
+					    		<div class="iconmobile-giamgia" ng-if="product['saleprice']/product['discount'] > 30"
+					    		to-dis="(product['saleprice']/product['discount'])"
+					    		></div>
+                                  </div>
+                                   <div ng-if="product['isprice']!='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      
+                                      </div>
+                                      <div>
+                                        <img  class='auto_images dau_gia'   src='http://m.dienmaycholon.vn/public/default/img/dau_gia_2.png'  />
+                                      </div>
+                                        
+                                  </div>
+                                </div>
+
+                                <small>
+                                <input type='checkbox' name='selectedCompate[]' ng-true-value='{{product["myid"]}}' ng-false-value='NO'
+                                  ng-checked='' ng-click='changeCompare(typeKey, $index, value)' />So sánh
+                                  </small>
+    				</div>
+		    	</div>
+
+
+		    	 <button class="button more-product" ng-click="loadNextPage()" ng-show='show_paginate'>
+          				  <a href="#" ng-click='loadNextPage()'>Xem thêm sản phẩm...</a>
+      			  </button>
+			</div>
+
+
+			
+			<div class="list list-cate-menu">
+				<ul ng-repeat="c in my_cate">
+					
+					<li>
+						<a href="/danh-muc/{{c['id']}}/{{ValidateData.toAlias(c['name'])}}" title="{{c['name']}}">
+					      <span>{{c['name']}}</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+					</li>
+				</ul>
+
+
+			</div>
+
+

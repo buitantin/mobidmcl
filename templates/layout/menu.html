@@ -1,0 +1,30 @@
+   <!-- Footer -->
+      <div class="footer" ng-controller='FooterCtrl'>
+        <div class="list">
+
+        <div ng-repeat='cate in cate_footer'>
+
+            <a class="item item-avatar" ng-click='tab_footer($index)' href="#">
+              <i class="iconmobile-{{viewclass(cate['name'])}}"></i>
+              <h2>{{cate['name']}}</h2>
+              <span class="iconmobile-mt"></span>         
+            </a>
+            <div ng-if='$index==t_footer' class="list  ">
+              <ul class="list_cate">
+
+                <li ng-repeat="child_cate in childCate[cate['id']]">
+                    <a class_1="active" href="/danh-muc/{{child_cate['id']}}/{{ValidateData.toAlias(child_cate['name'])}}">{{child_cate['name']}}</a></li>
+              
+              </ul>
+            </div>
+
+        </div>
+
+        </div>
+
+
+        
+       
+      </div>
+          <!-- End Footer -->   
+        

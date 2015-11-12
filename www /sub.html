@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Trang chủ</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+    <link rel="stylesheet" href="js/raty-master/lib/jquery.raty.css">
+
+
+    <link href="css/lib.css" rel="stylesheet">
+    <link href="scss/style.css" rel="stylesheet">
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery.dotdotdot.js"></script>
+	<script src="js/raty-master/lib/jquery.raty.js"></script>
+
+    <script src="js/global.js"></script>
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development)
+    <script src="cordova.js"></script> -->
+
+    <!-- your app's js -->
+    <script src="js/home/app.js"></script>
+    <script src="js/home/controllers.js"></script>
+    <script src="js/home/services.js"></script>
+    <script src="js/home/default.js"></script>
+
+  </head>
+  <body ng-app="starter">
+    <div ng-controller='mainController'>
+
+      <ion-side-menus>	
+
+        <ion-side-menu-content>
+			<div class="bg_popup"></div>
+            <ion-header-bar align-title="left" class="bar-positive">			
+
+              	<h2 class="ui-title"><a href="/"><img src="img/logo.png" alt="Điện máy chợ lớn" title="Điện máy chợ lớn"></a></h2>			    
+
+			    <a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-bars ui-nodisc-icon ui-alt-icon ui-btn-left" ng-click="toggleLeft()">Menu</a>
+
+			    <a class="ui-btn ui-btn-right iconmobile-user notext" href="#" title="account" ng-click='show()'>Account</a>
+
+
+			    <a class="ui-btn ui-btn-right iconmobile-cart notext" href="#" title="cart">Cart</a>
+			    
+
+            </ion-header-bar>
+
+
+
+            <ion-content>
+            <div class="list list-news">
+        		<p class="news">
+			        <a href="#" title="Tin Khuyến Mãi">Tin khuyến mãi</a>
+			        <a href="#" title="Mua trả góp">Mua trả góp</a>
+			        <a href="#" title="Thẻ thành viên">Thẻ thành viên</a>
+			    </p>            		
+        	</div>
+          	<div class="list list-inset">
+			  <label class="item item-input">				    
+			    <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
+			    
+			  </label>
+			  <div class="iconmobile-search"></div>
+			</div>
+
+
+
+			
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
+				<i class='iconmobile-title-danhmuc-sub'></i>
+				Vi tính
+			</div>
+
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
+				Phụ kiện
+				<div>
+					<a class="sosanh" href="">So sánh</a><a class="tieuchi" href="">Tiêu chí tìm kiếm</a>
+				</div>
+				
+			</div>
+			<div class="list list-main-sub-product">
+				<div class='row'>
+	    			<div class="left">
+	    				<a href="">
+	    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+	    				</a>
+	    			</div>
+    				<div class="right">
+	    				<a href='' class='title_product ddd'>
+	    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+	    				</a>
+	    				<div class="star"></div>
+	    				<div class='button-price button button-clear button-stable'>
+	    				 10.000.000 Đ
+	    				</div>
+	    				
+	    				<strong class=' button-price button-price button button-clear button-assertive'>
+	    				 10.000.000 Đ
+	    				</strong>
+	    				<div class="iconmobile-giamgia">-30%</div>
+    				</div>
+		    	</div>
+		    	<div class='row'>
+	    			<div class="left">
+	    				<a href="">
+	    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+	    				</a>
+	    			</div>
+    				<div class="right">
+	    				<a href='' class='title_product ddd'>
+	    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+	    				</a>
+	    				<div class="star"></div>
+	    				<div class='button-price button button-clear button-stable'>
+	    				 10.000.000 Đ
+	    				</div>
+	    				
+	    				<strong class=' button-price button-price button button-clear button-assertive'>
+	    				 10.000.000 Đ
+	    				</strong>
+	    				<div class="iconmobile-giamgia">-30%</div>
+    				</div>
+		    	</div>
+		    	<div class='row'>
+	    			<div class="left">
+	    				<a href="">
+	    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+	    				</a>
+	    			</div>
+    				<div class="right">
+	    				<a href='' class='title_product ddd'>
+	    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+	    				</a>
+	    				<div class="star"></div>
+	    				<div class='button-price button button-clear button-stable'>
+	    				 10.000.000 Đ
+	    				</div>
+	    				
+	    				<strong class=' button-price button-price button button-clear button-assertive'>
+	    				 10.000.000 Đ
+	    				</strong>
+	    				<div class="iconmobile-giamgia">-30%</div>
+    				</div>
+		    	</div>
+		    	<div class='row'>
+	    			<div class="left">
+	    				<a href="">
+	    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+	    				</a>
+	    			</div>
+    				<div class="right">
+	    				<a href='' class='title_product ddd'>
+	    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+	    				</a>
+	    				<div class="star"></div>
+	    				<div class='button-price button button-clear button-stable'>
+	    				 10.000.000 Đ
+	    				</div>
+	    				
+	    				<strong class=' button-price button-price button button-clear button-assertive'>
+	    				 10.000.000 Đ
+	    				</strong>
+	    				<div class="iconmobile-giamgia">-30%</div>
+    				</div>
+		    	</div>
+		    	<div class='row'>
+	    			<div class="left">
+	    				<a href="">
+	    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+	    				</a>
+	    			</div>
+    				<div class="right">
+	    				<a href='' class='title_product ddd'>
+	    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+	    				</a>
+	    				<div class="star"></div>
+	    				<div class='button-price button button-clear button-stable'>
+	    				 10.000.000 Đ
+	    				</div>
+	    				
+	    				<strong class=' button-price button-price button button-clear button-assertive'>
+	    				 10.000.000 Đ
+	    				</strong>
+	    				<div class="iconmobile-giamgia">-30%</div>
+    				</div>
+		    	</div>
+
+		    	<div class="button more-product"><a href="">Xem thêm sản phẩm...</a></div>	
+			</div>
+			<div class="list list-cate-menu">
+				<ul>
+					<li>
+						<a class="" href="#">
+					      <span>Laptop</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+			    	</li>
+					<li>
+						<a class="" href="#">
+					      <span>Loa vi tính</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+					</li>
+					<li>
+						<a class="" href="#">
+					      <span>Từ điển điện tử</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+					</li>
+					<li>
+						<a class="" href="#">
+					      <span>Phụ kiện</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+					</li>
+				</ul>
+			</div>
+
+
+
+            <!-- Footer -->
+			<div class="footer">
+				<div class="list bg_backtotop">
+					<a href=""><i class="iconmobile-backtotop"></i><br/> Lên đầu trang</a>					
+				</div>
+				<div class="list list-chinhanh">
+					<div class='a'>
+						<div class="chinhanh">
+							
+						</div>    					
+    				</div>
+    				<div class="a">
+    					<div class='bg_facebook'>
+    						<div class="fb-like" style="position: absolute;top: 60px;margin-left: 20px;"></div>
+    					</div>
+    				</div>
+    				<div class="a">
+    					<div class="row">
+    						<ul>
+    							<li><a href="#">Giới thiệu chung</a></li>
+    							<li><a href="#">Mua hàng online</a></li>
+    							<li><a href="#">Thẻ thành viên Chợ Lớn</a></li>
+    						</ul>
+    						<p>© 2001 - 2015, Công ty TNHH Cao Phong</p>
+    					</div>
+    				</div>
+				</div>	
+			</div>
+	        <!-- End Footer -->   
+        
+        
+            </ion-content>
+		
+
+
+        </ion-side-menu-content>
+		<ion-side-menu side='left'>
+			 <header class="bar bar-header" fade-header>
+			  <h1 class="title"><a href="#"><img src="img/logo.png" alt="Điện máy chợ lớn" title="Điện máy chợ lớn"></a></h1>
+			</header>
+			<ion-content has-header="true">			   
+		      <div class="list">
+		      	<i class="iconmobile-cart"></i><strong>Giỏ hàng: </strong><span class="numcart">0 Đ</span>
+		      </div>
+			  <div class="list menu">
+			  	<ul>
+			  		<li><i class="iconmobile-menu-all"></i><a href="">Tất cả danh mục</a></li>
+			  		<li><i class="iconmobile-check-order"></i><a href="">Kiểm tra đơn hàng</a></li>
+			  		<li><i class="iconmobile-login"></i><a href="">Đăng ký - Đăng nhập</a><a href=""><i class="iconmobile-face"></i></a></li>
+			  		<li><i class="iconmobile-desktop"></i><a href="">Chuyển sang phiên bản Desktop</a></li>
+			  		
+			  	</ul>
+			  </div>
+			  <div class="list list-lienhe">
+			  	<i class="iconmobile-hotline"></i><span>(08) 3856 3388</span>
+			  	<p>(Online từ 8h30 đến 21h00 từ Thứ 2 đến Chủ Nhật)</p>
+			  </div>		   
+			</ion-content>
+		</ion-side-menu>
+
+
+   </ion-side-menus>
+  </div>
+
+
+  <ion-footer-bar class="bar-footer">
+      <a href="tel:08 3856 3388 ">
+       <div class="iconmobile-bg_call"></div>
+      </a>    
+  </ion-footer-bar>
+
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.4&appId=566700460081717";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+  </body>
+</html>

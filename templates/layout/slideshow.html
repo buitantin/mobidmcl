@@ -1,0 +1,14 @@
+<div ng-controller='SliderShowCtrl' >
+  		<ion-slide-box on-slide-changed="slideHasChanged($index)" >
+            <ion-slide  ng-repeat='s in slideshow'>
+              <div class="box slideshow_main">
+                 <a href='{{s["links"]}}'>
+                 		<img src="http://m.dienmaycholon.vn/img/picture/slideshow/dienmay_{{s['id']}}.png">
+
+                 </a>
+             	   
+              </div>
+            </ion-slide>
+        </ion-slide-box>
+</div>
+

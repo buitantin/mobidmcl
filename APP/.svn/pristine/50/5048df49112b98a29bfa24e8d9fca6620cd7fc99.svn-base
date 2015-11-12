@@ -1,0 +1,23 @@
+<ion-view view-title="Thu nhập">
+  <ion-content class="padding">    
+	<div class="row no-bg no-border">
+	  <div class="col col-50"></div>
+	  <div class="col">Doanh số</div>
+	  <div class="col">Thu nhập</div>
+	</div>
+	<div class="row bg_new">
+	  <div class="col col-50">Tổng số lượng sản phẩm: <span>1002</span></div>
+	  <div class="col price">100.000.000 Đ</div>
+	  <div class="col price">100.000.000 Đ</div>
+	</div>
+	<div class="row bg_new">
+	  <div class="col col-50">Tổng số lượng sản phẩm trả hàng: <span>100</span><br>Tổng số lượng sản phẩm hủy: <span>100</span><br>Tổng số lượng sản phẩm thành công: <span>100</span><br>Tổng số lượng sản phẩm đang xử lý: <span>100</span></div>
+	  <div class="col col-center price">100.000.000 Đ</div>
+	  <div class="col col-center price">100.000.000 Đ</div>
+	</div>
+	<div class="row bg_new">
+	  <div class="col">Tổng thu nhập thực tế</div>
+	  <div class="col price">100.000.000 Đ</div>
+	</div>
+  </ion-content>
+</ion-view>

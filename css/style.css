@@ -1,0 +1,184 @@
+/* Empty. Add your own CSS if you like */
+
+.star-rating {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+} 
+ .star-rating .star {
+    padding: 1px;
+    background: url(../images/star-off.png) no-repeat;
+    font-size: 20px;
+    text-shadow: .05em .05em #aaa;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+        width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+}
+ .star-rating   .star.filled {
+      color: #fd0;
+      background: url(../images/star-on.png) no-repeat;
+         width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+    }
+  .dau_gia{
+    max-width:166px;
+  }
+
+ .star-rating   .star.readonly .star.filled {
+    color: #666;
+    background: url(../images/star-on.png) no-repeat;
+        width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+
+  }
+
+
+
+
+.logo{
+
+
+	margin-top:10px;
+	max-width:100px;
+}
+.slideshow_main img{
+	width:100%;
+}
+a{
+	text-decoration: none;
+}
+.not_position .tab-nav {
+	position: relative;
+	float:left;
+	top:0px
+}
+.title_product{
+	color: #494343;
+max-height: 100px;
+font-size: 12px;
+text-indent: 10px;
+font-weight: bold;
+text-overflow: ellipsis;
+position: relative;
+line-height: 17px;
+white-space: normal;
+height: 36px;
+overflow: hidden;
+display: inline-block;
+font-family: Arial;
+	
+}
+.button-price{
+	font-size:13px;
+	min-height: 20px;
+	line-height: 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	display: block;
+    text-align: left;
+}
+.header_bar{
+  border-top: 2px solid #f3f3f3;
+color: #444;
+padding: 7px;
+border-bottom: 3px solid #ea3d41;
+}
+.ui-widget-header {
+    background: #1163ac;
+}
+.ui-widget-content{
+	height: 6px !important;
+}
+
+
+div.coupon-box-3 {
+      width: 92%;
+}
+div.coupon-box-3 .coupon-header{
+  font-size: 12px
+}
+div.coupon-box-3  .coupon-header div{
+  font-size: 14px
+}
+div.coupon-box-3 .coupon-content span{
+  font-size: 16px
+}
+div.coupon-box-1{
+    width: 95%;
+    padding: 2%;  
+    text-align: left;
+    border: 1px solid #ddd;
+    position: relative;
+    float: left;
+    border-radius: 3px 3px 3px 3px;
+    margin-top: 10px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+}
+.coupon-box-2{
+  position: relative;
+  float:left;
+  width: 100%;
+}
+.coupon-box-2 .coupon-header div{
+    padding: 3px;
+    margin: 2px;
+    font-size:11px;
+  width:60px;
+}
+.coupon-box-2 .coupon-content{
+  font-size:11px;
+
+}
+.coupon-box-2 div , .coupon-box-2 span {
+  font-size:11px;
+  padding:0px;
+  
+}
+.coupon-box-2 .coupon-content span{
+  font-size: 12px;
+    color: #01a201;
+    padding: 3px;
+}
+.coupon-box-1 .coupon-header{
+  padding:0 10px;
+}
+.coupon-box{
+  font-weight: bold;
+  font-size:13px;
+  background: #f8f8f8
+}
+.coupon-header{
+  color:white;
+  background: #01a201;
+  font-size:14px;
+  text-align: center;
+
+}
+.coupon-content{
+     text-align: center;
+    font-size: 14px;
+    padding: 10px 0;
+}
+.coupon-content span{
+  font-size:20px;
+  color:#01a201;
+}
+.coupon-header div{
+  background: #fff;
+    color: #01a201;
+    font-size: 18px;
+    position: relative;
+    display: inline-block;
+    width: 98px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin: 7px;  
+} 
