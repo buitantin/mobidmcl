@@ -85,8 +85,8 @@
                                 </div>
 
                                 <small>
-                                <input type='checkbox' name='selectedCompate[]' ng-true-value='{{product["myid"]}}' ng-false-value='NO'
-                                  ng-checked='' ng-click='changeCompare(typeKey, $index, value)' />So sánh
+                                <input type='checkbox' 
+                                 type="checkbox" ng-change="changeCompare(bool[product['myid'] ], product['myid'])" ng-model="bool[product['myid'] ]" />So sánh
                                   </small>
     				</div>
 		    	</div>

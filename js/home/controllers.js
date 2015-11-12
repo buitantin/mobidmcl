@@ -179,7 +179,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller("ChildCtr",function($scope,$http,$stateParams,PUBLIC_VALUE,ValidateData,Compare){
+.controller("ChildCtr",function($scope,$http,$stateParams,PUBLIC_VALUE,ValidateData,Compare,$cookieStore){
 	
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
@@ -225,16 +225,57 @@ angular.module('starter.controllers', [])
 								}
 						});
 
-					$scope.changeCompare=function(typeKey, $index, value)	{
-						console.log($index);
-					}
+
 					
 			});
 
-		
-			
-			
-		
+			$scope.bool=[];
+						if(Compare.first != ""){
+								$scope.bool[Compare.first]=true;
+								
+								
+							}
+							if(Compare.second != ""){
+								$scope.bool[Compare.second]=true;
+								
+							}
+							if(Compare.three != ""){
+								$scope.bool[Compare.three]=true;
+								
+							}
+
+
+
+				$scope.changeCompare=function(bool,myid)	{
+					
+					
+						if(bool){
+
+							if(Compare.first == ""){
+								Compare.first=myid;
+								
+								return true;
+							}
+							if(Compare.second == ""){
+								Compare.second=myid;
+								return true;
+							}
+							if(Compare.three == ""){
+								Compare.three=myid;
+								return true;
+							}
+							$cookieStore.put("compare",Compare);
+							$scope.bool[myid]=false;
+						}else{
+							//remove value on compare
+							
+
+						}
+						
+					}
+
+
+							
 
 			
 			
