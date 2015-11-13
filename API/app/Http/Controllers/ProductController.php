@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Response;
 use DB;
+use App\Template;
 
 use Illuminate\Http\Request;
 
@@ -116,68 +117,44 @@ class ProductController extends Controller {
 		$a=Product::List_Product_New($limit);
 		return Response::json($a);
 	}
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+	public function getelement($id_cate,$id_product){
+		$a=Template::Compare_Cate($id_cate, $id_product);
+		return Response::json($a);
+		
 	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+	public function gettemplate($id,$supplier){
+		$a=Template::Compare_One($id, $supplier);
+		return Response::json($a);
 	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
+	public function get_element_product($id,$element){
+		 $a=Template::get_Product($id, $element);
+		return Response::json($a);
 	}
+	
+	public function getdetailproduct($id){
+			if(!empty($id)){
+				return Product::select(
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+						array(
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,1) AS discountcoupon"),
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
+								DB::raw("get_review(pro_product.id,1) AS rating"),
+							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
+							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+								"market_supplier.name AS myname","pro_product.cid_series","pro_supplier_product.cid_supplier","pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
+							)
+						)
+						->whereRaw("pro_product.id ={$id} AND pro_product.status='1' AND pro_product.is_status_cate='1' AND pro_product.is_status_series='1'  ")
+						->join("pro_supplier_product",function($join){
+							$join->on("pro_product.id","=","pro_supplier_product.cid_product");
+						})
+						->join("market_supplier",function($join){
+							$join->on("market_supplier.id","=","pro_supplier_product.cid_supplier");
+						})
+						
+						->first()->toJson(); 	
+			 }
+
 	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 }

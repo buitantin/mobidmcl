@@ -17,13 +17,6 @@ angular.module('starter.services', [])
 	
 
 })
-.factory("Compare",function(){
-	Compare={};
-	Compare.first='';
-	Compare.second='';
-	Compare.three='';
-	return Compare;
-})
 .factory('ValidateData', function(){
 
 		return {
@@ -55,7 +48,7 @@ angular.module('starter.services', [])
 				}
 				return '';
 			},
-			convertString:function(string)
+			convertString:function(str)
 			{
 
 
@@ -88,15 +81,15 @@ angular.module('starter.services', [])
 				    };
 					
 					for(var t in translate){
-						string=string.replace(t,translate[t]);
+						str=str.replace(t,translate[t]);
 					}
-					return string;
+					return str;
 			  },
 			  toIcon:function(string){
 			  		return this.repAll (this.convertString(string) ).toLowerCase();
 			  },
 			  toAlias:function(string){
-			  	 return this.replaceValue(this.convertString(string)).toLowerCase().replace("---","-");
+			  	 return this.replaceValue(this.convertString(string)).toLowerCase().replace("---","-") ;
 			  },
 			  toPrice:function(number){
 			  		if(!IsNumeric(number*1)){

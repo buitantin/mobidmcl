@@ -179,7 +179,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller("ChildCtr",function($scope,$http,$stateParams,PUBLIC_VALUE,ValidateData,Compare,$cookieStore){
+.controller("ChildCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore){
 	
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
@@ -187,6 +187,7 @@ angular.module('starter.controllers', [])
 
 	if($stateParams.child != undefined){
 			$scope.my_cate=[];
+			$scope.my_parent=[];
 			$scope.listproduct=[];
 			$scope.my_child=[];
 
@@ -194,6 +195,8 @@ angular.module('starter.controllers', [])
 			$scope.pageSize=10;
 			$scope.show_paginate=true;
 
+
+			
 			$http.get(PUBLIC_VALUE.URL+"getcate/"+$stateParams.child)
 			.success(function(re){
 					$scope.my_child=re;
@@ -202,10 +205,13 @@ angular.module('starter.controllers', [])
 						$http.get(PUBLIC_VALUE.URL+"getlistcate/"+$scope.my_child['cid_parent'])
 						.success(function(r){
 								$scope.my_cate=r;
-			
-
 						});
-					
+						$http.get(PUBLIC_VALUE.URL+"getcate/"+$scope.my_child['cid_parent'])
+						.success(function(parent){
+								$scope.my_parent=parent;
+						});
+
+
 
 						$http.get(PUBLIC_VALUE.URL+"getproduct/"+$stateParams.child+"/150")
 						.success(function(r){
@@ -230,18 +236,13 @@ angular.module('starter.controllers', [])
 			});
 
 			$scope.bool=[];
-						if(Compare.first != ""){
-								$scope.bool[Compare.first]=true;
-								
-								
-							}
-							if(Compare.second != ""){
-								$scope.bool[Compare.second]=true;
-								
-							}
-							if(Compare.three != ""){
-								$scope.bool[Compare.three]=true;
-								
+			var compare=$cookieStore.get("compare") || [];
+
+
+							if(compare.length > 0){
+								for (var i = compare.length - 1; i >= 0; i--) {
+									$scope.bool [ compare[i] ] =true;
+								};
 							}
 
 
@@ -251,28 +252,41 @@ angular.module('starter.controllers', [])
 					
 						if(bool){
 
-							if(Compare.first == ""){
-								Compare.first=myid;
-								
+							if(compare.length < 2){
+								compare.push(myid);
+								$cookieStore.put("compare",compare);
+
 								return true;
+							}else{
+								$ionicPopup.show({
+									template:"Da du san pham so sanh",
+									title:"Thong bao",
+									subTitle:"Vui long chon lai",
+									buttons:[
+										{text:"Thoat",
+											type:"button-positive"
+											}
+									]
+								})
 							}
-							if(Compare.second == ""){
-								Compare.second=myid;
-								return true;
-							}
-							if(Compare.three == ""){
-								Compare.three=myid;
-								return true;
-							}
-							$cookieStore.put("compare",Compare);
+							
 							$scope.bool[myid]=false;
 						}else{
 							//remove value on compare
-							
+							if(compare.length > 0 ){
+								var tm=[];
+								for (var i = compare.length - 1; i >= 0; i--) {
+									if(compare[i]!=myid){
+										tm.push(compare[i]);
+									}
+								};
+								compare=tm;
+							}
 
 						}
 						
 					}
+					
 
 
 							
@@ -285,11 +299,120 @@ angular.module('starter.controllers', [])
 
 
 })
+.controller("CompareCtr",function($scope,$http,$stateParams,PUBLIC_VALUE,ValidateData,$cookieStore){
+	
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	
+	$scope.ValidateData=ValidateData;
+
+
+	var compare=$cookieStore.get("compare") || [];
+
+	$scope.compare=compare;
+
+	if($stateParams.compare != undefined && compare.length > 0 ){
+			$scope.my_cate=[];
+			$scope.my_parent=[];
+			$scope.listproduct=[];
+			$scope.listproduct_element=[];
+			$scope.my_child=[];
+			$scope.list_element=[];
+
+
+			$scope.currentPage=1;
+			$scope.pageSize=10;
+			$scope.show_paginate=true;
+
+
+			
+			$http.get(PUBLIC_VALUE.URL+"getcate/"+$stateParams.compare)
+			.success(function(re){
+					$scope.my_child=re;
+
+
+						$http.get(PUBLIC_VALUE.URL+"getlistcate/"+$scope.my_child['cid_parent'])
+						.success(function(r){
+								$scope.my_cate=r;
+						});
+						$http.get(PUBLIC_VALUE.URL+"getcate/"+$scope.my_child['cid_parent'])
+						.success(function(parent){
+								$scope.my_parent=parent;
+						});
+
+						$http.get(PUBLIC_VALUE.URL+"getelement/"+$scope.my_child['id']+"/"+compare[0])
+						.success(function(list_element){
+								$scope.list_element=list_element;
+
+
+
+
+								for (var i = compare.length - 1; i >= 0; i--) {
+
+									//$scope.listproduct_element[i]=[];
+										for (var j = list_element.length - 1; j >= 0; j--) {
+											$http.get(PUBLIC_VALUE.URL+"get_element_product/"+compare[i]+"/"+list_element[j]["id"])
+											.success(function(e){
+													$scope.listproduct_element.push(e)
+													
+											});	
+
+										};
+									
+									
+
+								};
+
+
+
+									
+
+									
+
+						});	
+
+						for (var i = compare.length - 1; i >= 0; i--) {
+							
+							$http.get(PUBLIC_VALUE.URL+"getdetailproduct/"+compare[i])
+							.success(function(product){
+									$scope.listproduct.push(product);
+
+									
+							});	
+
+
+							
+						};
+						
+						
+						
+
+
+
+						
+
+
+					
+			});
+
+		
+
+
+							
+
+			
+			
+	}else{
+		window.location.href="/?error=";
+	}
+
+
+
+})
  
  .controller('RatingController', RatingController)
   .directive('starRating', starRating)
   .directive("toPrice",toPrice)
-  .directive("toDis",toDis
+  .directive("toElement",toElement
   	);
 
 
@@ -360,15 +483,17 @@ angular.module('starter.controllers', [])
   		
   	};
   }
-  function toDis(){
-  	return {
+  function toElement(){
+  		return {
   		link:function(scope,element,attributes){
-  				
-  					scope.$watch(attributes.toDis,function(number){
+  					scope.$watch(attributes.toElement,function(number){
+  						$http.get("/API/get_element_product/"+number,function(r){
+  							element.text(r);	
+  						})
   						
-  						element.text( "- %"+Math.round(number) );
 			  	 
   					});
+  					
   					
   		}
   		

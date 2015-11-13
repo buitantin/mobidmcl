@@ -31,6 +31,12 @@ Route::get('/productnew/{limit}', 'ProductController@productnew');
 Route::get('/getcate/{id}', 'ProductController@getcate');
 Route::get('/getlistcate/{id}', 'ProductController@getlistcate');
 Route::get('/list_product_cate/{id}/{limit}', 'ProductController@list_product_cate');
+Route::get('/getelement/{id_cate}/{id_product}', 'ProductController@getelement');
+Route::get('/gettemplate/{id}/{supplier}', 'ProductController@gettemplate');
+Route::get('/getdetailproduct/{id}', 'ProductController@getdetailproduct');
+
+Route::get('/get_element_product/{id}/{element}', 'ProductController@get_element_product');
+
 
 
 

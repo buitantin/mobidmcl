@@ -80,6 +80,13 @@ $httpProvider.defaults.withCredentials = true;
               controller: 'ChildCtr'
           }
         )
+       .state("compare",
+         {
+             url:"/so-sanh/:compare",
+             templateUrl : '/templates/front/compare.html',
+             controller: 'CompareCtr' 
+          }
+        )
       
      
     

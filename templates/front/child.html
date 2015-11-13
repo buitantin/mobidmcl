@@ -1,14 +1,17 @@
 
 
 			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
+				
+				<a href='' >
 				<i class='iconmobile-title-danhmuc-sub'></i>
-				{{my_child['name']}}
+					{{my_parent['name']}}
+				</a>
 			</div>
 
 			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
-				Phụ kiện
+				{{my_child['name']}}
 				<div>
-					<a class="sosanh" href="">So sánh</a>
+					<a class="sosanh" href="/so-sanh/{{my_child['id']}}">So sánh</a>
 					<a class="tieuchi" href="">Tiêu chí tìm kiếm</a>
 				</div>
 				
