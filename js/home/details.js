@@ -50,7 +50,7 @@ angular.module('starter.details', [])
 						
 				});
 
-					$http.get(PUBLIC_VALUE.URL+"detail_element/"+$scope.product['cid_cate']+"/"+$scope.product['my_id'])
+					$http.get(PUBLIC_VALUE.URL+"getelement/"+$scope.product['cid_cate']+"/"+$scope.product['myid'])
 						.success(function(list_element){
 								$scope.list_element=list_element;
 
@@ -68,9 +68,7 @@ angular.module('starter.details', [])
 											});	
 
 										};
-									
-									
-
+								
 								};
 
 						});	
