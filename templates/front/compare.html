@@ -1,19 +1,4 @@
-			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
-				
-				<a href='/' >
-				<i class='iconmobile-title-danhmuc-sub'></i>
-					{{my_parent['name']}}
-				</a>
-			</div>
-
-			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
-				{{my_child['name']}}
-				<div>
-					<a class="sosanh" href="/so-sanh/{{my_child['id']}}">So sánh</a>
-					<a class="tieuchi" href="">Tiêu chí tìm kiếm</a>
-				</div>
-				
-			</div>
+  			 <ng-include src="'/templates/front/headercate.html'"></ng-include>
 
 			
 			<div class="list list-main-sub-product list-main-sub-product-compare">
@@ -129,7 +114,7 @@
 			<div class="list list-cate-menu">
 				<ul>
 					<li>
-						<a href="/danh-muc/{{my_child['id']}}/{{ValidateData.toAlias(my_child['name'])}}" title="{{my_child['name']}}">
+						<a href="">
 					      <span>Xem tất cả {{my_child['name']}}</span>
 					      <span class="iconmobile-mt"></span>		      
 					    </a>

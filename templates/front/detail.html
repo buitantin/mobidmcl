@@ -1,1 +1,644 @@
-askdjfakdsj
+
+			<div class="list content-product-detail">
+				
+				<div class="list step1">
+					<p><span class='name_product'>{{product['name']}}</span></p>
+					<p><span class='text'>Sản xuất bởi </span><span class='text name-seri padding-right-10'>
+					<img src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{product['cid_series']}}.png" alt="{{product['name']}}" title="{{product['name']}}" />
+					 </span> | <span class="text padding-left-10"> Mã SAP: {{product['sap_code']}}</span></p>
+				
+							
+                              <div  ng-controller="RatingController as rating">
+	                               <star-rating ng-model="product['rating']" readonly="rating.isReadonly">
+	                               </star-rating>
+                                <small class=''>
+                                  ({{product['countrating']}})
+                                </small>
+                               
+                              </div>
+
+					<div>
+						<ion-slide-box on-slide-changed="slideHasChanged($index)">				
+						  <ion-slide ng-repeat='im in list_image'>
+						    <div class="box slideshow_main"  >
+						    	<img ng-src="http://static.dienmaycholon.vn/product/product{{product['myid']}}/{{im}}">
+						    </div>
+						  </ion-slide>
+						 					  
+						</ion-slide-box>
+					</div>
+				</div>
+				<div class="list step2">
+
+					
+						<div ng-if="product['isprice']==1">
+						<table>
+							<tr>
+								<td class="text-right" >Giá thị trường:</td>
+								<td><span class="price-tt" to-Price="product['saleprice']"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right">Giá bán:</td>
+								<td><span class="price-gb" to-Price="product['discount']"></span></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><span class="ship-free">+ Giao hàng <span>MIỄN PHÍ.</span> <a href="/quy-dinh-giao-hang" >Xem chi tiết</a></span></td>
+							</tr>
+							<tr ng-if="product['saleprice']>product['discount']">
+								<td class="text-right">Tiết kiệm:</td>
+								<td><span class="price-tk" to-Price="product['saleprice']-product['discount']"></span> (<span class="price-tk" to-Discount="product['discount']/product['saleprice']*100"></span>) </td>
+							</tr>
+							<tr ng-if='product["coupon"]'>
+								<td></td>
+								<td>
+									
+										 <div class='product["coupont"]'>
+
+					    				  <div class="coupon-box-2">
+	                                                    <div class="coupon-box">
+	                                                      <div class="coupon-header">
+	                                                      Nhập mã <div>{{product['coupons']}}</div>
+	                                                      </div>
+	                                                      <div class="coupon-content">
+	                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+	                                                      </div>
+	                                                    </div>
+	                                       </div>
+				 			  		 </div>
+								</td>
+							</tr>
+						</table>
+						</div>
+
+
+						<div ng-if="product['isprice']!=1">
+						<table>
+							<tr>
+								<td class="text-right" >Giá bán:</td>
+								<td><span class="price-gb" to-Price="product['saleprice']"></span></td>
+							</tr>
+							<tr>
+								<td class="text-right"></td>
+								<td><img  class='auto_images'  src='http://m.dienmaycholon.vn/public/default/img/dau_gia.png' /></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><span class="ship-free">+ Giao hàng <span>MIỄN PHÍ.</span> <a href="/quy-dinh-giao-hang" >Xem chi tiết</a></span></td>
+							</tr>
+							<tr ng-if='product["coupon"]'>
+								<td></td>
+								<td>
+									
+										 <div class='product["coupont"]'>
+
+					    				  <div class="coupon-box-2">
+	                                                    <div class="coupon-box">
+	                                                      <div class="coupon-header">
+	                                                      Nhập mã <div>{{product['coupons']}}</div>
+	                                                      </div>
+	                                                      <div class="coupon-content">
+	                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+	                                                      </div>
+	                                                    </div>
+	                                       </div>
+				 			  		 </div>
+								</td>
+							</tr>
+						</table>
+						</div>
+				   
+				   				
+
+				</div>
+
+			
+
+				<div class="list step3">
+				<p ng-if="product['is_sample']!='1'">
+					<p ng-if="product['stock_num'] > 0">
+						<span class='text' ng-if="product['stock_num']  > 5 ">Còn hàng</span>
+						<span class='text' ng-if="product['stock_num']  <6 ">HÀNG HOT SẮP HẾT</span>
+					</p>
+				</p>
+					<p ng-if="product['stock_num'] ==0 ">
+						<span class='text'  ng-if="product['is_sample'] == '1' ">HẾT HÀNG</span>
+						<span class='text'  ng-if="product['is_sample'] != '1' ">HÀNG SẮP VỀ</span>
+					</p>
+
+
+					<p><span>Bán & giao hàng bởi <a href="">{{product['name_supplier']}}</a>.</span></p>
+					<div class="list" ng-if="list_gift">
+						Quà tặng cho sản phẩm <i class="iconmobile-mt"></i>
+						<ul class='list'>
+								<li ng-if="list_gift['gift']['description']">
+									{{list_gift['gift']['description']}}
+								</li>
+								<li ng-if="list_gift['press']['description']">
+									{{list_gift['press']['description']}}
+								</li>
+								<li ng-repeat="text in list_gift">
+									{{text['name']}}
+								</li>
+								
+						</ul>
+						
+					</div>
+
+
+
+
+					<div class="list">
+						Số lượng
+						<div class="float-right">
+							<i class="iconmobile-daucong" ng-click='change_value(1)'></i>
+							<input  ng-minlength='1' ng-maxlength='100' type="number" ng-change='check_number()' class="number" ng-model='mylimit'/>
+							<i class="iconmobile-dautru" ng-click="change_value(-1)"></i>
+						</div>
+					</div>
+					<div class="list" ng-if="product['color']">
+						Màu sắc
+						<div class="float-right">
+							<div class="color1"></div>
+							<div class="color2"></div>
+							<div class="color3"></div>
+							<div class="color4"></div>
+							<div class="color5"></div>
+						</div>
+					</div>
+					<div class="list tragop" ng-if="permin">
+						Mua trả góp chỉ từ <span class='text' to-Price="permin"></span>/tháng.
+						<br/><a class='text-click' href="">Nhập thông tin</a>
+						<i class='iconmobile-mt'></i>
+					</div>
+					<div class="list call-hotline">
+						Gọi <span>(08) 3856 3388</span> để được tư vấn trực tiếp.
+					</div>
+
+					<div class="list buy">
+						<i class='iconmobile-buy'></i>
+						<a href="">Đặt mua</a>
+					</div>
+					<div class="list call-me">
+						<i class='iconmobile-call-me'></i>
+						<a href="">Gọi lại cho tôi</a>						
+					</div>
+					<div class="list share">
+						Chia sẻ cho bạn bè: <div class="fb-like" style=""></div>
+					</div>
+					<div class="list giacu" ng-if="old_new['new']['price']">
+						<span style='font-weight: 600;'>Mới </span> 
+						<span style='color: #1163ac;'>({{old_new['new']['count']}})</span> giá từ <span style='color: #fb4c36;' to-Price="old_new['new']['price']"></span>
+						<i class='iconmobile-mt'></i>
+					</div>
+					<div class="list giacu" ng-if="old_new['old']['price']">
+						<span style='font-weight: 600;'>Cũ</span>
+						<span style='color: #1163ac;'>({{old_new['old']['count']}})</span> giá từ <span style='color: #fb4c36;' to-Price="old_new['old']['price']"></span>
+						<i class='iconmobile-mt'></i>
+					</div>
+
+				
+					<h2 ng-if="buytogether[0]">Sản phẩm mua kèm</h2>
+					<div ng-if="buytogether[0]" class="list product-ct">
+						<div class="list-img">
+							<div>
+								<img src="http://static.dienmaycholon.vn/product/product{{product['myid']}}/small/product_{{product['myid']}}_1.png?versionsmart-tivi-led.jpg">	
+							</div>
+
+							<div style="width:3%;"><i class='iconmobile-congxanh'></i></div>
+
+							<div ng-repeat="b in buytogether">
+								<img ng-src="http://static.dienmaycholon.vn/product/product{{b['myid']}}/small/product_{{b['myid']}}_1.png">	
+							</div>
+
+						
+						</div>
+						<div class="list list-pro-null">
+							<div class="one">
+								<input type="checkbox" checked="">
+							</div>
+							<div class="two">
+								Sản phẩm đang xem:<br/>
+								<a class="name-pro" href="">{{product['name']}}</a><br/>
+								<span ng-if="product['isprice']==1" class="price" to-Price="product['discount']" > </span>
+								<span ng-if="product['isprice']!=1" class="price" to-Price="product['saleprice']" ></span>
+							</div>
+						</div>
+
+						<div class="list list-pro-null" ng-repeat="b in buytogether">
+							<div class="one">
+								<input type="checkbox" >
+							</div>
+							<div class="two">
+								<a class="name-pro" href="/chi-tiet-san-pham/{{b['myid']}}_{{ValidateData.toAlias(b['name'])}}_1_0">{{b['name']}}</a><br/>
+							<span ng-if="b['isprice']==1" class="price" to-Price="b['discount']" ></span>
+								<span ng-if="b['isprice']!=1" class="price" to-Price="b['saleprice']" ></span>
+								<i class='iconmobile-mt'></i>
+							</div>
+						</div>
+
+						
+
+						<div class="list list-pro-null buy-group">
+							<p>Tổng giá trị: <span to-Price="get_total_element1"></span></p>
+							<div class="buy-all">Đặt mua tất cả</div>
+						</div>
+					</div>
+			
+					<!--chi tiet san pham-->
+					
+					<h2  ng-click='my_show_detail()'>Chi tiết về sản phẩm</h2>
+					<div class="list product-detail" ng-show='show_detail'>
+						<div >
+
+							Thông tin - Tính năng
+							<i class="iconmobile-mt"></i>
+							<div class="" >
+
+
+								<div class="list" ng-repeat='e in list_element'>
+
+								  <div class="item item-divider">
+								  {{e['name']}}
+								  </div>
+
+								  <div class=""  ng-repeat='c in e["value"]'>
+								  	<div class='row'>
+								  		<small class='col'>
+								  			   {{c['name']}} 
+								  		</small>
+								  		<small class='col'>
+								  			{{c['val']}}
+								  		</small>
+								  	</div>
+									   
+								  </div>
+
+
+								</div>
+								
+							</div>
+							
+						</div>
+						<div>
+							Giới thiệu
+							<i class="iconmobile-mt"></i>
+							<div class="" ng-bind-html="content">
+									
+							</div>
+							
+						</div>
+					</div>
+					
+					<!--Sản phẩm cùng hãng-->
+					
+					<h2>Sản phẩm cùng hãng</h2>
+
+					<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager='false' >
+					  <ion-slide data-ng-repeat='x in [1,3,6]'>
+					    	
+					  <div class='row'>
+
+                        <div class='col' ng-repeat='product in list_cate.slice(x,x+3)'>
+                        
+
+                            <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}'  class="" >
+                              
+                               <img title="{{product['name']" alt="{{product['name']" src="{{LINK_IMG}}product{{product['id']}}/small/product_{{product['id']}}_1.png" />
+                            </a>
+
+                          
+                        <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}'  class="title_product" >{{product['name']}}</a>
+
+
+                              <div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="product['rating']" readonly="rating.isReadonly"></star-rating>
+                                <small class=''>
+                                  ({{product['countrating']}})
+                                </small>
+                               
+                              </div>
+
+                              <div ng-if="product['coupons']" >
+                                      
+                                         
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
+                                          </strong>
+                                     
+                                      <div class="coupon-box-2">
+                                                    <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{product['coupons']}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                              </div>
+                                <div ng-if="!product['coupons']" >
+                                  <div ng-if="product['isprice']=='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      </div>
+                                      <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+                                      </strong>
+                                  </div>
+                                   <div ng-if="product['isprice']!='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      
+                                      </div>
+                                      <div>
+                                        <img  class='auto_images'  src='http://m.dienmaycholon.vn/public/default/img/dau_gia_2.png' />
+                                      </div>
+                                        
+                                  </div>
+                                </div>
+                              
+                        </div>
+                       
+                      </div>
+					  </ion-slide>
+					 			  
+					</ion-slide-box>
+					
+					<!--So sánh sản phẩm-->
+					
+					<h2>So sánh sản phẩm tương tự</h2>
+
+					<div class="list list-main-sub-product list-main-sub-product-compare compare-detail">
+				    	<div class="tbl-so-sanh">
+				    		<div>Hình ảnh & tên sản phẩm</div>
+				    			<div>Đánh giá</div>
+		    					<div>Giá bán</div>
+					    		<div>Giao hàng</div>
+					    		<div>Bán bởi</div>
+					    		<div>Thương hiệu</div>
+
+					    		<div ng-repeat="e in list_element">{{e['name']}}</div>
+				    	
+
+				    		<div></div>
+				    	</div>
+				    	<div class="tem-compare">
+				    		<div>
+				    			<a href="">
+			    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+			    				</a><br/>
+			    				<span class='bold'>Sản phẩm đang xem: </span>
+			    				<br/>
+			    				<a href='' class='title_product'>
+			    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+			    				</a>
+				    		</div>
+				    		<div class="div-star"><span class='star'></span><span class='sl-star'>(333)</span></div>
+				    		<div class="price">9.090.000 Đ</div>
+				    		<div>Miễn phí</div>
+				    		<div>ABC</div>
+				    		<div>Sony</div>
+				    		<div>Giá bán</div>
+				    		<div>Giao hàng</div>
+				    		<div>ABC</div>
+				    		<div>Thương hiệu</div>
+				    		<div><a class="iconmobile-buy-red" href=""></a></div>
+				    	</div>
+				    	<div class="tem-compare">
+				    		<div>
+				    			<a href="">
+			    					<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+			    				</a><br/>
+			    				<span class='bold'>Sản phẩm đang xem: </span>
+			    				<br/>
+			    				<a href='' class='title_product'>
+			    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+			    				</a>
+				    		</div>
+				    		<div class="div-star"><span class='star'></span><span class='sl-star'>(333)</span></div>
+				    		<div class="price">9.090.000 Đ</div>
+				    		<div>Miễn phí</div>
+				    		<div>ABC</div>
+				    		<div>Sony</div>
+				    		<div>Giá bán</div>
+				    		<div>Giao hàng</div>
+				    		<div>ABC</div>
+				    		<div>Thương hiệu</div>
+				    		<div><a class="iconmobile-buy-black" href=""></a></div>
+				    	</div>
+					</div>
+					
+					<!--Phần hỏi đáp -->
+					<h2>Hỏi - Đáp thắc mắc</h2>
+					
+					<div class="list question">
+
+						<div>
+							<div class="question-s">
+								<i class="iconmobile-dauhoi"></i>
+								<div>Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>yeucongnghe | 30.07.2015 - 11:12:25</span></p>
+								</div>
+							</div>
+							<div class="answer">
+								<i class="iconmobile-daucheck"></i>
+								<div>
+									Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>oscar | 30.07.2015 - 11:12:25</span></p>
+									<p><a href="">Xem tất cả 4 câu hỏi</a></p>
+								</div>
+
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+
+						<div>
+							<div class="question-s">
+								<i class="iconmobile-dauhoi"></i>
+								<div>Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>yeucongnghe | 30.07.2015 - 11:12:25</span></p>
+								</div>
+							</div>
+							<div class="answer">
+								<i class="iconmobile-daucheck"></i>
+								<div>
+									Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>yeucongnghe | 30.07.2015 - 11:12:25</span></p>
+									<p><a href="">Xem tất cả 4 câu hỏi</a></p>
+								</div>
+
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+						<div>
+							<div class="question-s">
+								<i class="iconmobile-dauhoi"></i>
+								<div>Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>yeucongnghe | 30.07.2015 - 11:12:25</span></p>
+								</div>
+							</div>
+							<div class="answer">
+								<i class="iconmobile-daucheck"></i>
+								<div>
+									Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+									<p><span>yeucongnghe | 30.07.2015 - 11:12:25</span></p>
+								</div>
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+
+						<div style="padding: 6px 10px 0px 10px;">
+							<a href="">Xem tất cả 30 câu hỏi đã được giải đáp
+							<i class="iconmobile-mt"></i>
+							</a>
+						</div>
+					</div>
+					
+					<h2>Đánh giá khách hàng</h2>
+					<div class="list question danhgia">
+						<div>
+							<span>33 đánh giá</span><br>
+							<span class="star"></span>
+							<span style='font-weight: 300;'>3.5 / 5</span>
+							<i class="iconmobile-mt"></i>
+						</div>
+						<div>
+							<span>Bình luận được quan tâm nhất</span><br><br>
+							<span>Những tính năng ưu việt</span><br>
+							<span class="star"></span>
+							<div class="text">
+								Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+								<p><span class='autor'>Đăng bởi <a href="">Okasaki</a> | 02/05/2015</span></p>
+								<p><i class='iconmobile-like'></i> <span class='action'>Thích (15)</span> <i class='iconmobile-dislike'></i><span class='action'>Không thích (0)</span></p>
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+						<div>
+							<span>Những tính năng ưu việt</span><br>
+							<span class="star"></span>
+							<div class="text">
+								Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+								<p><span class='autor'>Đăng bởi <a href="">Okasaki</a> | 02/05/2015</span></p>
+								<p><i class='iconmobile-like'></i> <span class='action'>Thích (15)</span> <i class='iconmobile-dislike'></i><span class='action'>Không thích (0)</span></p>
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+						<div>
+							<span>Những tính năng ưu việt</span><br>
+							<span class="star"></span>
+							<div class="text">
+								Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu? cho sản phẩm thì xem ở đâu?Tôi muốn xem danh sách điểm bảo hành cho sản phẩm thì xem ở đâu?
+								<p><span class='autor'>Đăng bởi <a href="">Okasaki</a> | 02/05/2015</span></p>
+								<p><i class='iconmobile-like'></i> <span class='action'>Thích (15)</span> <i class='iconmobile-dislike'></i><span class='action'>Không thích (0)</span></p>
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+						<div style="padding: 6px 10px 0px 10px;">
+							<a href="">Xem tất cả 30 câu hỏi đã được giải đáp
+							<i class="iconmobile-mt"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="list button-danhgia">
+						<a href="">Viết bài đánh giá</a>
+					</div>
+					<div class="list button-dichvu">
+						<a href="">Dịch vụ tư vấn</a>
+					</div>
+
+					<h2>Sản phẩm vừa xem</h2>
+					<div class="list product-saw">
+						<div>
+							<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+						</div>
+						<div>
+							<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+						</div>
+						<div>
+							<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+						</div>
+						<i class='iconmobile-mt'></i>
+					</div>
+
+
+
+					<h2>Sản phẩm tương tự</h2>
+
+					<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager='false' >
+					  <ion-slide>
+					    	<div class='row'>
+				    			<div class='col'>
+				    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+				    				<a href='' class='title_product'>
+				    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+				    				</a>
+				    				<div class='button-price button button-clear button-stable'>
+				    				 10.000.000 Đ
+				    				</div>
+				    				<strong class=' button-price button-price button button-clear button-assertive'>
+				    				 10.000.000 Đ
+				    				</strong>
+				    			</div>
+				    			<div class='col'>
+				    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+				    				<a href='' class='title_product'>
+				    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+				    				</a>
+				    				<strong class='button-price button button-clear button-assertive'>
+				    				 10.000.000 Đ
+				    				</strong>
+				    			</div>
+				    			<div class='col'>
+				    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+				    				<a href='' class='title_product'>
+				    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+				    				</a>
+				    				<strong class='button-price button button-clear button-assertive'>
+				    				 10.000.000 Đ
+				    				</strong>
+				    			</div>
+					    	</div>
+					  </ion-slide>
+					 <ion-slide>
+					  	 <div class='row'>
+			    			<div class='col'>
+			    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+			    				<a href='' class='title_product'>
+			    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+			    				</a>
+			    				<strong class='button-price button button-clear button-assertive'>
+			    				 10.000.000 Đ
+			    				</strong>
+			    			</div>
+			    			<div class='col'>
+			    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+			    				<a href='' class='title_product'>
+			    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+			    				</a>
+			    				<strong class='button-price button button-clear button-assertive'>
+			    				 10.000.000 Đ
+			    				</strong>
+			    			</div>
+			    			<div class='col'>
+			    				<img src='http://dienmaycholon.vn/public/picture/product/product14/small/product_14_1.png?versiontivi-led-samsung-ua40h4200akxxv.jpg' />
+			    				<a href='' class='title_product'>
+			    					MÁY GIẶT LỒNG ĐỨNG SAMSUNG 11.0KG WA11F5S5QWA/SV 
+			    				</a>
+			    				<strong class='button-price button button-clear button-assertive'>
+			    				 10.000.000 Đ
+			    				</strong>
+			    			</div>
+					    </div>
+					  </ion-slide>					  
+					</ion-slide-box>
+				</div>
+
+				<!--
+				<div class="list step4">
+					a
+				</div>-->
+			</div>
+			

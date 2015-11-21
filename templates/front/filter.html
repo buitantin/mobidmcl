@@ -1,0 +1,228 @@
+<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager='false' auto-play='false'>
+	<ion-slide>
+
+		 <ng-include src="'/templates/front/headercate.html'"></ng-include>
+
+			<div class="list list-main-sub-product list-main-sub-product-compare list-main-sub-product-filter">
+				<div>
+					<div class="list">
+						<a class="active" href="">
+							<i class='iconmobile-daucong'></i>Loại sản phẩm
+						</a>						
+				 	</div>
+				 	<div class="list-item" style="display: block">
+				 		<ul>
+				 			<li ng-repeat="cc in my_cate">
+					 			<a href="/tieu-chi-tim-kiem/{{cc['id']}}">
+					 				<strong ng-if="cc['name']==my_child['name']" class="price_sidebar_view">
+					 					{{cc['name']}} 	({{cc['total']}})
+					 				</strong>
+					 				<span ng-if="cc['name']!=my_child['name']">
+					 					{{cc['name']}} 	({{cc['total']}})
+					 				</span>
+					 			</a>
+				 			</li>
+				 						 			
+				 		</ul>				 		
+				 	</div>
+
+
+				 		<div class="list">
+						<a  class="{{(hide_tag[100]) ? 'active': ''}}" href="javascript:;" ng-init='hide_tag[100]=false' ng-click='hidden(hide_tag[100],100)'>
+						<i  class='iconmobile-daucong'></i>Nhà sản xuất
+						</a>						
+				 	</div>
+				 	<div class="list-item" style="display: block" ng-show="hide_tag[100]">
+				 		<ul>
+				 			<li ng-repeat="s in my_series">
+				 				<a href="javascript:void(0)">
+					 				<span>{{s['name']}} ({{s['total']}})</span>
+					 				<input type="checkbox" ng-change="changecheckbox(1,s['id'],bool)" ng-model='bool'  />
+					 		    </a>
+				 			</li>
+				 						 			
+				 		</ul>				 		
+				 	</div>
+
+				 <div ng-repeat ='(key,tem) in list_template'>
+				 	<div class="list" >
+						<a href="" class='{{ (hide_tag[key])? "active":"" }}'  ng-init="hide_tag[key]=false"  ng-click='hidden(hide_tag[key],key)'>
+							<i class='iconmobile-daucong'></i>{{tem['name']}}
+						</a>						
+				 	</div>
+				 	
+				 	<div class="list-item" style="display: block"  ng-show="hide_tag[key]">
+				 		<ul>
+				 			<li ng-repeat='(k,s) in tem["child"]'>
+					 			<a href="javascript:void(0)">
+					 				<span>{{s['val']}} ({{s['total']}})</span>
+					 				<input type="checkbox" ng-change="changecheckboxtemplate(s['id'],k,bool)" ng-model='bool' ng-true-value="'{{s['val']}}'" ng-false-value='false'/>
+					 			</a>
+				 			</li>
+				 					
+				 		</ul>				 		
+				 	</div>
+
+				  </div>
+				  
+
+
+
+				 	<div class="list">
+						<a href="" ng-init="hide_tag[200]=false"  class='{{ (hide_tag[200])? "active":"" }}' ng-click='hidden(hide_tag[200],200)'>
+							<i class='iconmobile-daucong'></i>Theo giá sản phẩm
+						</a>						
+				 	</div>
+				 	<div class="list-item" style="display: block"  ng-show="hide_tag[200]" ng-init='myvalue=1'>
+				 		<ul>
+				 			<li  ng-repeat='(key,price) in my_price'>
+					 			<a href="javascript:void(0)" ng-if="price['position']=='2'" ng-init='maxvalue=price["value"]'>
+					 				<span > {{price['name']}} ({{price['count']}})</span><input type="checkbox" ng-click="changecheckboxprice(bool,key)" ng-model='bool' ng-true-value="'(b.discount >= {{price['value']}})'" ng-false-value="false"/>
+					 			</a>
+					 			<a href="javascript:void(0)" ng-if="price['position']=='1'" ng-init='minvalue=price["value"]'>
+					 				<span > {{price['name']}} ({{price['count']}})</span><input type="checkbox" ng-click="changecheckboxprice(bool,key)" ng-model='bool' ng-true-value="'(b.discount < {{price['value']}} )'" ng-false-value="false" />
+					 				<span ng-init="myvalue=price['value']"></span>
+					 			</a>
+					 			<a href="javascript:void(0)" ng-if="price['position']=='3'">
+					 				<span> {{price['name']}} ({{price['count']}})</span><input type="checkbox" ng-click="changecheckboxprice(bool,key)" ng-model='bool' ng-true-value="' ( b.discount < {{price['value']}} AND b.discount > {{price['phandoan']}} )'" ng-false-value="false" />
+
+					 				<span ng-init="myvalue=price['value']"></span>
+					 			</a>
+
+				 			</li>
+
+
+				 			
+				 		</ul>				 		
+				 	</div>
+
+
+				 
+
+				 	<div class="action">
+				 		<div><button class="button xacdinh" ng-click="click_filter()"> Xác nhận</button></div>
+				 	</div>
+				 	<div class="action">
+				 		<div><a class="button huybo" href="">Bỏ chọn tất cả</a></div>
+				 	</div>
+
+				</div>				
+			</div>
+
+
+			<div class="list list-cate-menu">
+				<ul>
+					<li>
+						<a class="" href="#">
+					      <span>Xem tất cả {{my_child['name']}}</span>
+					      <span class="iconmobile-mt"></span>		      
+					    </a>
+			    	</li>
+					
+				</ul>
+			</div>
+		</ion-slide>
+
+
+
+
+		<ion-slide>
+
+		
+
+		
+
+
+			<div class="list list-main-sub-product">
+					<button ng-click="slidePrevious()" class="button xacdinh button icon-left ion-chevron-left button-positive"	 >Quay lại</button>
+
+					<div >
+							<div class='tag' >
+							
+							</div>
+					</div>
+		    	<div class='row' ng-repeat="product in listproduct| limitTo:pageSize">
+	    			<div class="left">
+	    				 <a href='/chi-tiet-san-pham/{{product["my"]}}_{{ValidateData.toAlias(product["name"])}}_1' >
+
+			                         <img title="{{product['name']}}" alt="{{product['name']}}" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
+			                         
+                         </a>
+	    			</div>
+    				<div class="right">
+	    				 <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1'  class='title_product ddd'>
+
+		                             {{product['name']}}
+		                          </a>
+
+
+	    				  <div  ng-controller="RatingController as rating">
+                           <star-rating ng-model="product['rating']" readonly="rating.isReadonly"></star-rating>
+                            <small class=''>
+                              ({{product['countrating']}})
+                            </small>
+                           
+                          </div>
+
+
+	    				 <div ng-if="product['coupons']" >
+                                      
+                                         
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
+                                          </strong>
+                                     
+                                      <div class="coupon-box-2">
+                                                    <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{product['coupons']}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                            	  </div>
+                                <div ng-if="!product['coupons']" >
+                                  <div ng-if="product['isprice']=='1'">
+                                     
+
+                                      <div class='button-price button button-clear button-stable'   to-Price="product['saleprice']">
+				    				
+					    				</div>
+					    				
+					    				<strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+					    			
+					    				</strong>
+					    		<div class="iconmobile-giamgia" ng-if="product['saleprice']/product['discount'] > 30"
+					    		to-dis="(product['saleprice']/product['discount'])"
+					    		></div>
+                                  </div>
+                                   <div ng-if="product['isprice']!='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      
+                                      </div>
+                                      <div>
+                                        <img  class='auto_images dau_gia'   src='http://m.dienmaycholon.vn/public/default/img/dau_gia_2.png'  />
+                                      </div>
+                                        
+                                  </div>
+                                </div>
+
+                               
+    				</div>
+		    	</div>
+
+
+		    	 <button class="button more-product" ng-click="loadNextPage()" ng-show='show_paginate'>
+          				  <a href="#" ng-click='loadNextPage()'>Xem thêm sản phẩm...</a>
+      			  </button>
+			</div>
+
+
+
+
+
+		</ion-slide>
+
+</ion-slide-box>
+	

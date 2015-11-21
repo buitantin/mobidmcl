@@ -228,12 +228,20 @@ class Promotion extends Model {
 		";
 		return	$data_product=$this->TT_DB->fetchAll($sql);
 	}
-	public function getGift($id,$supplier='1',$type_promo=null){//Sử thay đổi 19-01-2015  
+	public static function getGift($id,$supplier='1'){//Sử thay đổi 19-01-2015  
+
+		$type_promo=Promotion::whereRaw("cid_product=$id AND status='0'")->orderBy("type_promo","ASC")->first();
+
 		$data_product=array();
-            if($type_promo=='2'){
+
+		if(!empty($type_promo->type_promo)){
+
+
+
+            if($type_promo->type_promo=='2'){
                 $sql_online = "
-                    SELECT a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
-					c.status,c.cid_product,c.cid_promotion,c.type_promo,
+                    SELECT 
+
 					d.id AS idpromotion ,d.active,d.name,d.description,d.of_type,
 					s.id,s.cid_product,s.cid_supplier
 					FROM (  
@@ -244,10 +252,14 @@ class Promotion extends Model {
 					AND d.active='1' AND c.type_promo='2'
 					AND s.cid_product=$id AND s.cid_supplier=$supplier
                 ";
-                $data_product['online']=$this->TT_DB->fetchRow($sql_online);
-            }elseif($type_promo=='3'){
+                $v=DB::select($sql_online);
+                if(!empty($v[0])){
+                	$data_product['online']=$v[0];
+                }
+            }elseif($type_promo->type_promo=='3'){
                 $sql_press = "
-                    SELECT a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
+                    SELECT 
+
 					c.status,c.cid_product,c.cid_promotion,c.type_promo,
 					d.id AS idpromotion ,d.active,d.name,d.description,d.of_type,
 					s.id,s.cid_product,s.cid_supplier
@@ -259,10 +271,14 @@ class Promotion extends Model {
 					AND d.active='1' AND c.type_promo='3'
 					AND s.cid_product=$id AND s.cid_supplier=$supplier
                 ";
-                $data_product['press']=$this->TT_DB->fetchRow($sql_press);
-            }elseif($type_promo=='4' || $type_promo=='1'){
+                $v=DB::select($sql_press);
+                if(!empty($v[0])){
+                	$data_product['press']=$v[0];
+                }
+            }elseif($type_promo->type_promo=='4' || $type_promo->type_promo=='1'){
                 $sql="
-					SELECT a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
+					SELECT 
+
 					c.status,c.cid_product,c.cid_promotion,c.type_promo,
 					d.id AS idpromotion ,d.active,d.name,d.description,
 					s.id,s.cid_product,s.cid_supplier
@@ -274,11 +290,15 @@ class Promotion extends Model {
 					AND d.active='1' AND c.type_promo='4'
 					AND s.cid_product=$id AND s.cid_supplier=$supplier
 				";
-				$data_product['text']=$this->TT_DB->fetchAll($sql);
+				$v=DB::select($sql);
+                if(!empty($v[0])){
+                	$data_product['text']=$v[0];
+                }
             }
                 
 			$sql_gift="
-				SELECT a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
+				SELECT
+				
 				c.cid_product,c.cid_gift,c.cid_supplier,
 				d.id,d.name,d.amount
 				FROM (   pro_product AS a INNER JOIN pro_gift_product as c ON c.cid_product=a.id )
@@ -287,8 +307,16 @@ class Promotion extends Model {
 				AND c.cid_product=$id AND c.cid_supplier=$supplier
 				GROUP BY d.id
 			";		
-			$data_product['gift']=$this->TT_DB->fetchAll($sql_gift);		
-		return $data_product;
+
+
+			$v=DB::select($sql_gift);
+                if(!empty($v[0])){
+                	$data_product['gift']=$v[0];
+                }	
+
+			return $data_product;
+	  }
+	  return null;
 	}
     
     public function getProduct_filter_khuyenmai($sql=null){

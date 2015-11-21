@@ -37,7 +37,19 @@ Route::get('/getdetailproduct/{id}', 'ProductController@getdetailproduct');
 
 Route::get('/get_element_product/{id}/{element}', 'ProductController@get_element_product');
 
+Route::get('/filter_cate/{id}', 'FilterController@getcate');
+Route::get('/filter_series/{id}', 'FilterController@getseries');
+Route::get('/filter_price/{id}', 'FilterController@getprice');
+Route::get('/filter_template/{id}', 'FilterController@gettemplate');
+Route::any('/filter_product/{id}', 'FilterController@getproduct');
 
+Route::any('/detail_product/{id}/{supplier}', 'DetailController@detail');
+Route::get('/detail_gift/{id}/{supplier}', 'DetailController@getgift');
+Route::get('/detail_payment/{id_cate}', 'DetailController@getpayment');
+Route::get('/detail_price/{id}', 'DetailController@getpricenewold');
+Route::get('/detail_buy/{id}', 'DetailController@getbuytogether');
+Route::get('/detail_element/{id}', 'DetailController@getelement');
+Route::get('/detail_cate/{id}', 'DetailController@getcate');
 
 
 Route::controllers([

@@ -1,7 +1,15 @@
 angular.module('starter.controllers', [])
 
 
+.controller("ONTOP",function($scope,$ionicScrollDelegate) {
+	$ionicScrollDelegate.scrollTop();
+	$scope.ontoppage=function(){
+			$ionicScrollDelegate.scrollTop();
+		}
+})
 .controller('FooterCtrl', function($scope,$http,Cate,PUBLIC_VALUE,ValidateData) {
+
+		
 
 		$scope.show_dt=false;
 		$scope.ValidateData=ValidateData;
@@ -60,6 +68,7 @@ angular.module('starter.controllers', [])
 
 .controller('HeaderController',function($scope,$ionicSideMenuDelegate,$http, $ionicActionSheet, $timeout){
 			  //$scope.Mr_Data=Mr_Data;
+
 			  $scope.toggleLeft=function(){
 				  $ionicSideMenuDelegate.toggleLeft();
 			  };
@@ -93,8 +102,10 @@ angular.module('starter.controllers', [])
 		
 							   });
 })
-.controller("HOMECtrl",function($scope,$http,PUBLIC_VALUE,ValidateData){
-	
+.controller("HOMECtrl",function($scope,$http,PUBLIC_VALUE,ValidateData,$ionicScrollDelegate){
+	$ionicScrollDelegate.scrollTop();
+
+
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 
@@ -134,8 +145,10 @@ angular.module('starter.controllers', [])
 			return ValidateData.toAlias(alias);
 		}
 })
-.controller("CategoriesCtr",function($scope,$ionicSlideBoxDelegate,$state,$http,$stateParams,PUBLIC_VALUE,ValidateData,Cate){
+.controller("CategoriesCtr",function($scope,$ionicSlideBoxDelegate,$state,$http,$stateParams,PUBLIC_VALUE,ValidateData,Cate,$ionicScrollDelegate){
+	$ionicScrollDelegate.scrollTop();
 	
+
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 	if($stateParams.parent != undefined){
@@ -179,8 +192,10 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller("ChildCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore){
-	
+.controller("ChildCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
+	$ionicScrollDelegate.scrollTop();	
+
+
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 
@@ -259,11 +274,10 @@ angular.module('starter.controllers', [])
 								return true;
 							}else{
 								$ionicPopup.show({
-									template:"Da du san pham so sanh",
-									title:"Thong bao",
-									subTitle:"Vui long chon lai",
+									template:"Chỉ tối đa 2 sản phẩm ",
+									title:"Thông báo",
 									buttons:[
-										{text:"Thoat",
+										{text:"OK",
 											type:"button-positive"
 											}
 									]
@@ -299,7 +313,7 @@ angular.module('starter.controllers', [])
 
 
 })
-.controller("CompareCtr",function($scope,$http,$stateParams,PUBLIC_VALUE,ValidateData,$cookieStore){
+.controller("CompareCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore){
 	
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	
@@ -402,19 +416,213 @@ angular.module('starter.controllers', [])
 			
 			
 	}else{
-		window.location.href="/?error=";
+			$ionicPopup.show({
+									template:"Vui lòng chọn sản phẩm để so sánh.",
+									title:"Thông báo",
+									buttons:[
+										{text:"OK",
+											type:"button-positive"
+											}
+									]
+								})
+		window.history.back();
 	}
 
 
 
 })
  
+.controller("FilterCtr",function($scope,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
+	
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	$scope.ValidateData=ValidateData;
+
+
+	if($stateParams.filter != undefined){
+			$scope.my_cate=[];
+			$scope.my_parent=[];
+			$scope.listproduct=[];
+			$scope.my_child=[];
+
+			$scope.my_series=[];
+			$scope.my_price=[];
+			$scope.list_template=[];
+			
+			$scope.valueseries=[];
+			$scope.valuetemplate=[];
+			$scope.valueprice=[];
+
+			$scope.hide_tag=[];
+
+			$scope.currentPage=1;
+			$scope.pageSize=6;
+			$scope.show_paginate=true;
+
+			$http.get(PUBLIC_VALUE.URL+"getcate/"+$stateParams.filter)
+			.success(function(re){
+					$scope.my_child=re;
+
+								$http.get(PUBLIC_VALUE.URL+"filter_cate/"+$scope.my_child['cid_parent'])
+								.success(function(r){
+										$scope.my_cate=r;
+								});
+								$http.get(PUBLIC_VALUE.URL+"filter_series/"+$scope.my_child['id'])
+								.success(function(s){
+										$scope.my_series=s;
+								});	
+								$http.get(PUBLIC_VALUE.URL+"filter_price/"+$scope.my_child['id'])
+								.success(function(s){
+										$scope.my_price=s;
+								});	
+
+								$http.get(PUBLIC_VALUE.URL+"filter_template/"+$scope.my_child['id'])
+								.success(function(s){
+										$scope.list_template=s;
+								});	
+
+
+							$http.get(PUBLIC_VALUE.URL+"getcate/"+$scope.my_child['cid_parent'])
+								.success(function(parent){
+										$scope.my_parent=parent;
+								});
+
+
+
+								$http.get(PUBLIC_VALUE.URL+"getproduct/"+$scope.my_child['id']+"/12")
+								.success(function(r){
+										$scope.listproduct=r;
+										var count_max=$scope.listproduct.length;
+										$scope.loadNextPage=function(){
+								
+											$scope.currentPage++;
+											$scope.pageSize=$scope.currentPage*10;
+
+												if($scope.pageSize > count_max){
+
+													$scope.show_paginate=false;
+												}
+
+											}	
+									});
+			});
+	
+
+			$scope.click_filter=function(){
+						$ionicLoading.show({
+							template:"Loading...."
+						})
+						var t='';
+						if($scope.valuetemplate.length > 0){
+
+							for (var i = $scope.valuetemplate.length - 1; i >= 0; i--) {
+								if($scope.valuetemplate[i] == null){
+									$scope.valuetemplate.splice(i,1);
+								}
+							};
+
+							t=$scope.valuetemplate.join(" OR ");
+						}
+						
+						
+						var d=JSON.stringify({
+							series:$scope.valueseries,
+							template:$scope.valuetemplate,
+							price:$scope.valueprice
+						});
+
+						$http.post(PUBLIC_VALUE.URL+"filter_product/"+$scope.my_child['id'],d)
+								.success(function(r){
+										$scope.listproduct=r;
+											$ionicSlideBoxDelegate.next();
+											$ionicLoading.hide();
+											if($scope.pageSize > $scope.listproduct.length){
+
+													$scope.show_paginate=false;
+												}
+
+										$scope.loadNextPage=function(){
+								
+											$scope.currentPage++;
+											$scope.pageSize=$scope.currentPage*10;
+
+												if($scope.pageSize > $scope.listproduct.length){
+
+													$scope.show_paginate=false;
+												}
+
+											}	
+									});
+				
+				$ionicScrollDelegate.scrollTop();
+			}		
+			$scope.changecheckbox=function(opt,idx,bool){
+					//for series
+					if(opt==1){
+						if(bool){
+							$scope.valueseries.push(idx);
+						}else{
+							$scope.valueseries.splice( $scope.valueseries.indexOf(idx),1);
+						}
+
+					}
+											
+
+			}
+			$scope.changecheckboxtemplate=function(idx,k,bool){
+						if(bool){
+							$scope.valuetemplate[idx+k]="(e.cid_element="+idx+" AND e.val LIKE '"+bool+"' )";
+						}else{
+							//$scope.valuetemplate.splice($scope.valuetemplate[idx+k],1);
+							delete $scope.valuetemplate[idx+k];
+						}
+						
+
+						
+			}
+			$scope.changecheckboxprice=function(value,k){
+				if(value){
+					$scope.valueprice[k]=value;
+				}else{
+				
+					delete $scope.valueprice[k];
+				}
+
+				
+			}
+
+
+			$scope.hidden=function(curre,ind){
+				 $scope.hide_tag[ind] = !curre;
+			}
+			
+		 	$scope.slidePrevious = function() {
+
+	      	  $ionicSlideBoxDelegate.previous();
+	    	}
+			
+			
+	}else{
+		window.location.href="/?error=";
+	}
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
  .controller('RatingController', RatingController)
   .directive('starRating', starRating)
   .directive("toPrice",toPrice)
-  .directive("toElement",toElement
-  	);
-
+  .directive("toDiscount",toDiscount)
 
   //Detail all Function.
   function RatingController() {
@@ -473,8 +681,8 @@ angular.module('starter.controllers', [])
   	return {
   		link:function(scope,element,attributes){
   					scope.$watch(attributes.toPrice,function(number){
-  						
-  						element.text(number.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " D" );
+  						if(number != null && number != undefined)
+  						element.text(number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " Đ" );
 			  	 
   					});
   					
@@ -483,22 +691,18 @@ angular.module('starter.controllers', [])
   		
   	};
   }
-  function toElement(){
-  		return {
+  function toDiscount(){
+  	return {
   		link:function(scope,element,attributes){
-  					scope.$watch(attributes.toElement,function(number){
-  						$http.get("/API/get_element_product/"+number,function(r){
-  							element.text(r);	
-  						})
-  						
-			  	 
-  					});
-  					
-  					
+  			scope.$watch(attributes.toDiscount,function(s){
+  				if(s != undefined){
+  					element.text( Math.round(s).toString()+ "%")
+  				}
+  			})
   		}
-  		
-  	};
+  	}
   }
+
  
 
 

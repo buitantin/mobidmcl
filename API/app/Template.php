@@ -50,9 +50,9 @@ class Template extends Model {
 	/*
 	 * CATE  ID cho danh mục con
 	*/
-	public function getFilter_Child($id_cate){
+	public static function getFilter_Child($id_cate){
 
-		$root=	$this->TT_DB->fetchAll("
+		$root=	DB::select("
 				SELECT
 					a.id,a.status,a.is_status_series,a.is_status_cate,a.cid_cate,
 					b.id AS myid,b.cid_product,b.cid_parent,b.is_type,b.val,b.cid_element,
@@ -69,11 +69,11 @@ class Template extends Model {
 			");
 		$data=array();
 		foreach($root as $r){
-			$child=$this->TT_DB->fetchAll("
+			$child=DB::select("
 				SELECT
-					DISTINCT b.val,a.id,a.status,a.is_status_series,a.is_status_cate,a.cid_cate,
-					b.id,b.cid_product,b.cid_parent,b.is_type,b.val,b.cid_element,
-					c.id,c.name,c.is_filter
+					DISTINCT b.val,COUNT(a.id) AS total,
+					c.id
+					
 				FROM 
 					pro_product AS a INNER JOIN comp_elemt_product AS b ON a.id=b.cid_product
 									INNER JOIN comp_element AS c ON c.id=b.cid_element
@@ -81,13 +81,13 @@ class Template extends Model {
 				WHERE 
 					 a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'  
 					AND c.is_filter='1'
-					AND b.is_type='0' AND a.cid_cate=$id_cate AND b.cid_element={$r['cid_element']}
+					AND b.is_type='0' AND a.cid_cate=$id_cate AND b.cid_element=".$r->cid_element."
 				GROUP BY b.val
 			");
 			if(!empty($child)){
-				$data[$r['myid']]=array(
-							"name"=>$r['name'],
-							'child'=>$child
+				$data[ $r->myid ]=array(
+							"name"=>$r->name,
+							'child'=>(array)$child
 						);
 			}
 		}
@@ -142,7 +142,7 @@ class Template extends Model {
 					->join("comp_element AS c",function($join){
 						$join->on("c.id","=","b.cid_element");
 					})
-					->join("comp_temp_product AS d",function($join){
+					->leftJoin("comp_temp_product AS d",function($join){
 
 						$join->on("a.id","=","d.cid_template");
 					})	

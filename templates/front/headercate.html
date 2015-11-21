@@ -1,0 +1,16 @@
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
+				
+				<a href='' >
+				<i class='iconmobile-title-danhmuc-sub'></i>
+					{{my_parent['name']}}
+				</a>
+			</div>
+
+			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
+				{{my_child['name']}}
+				<div>
+					<a class="sosanh {{ ( $location.url().indexOf('so-sanh') > -1 ) ? 'active':''}}" href="/so-sanh/{{my_child['id']}}">So sánh</a>
+					<a class="tieuchi {{ ( $location.url().indexOf('tieu-chi-tim-kiem') > -1 ) ? 'active':''}}" href="/tieu-chi-tim-kiem/{{my_child['id']}}">Tiêu chí tìm kiếm</a>
+				</div>
+				
+			</div>

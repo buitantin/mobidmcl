@@ -1,0 +1,37 @@
+
+.star-rating {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+} 
+ .star-rating .star {
+    padding: 1px;
+    background: url(../images/star-off.png) no-repeat;
+    font-size: 20px;
+    text-shadow: .05em .05em #aaa;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+        width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+}
+ .star-rating   .star.filled {
+      color: #fd0;
+      background: url(../images/star-on.png) no-repeat;
+         width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+    }
+  .dau_gia{
+    max-width:166px;
+  }
+
+ .star-rating   .star.readonly .star.filled {
+    color: #666;
+    background: url(../images/star-on.png) no-repeat;
+        width: 17px;
+    height: 15px;
+    background-size: 15px 15px;
+
+  }

@@ -7,7 +7,7 @@
 
     <link href="/lib/ionic/css/ionic.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
-
+    <link href="/css/default.css" rel="stylesheet" />
     <link href="/css/jquery.mobile-1.4.1.min.css"  rel="stylesheet"  />
 
     <link href="/css/lib.css" rel="stylesheet" />
@@ -34,6 +34,7 @@
   
     <script  type='text/javascript' src="/js/home/app.js"></script>
     <script  type='text/javascript' src="/js/home/controllers.js"></script>
+    <script  type='text/javascript' src="/js/home/details.js"></script>
     <script type='text/javascript'  src="/js/home/services.js"></script>
     <script  type='text/javascript'  src="/js/home/default.js"></script>
 
@@ -62,7 +63,7 @@
 
       
 
-                  <ui-view cache='true' cache-view="true"></ui-view>
+                  <ui-view cache='true' cache-view="true" scroll="true"></ui-view>
 
 
               <ng-include src="'/templates/layout/footer.html'"></ng-include>
@@ -75,7 +76,7 @@
         </ion-side-menu-content>
        <ion-side-menu side='left'>
        <header class="bar bar-header" fade-header>
-        <h1 class="title"><a href="#"><img src="img/logo.png" alt="Điện máy chợ lớn" title="Điện máy chợ lớn"></a></h1>
+        <h1 class="title"><a href="#"><img src="/img/logo.png" alt="Điện máy chợ lớn" title="Điện máy chợ lớn"></a></h1>
       </header>
       <ion-content has-header="true">        
           <div class="list">

@@ -5,12 +5,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.services','starter.details'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
@@ -26,8 +27,8 @@ angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.
         URL:"/API/",
         IMG:"http://static.dienmaycholon.vn/product/"
 })
-.config(function($stateProvider, $urlRouterProvider,$locationProvider,$httpProvider) {
-
+.config(function($stateProvider, $urlRouterProvider,$locationProvider) {
+ 
   /*  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 $httpProvider.defaults.withCredentials = true;
 */
@@ -67,7 +68,7 @@ $httpProvider.defaults.withCredentials = true;
      .state("detail",
           { 
          
-              url: "/chi-tiet-san-pham/:id_:alias_:supplier_:color",
+              url: "/chi-tiet-san-pham/:id",
               templateUrl : '/templates/front/detail.html',
               controller: 'DetailCtr'
           }
@@ -85,6 +86,13 @@ $httpProvider.defaults.withCredentials = true;
              url:"/so-sanh/:compare",
              templateUrl : '/templates/front/compare.html',
              controller: 'CompareCtr' 
+          }
+        )
+        .state("filter",
+         {
+             url:"/tieu-chi-tim-kiem/:filter",
+             templateUrl : '/templates/front/filter.html',
+             controller: 'FilterCtr' 
           }
         )
       
