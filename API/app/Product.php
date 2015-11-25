@@ -85,8 +85,9 @@ class Product extends Model {
 								  	DB::raw("get_price(a.id,b.discount) AS discount"),
 								  	DB::raw("get_sale_price(a.id,b.saleprice) AS saleprice"),
 
-							  		"a.id AS myid","a.code","a.sap_code","a.is_hot","a.name","a.cid_series","a.cid_cate","b.id AS cid_res"
-							  		,"a.isprice"
+							  		"a.id AS myid","a.code","a.sap_code","a.is_hot","a.name",
+							  		"a.cid_series","a.cid_cate","b.id AS cid_res"
+							  		,"a.isprice","b.cid_supplier"
 
 
 							  			)
@@ -312,4 +313,62 @@ class Product extends Model {
 		return $data;
 	
 	}
+
+	/*
+	 * Sản phẩm tượng tự trong trang chi tiết
+	 */
+	public static function Detail_Simalar($id_product,$supplier=1){
+		$query_similar="
+					SELECT
+						d.cid_product_one,d.cid_product_two,d.cid_product_three,d.cid_product_four
+					FROM pro_similar AS d
+					WHERE 
+						d.cid_product_one=$id_product OR d.cid_product_two =$id_product OR d.cid_product_three=$id_product OR d.cid_product_four=$id_product 
+				
+				";
+			$sql='';
+			$TSililar=DB::select($query_similar);
+			if(!empty($TSililar[0]->cid_product_one) )
+				$sql=" b.id={$TSililar[0]->cid_product_one} OR";
+			if(!empty($TSililar[0]->cid_product_two) )
+				$sql .= " b.id={$TSililar[0]->cid_product_two} OR";
+			if(!empty($TSililar[0]->cid_product_three) )
+				$sql .= " b.id={$TSililar[0]->cid_product_three} OR";
+			if(!empty($TSililar[0]->cid_product_four) )
+				$sql .= " b.id={$TSililar[0]->cid_product_four} OR";
+			if($sql!=''){
+				
+			
+				$sql=" AND (".substr($sql, 0,strlen($sql)-2).")";
+				$sql1="
+						SELECT 
+								a.id as mysupplier, a.name AS namesupplier,
+								b.id AS myid,b.name,
+								b.is_status_series,b.is_status_cate,b.cid_series,c.is_tranc,
+								c.id AS cid_res,c.cid_supplier,
+								get_review(b.id,1) AS rating,
+							  	get_review(b.id,2) AS countrating,
+							  	get_price(b.id,c.discount) AS discount,
+							  	get_sale_price(b.id,c.saleprice) AS saleprice
+							FROM
+									pro_product AS b  INNER JOIN pro_supplier_product AS c ON c.cid_product=b.id
+													   INNER JOIN market_supplier AS a ON a.id=c.cid_supplier
+													
+							WHERE
+								c.status='1' AND b.status='1' AND b.is_status_series='1' AND b.is_status_cate='1'
+								$sql
+							GROUP BY b.id
+							ORDER BY a.is_type DESC
+					
+					";
+				
+				$value=	DB::select(DB::raw($sql1) );
+				return $value;
+			}
+			return null;
+	 
+		
+	}
+
+	
 }

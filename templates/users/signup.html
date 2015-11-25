@@ -1,0 +1,95 @@
+
+			<div class="list content-product-detail">				
+
+			    <div class="bar-balanced header_bar ">
+					<strong class="bt_title">
+						Đăng ký tài khoản DIENMAYCHOLON.VN
+					</strong>
+						
+			    </div>		    
+				
+				<div class='not_position'>
+					<div class="  cart">					
+	    				<div class='list'>
+	    					<label class="item item-input ">						    
+							    <input placeholder="Tên đăng nhập" name="name" type="text" ng-model='signup.username'>
+							     <p  style="color:red" ng-if="myerror['username']">
+						    			{{myerror['username']}}
+						 		   </p>
+						    </label>
+						   
+
+						    <label class="item item-input ">					    	
+						     	<input placeholder="Mật khẩu" name="password" type="password" ng-model='signup.password'>
+						     	<p  style="color:red" ng-if="myerror['password']">
+						    			{{myerror['password']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">					    	
+						     	<input placeholder="Nhập lại mật khẩu" name="reset" type="password" ng-model='signup.reset'>
+						     	<p  style="color:red" ng-if="myerror['reset']">
+						    			{{myerror['reset']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input placeholder="Email" name="email" type="email" ng-model='signup.email'>
+						    	<p  style="color:red" ng-if="myerror['email']">
+						    			{{myerror['email']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input placeholder="Họ tên" name="name" type="text" ng-model='signup.name' >
+						    	<p  style="color:red" ng-if="myerror['name']">
+						    			{{myerror['name']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input placeholder="Điện thoại" name="phone" type="number" ng-model='signup.phone'>
+						    	 	<p  style="color:red" ng-if="myerror['phone']">
+						    			{{myerror['phone']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input class="picker__input" placeholder="Ngày sinh" name="birth" type="date" ng-model='signup.birth'>
+						    </label>
+						    <label class="item item-input item-select">
+						    	<span class="input-label">Tỉnh/Thành phố</span>
+						    	<select name="city" ng-model='signup.city' ng-change="change_cities()">
+						   		 	<option value="" selected="selected" label="">Chon</option>
+						    		<option ng-repeat="l in list_location" ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
+						    	</select>
+						    	<p  style="color:red;width:100%" ng-if="myerror['city']">
+						    			{{myerror['city']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input item-select">
+						    	<span class="input-label">Quận/Huyện</span>
+						    	<select name="state" ng-model='signup.state'>
+						    		<option ng-repeat="l in list_state" ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
+						    	</select>
+						    	<p  style="color:red;width:100%" ng-if="myerror['state']">
+						    			{{myerror['state']}}
+						 		   </p>
+						    </label>
+						    <ul>
+						    <li class="item item-checkbox">
+							    <label class="checkbox">
+							      <input name="agree" type="checkbox" ng-model="signup.agree">								     </label>
+							      Tôi đã đọc và đồng ý với Điều kiện sử dụng - Thỏa thuận người dùng của website.
+							</li>
+							</ul>
+							<p  style="color:red;width:100%" ng-if="myerror['agree']">
+						    			{{myerror['agree']}}
+						 		   </p>
+	    				</div>				    	
+					</div>
+					<div class="list step3">
+						<div class="list buy" ng-click="signupsubmit()">						
+							<a href="javascript:;">Đăng ký</a>
+						</div>				
+					</div>
+				</div>
+				
+			</div>
+			
+

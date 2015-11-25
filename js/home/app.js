@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.services','starter.details'])
+angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.services','starter.details','starter.users'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -58,6 +58,24 @@ $httpProvider.defaults.withCredentials = true;
            controller: 'HOMECtrl' 
         }
       )
+
+        //for use
+        .state("signup",
+            {
+               url:"/dang-ky",
+               templateUrl:"/templates/users/signup.html",
+               controller:"UserSignupCtr"
+            }
+        )
+         .state("login",
+            {
+               url:"/dang-nhap",
+               templateUrl:"/templates/users/login.html",
+               controller:"UserLoginCtr"
+            }
+        )
+
+         
        .state("parent",
         {
           url:"/:parent",
@@ -95,7 +113,10 @@ $httpProvider.defaults.withCredentials = true;
              controller: 'FilterCtr' 
           }
         )
-      
+        
+
+
+
      
     
 

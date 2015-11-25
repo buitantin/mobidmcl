@@ -50,6 +50,19 @@ Route::get('/detail_price/{id}', 'DetailController@getpricenewold');
 Route::get('/detail_buy/{id}', 'DetailController@getbuytogether');
 Route::get('/detail_element/{id}', 'DetailController@getelement');
 Route::get('/detail_cate/{id}', 'DetailController@getcate');
+Route::get('/detail_similar/{id}/{supplier}', 'DetailController@getsimilar');
+Route::get('/detail_question/{id}/{limit}', 'DetailController@getquestion');
+Route::get('/getnamequestion/{id}', 'DetailController@getnamequestion');
+Route::get('/detail_review/{id}', 'DetailController@getreview');
+Route::get('/detail_pluslike/{id}/{opt}', 'DetailController@pluslike');
+Route::post('/detail_save_reivew/{id}', 'DetailController@postreview');
+
+
+
+//For user
+Route::get('/list_location', 'UserController@listlocation');
+Route::get('/list_state/{id}', 'UserController@liststate');
+Route::get('/save_users', 'UserController@saveusers');
 
 
 Route::controllers([

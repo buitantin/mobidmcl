@@ -89,7 +89,9 @@ angular.module('starter.services', [])
 			  		return this.repAll (this.convertString(string) ).toLowerCase();
 			  },
 			  toAlias:function(string){
+			  	if(string){
 			  	 return this.replaceValue(this.convertString(string)).toLowerCase().replace("---","-") ;
+			  	}
 			  },
 			  toPrice:function(number){
 			  		if(!IsNumeric(number*1)){
@@ -114,6 +116,12 @@ angular.module('starter.services', [])
 
 		
 })
-
+.factory("USERS",function($http,PUBLIC_VALUE){
+	return {
+		getNameQuestion:function(id){
+			
+		}
+	};
+})
 
 

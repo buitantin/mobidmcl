@@ -16,12 +16,12 @@
                          
                           
 
-                          <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="" >
+                          <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="" >
                                <img title="{{product['name']}}" alt="{{product['name']}}" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
 
                           </a>
 
-                           <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="title_product" >{{product['name']}}</a>
+                           <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="title_product" >{{product['name']}}</a>
 
 
                           <div  ng-controller="RatingController as rating">
@@ -67,12 +67,12 @@
                         
                           
 
-                          <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="" >
+                          <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="" >
                             
                              <img title="{{product['name']" alt="{{product['name']" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
                           </a>
 
-                          <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="title_product" >{{product['name']}}</a>
+                          <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class="title_product" >{{product['name']}}</a>
 
 
                               <div  ng-controller="RatingController as rating">
@@ -140,11 +140,11 @@
                         <div class='col' ng-repeat='product in list_new.slice(x,x+3)'>
                          
                           
-                           <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="" >
+                           <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="" >
                              
                              <img title="{{product['name']" alt="{{product['name']" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
                            </a>
-                           <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="title_product" >{{product['name']}}</a>
+                           <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="title_product" >{{product['name']}}</a>
 
 
 
@@ -224,13 +224,13 @@
                         <div class='col' ng-repeat='product in listproduct[cate["id"]].slice(x,x+3)'>
                         
 
-                            <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}'  class="" >
+                            <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="" >
                               
                                <img title="{{product['name']" alt="{{product['name']" src="{{LINK_IMG}}product{{product['id']}}/small/product_{{product['id']}}_1.png" />
                             </a>
 
                           
-                        <a href='/chi-tiet-san-pham/{{product["id"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}'  class="title_product" >{{product['name']}}</a>
+                        <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="title_product" >{{product['name']}}</a>
 
 
                               <div  ng-controller="RatingController as rating">

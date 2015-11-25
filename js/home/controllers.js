@@ -66,7 +66,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$http, $ionicActionSheet, $timeout){
+.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$http, $state, $ionicActionSheet, $timeout){
 			  //$scope.Mr_Data=Mr_Data;
 
 			  $scope.toggleLeft=function(){
@@ -86,6 +86,12 @@ angular.module('starter.controllers', [])
 			           // add cancel code..
 			         },
 			      buttonClicked: function(index) {
+			      	if(index==0){
+			      		$state.go("signup");
+			      	}
+			      	if(index==1){
+			      		$state.go("login");
+			      	}
 			        return true;
 			      }
 			    });

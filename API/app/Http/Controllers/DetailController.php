@@ -5,10 +5,13 @@ use App\Http\Controllers\Controller;
 
 use App\Product; 
 use App\Promotion;
+use App\Question;
 use DB;
 use Response;
+use App\Review;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class DetailController extends Controller {
 
@@ -95,5 +98,69 @@ class DetailController extends Controller {
 						->orderBy("pro_supplier_product.date_mod","DESC")
 						->limit(9)->get()->toJson();
 		
+	}
+	public function getsimilar($id,$supplier=1){
+		
+		$a=Product::Detail_Simalar($id,$supplier);
+		return Response::json($a);
+	}
+	public function getquestion($id,$limit){
+			$a=Question::getList($id,$limit);
+			return Response::json($a);
+	}
+	public function getnamequestion($id){
+			$a=Question::getNameQuestion($id);
+			return Response::json($a);	
+	}
+	public function getreview($id){
+		$a=Review::getList($id);
+		return Response::json($a);
+	}
+	public function pluslike($id,$opt){
+		$f=Review::where("id","=",$id)->first();
+
+		if($opt=='1'){
+			$f->likes=$f->likes+1;
+		}else{
+			$f->unlikes=$f->unlikes+1;
+		}
+			$f->save();
+			return;
+
+	}
+	public function postreview($id,Request $request){
+		$r=($request->all());
+		if(empty($r['rating'])){
+			return "rating";
+		}
+		if(empty($r['title'])){
+			return "title";
+		}
+		if(empty($r['content'])){
+			return "content";
+		}
+		if(Auth::check()){
+					$users=Auth::user();
+
+					$news=new Review;
+					$news->cid_product=$id;
+					$news->email=$users->email;
+					$news->cid_user=$users->id;
+					$news->title=$r['title'];
+					$news->description=$r['description'];
+					$news->created=date("Y-m-d H:i:s");
+					$news->status='1';
+					$news->cid_parent='0';
+					$news->likes='1';
+					$news->unlikes='0';
+					$news->rate=$r['rating'];
+					$news->save();
+
+		}else{
+			return '2';
+		}
+
+
+		return '1';
 	}
 }

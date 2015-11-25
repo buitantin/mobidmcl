@@ -1,4 +1,25 @@
 
+.my-similar{
+      position: relative;
+    display: inline-block;
+    width: 74%;
+    /* float: left; */
+}
+.has-header .list-main-sub-product.list-main-sub-product-compare .tbl-so-sanh div:first-child, .has-header .list-main-sub-product.list-main-sub-product-compare .tem-compare div:first-child{
+      min-height: 172px !important;
+}
+.has-header .list-main-sub-product.list-main-sub-product-compare .tbl-so-sanh div, .has-header .list-main-sub-product.list-main-sub-product-compare .tem-compare div{
+      font-size: 13px;
+    height: 36px;
+}
+.tbl-so-sanh{
+    float: left;
+}
+.has-header .list-main-sub-product.list-main-sub-product-compare .tem-compare1 {
+    float: left;
+    margin: 0px !important ;
+    width: 50% !important;
+}
 .star-rating {
   margin: 0;
   padding: 0;

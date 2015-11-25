@@ -1,7 +1,9 @@
 angular.module('starter.details', [])
 
-.controller("DetailCtr",function($scope,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
+.controller("DetailCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
 	
+
+
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 
@@ -15,6 +17,14 @@ angular.module('starter.details', [])
 	$scope.list_element=[];
 	$scope.get_total_element=0;
 	$scope.list_cate=[];
+	$scope.listproduct_element=[];
+	$scope.list_similar=[];
+	$scope.list_orther=[];
+
+	$scope.myrating=5;
+	
+
+
 	$scope.content='';
 
 	if($stateParams.id != undefined){
@@ -24,6 +34,23 @@ angular.module('starter.details', [])
 		$http.get(PUBLIC_VALUE.URL+"detail_product/"+all_value[0]+"/"+all_value[2]).success(function(result){
 
 			$scope.product=result;
+			$scope.myrating=result['rating'];
+
+			//$cookieStore.remove("ortherproduct");
+			var list_orther=$cookieStore.get("ortherproduct") || [];
+			var p=[ result['name'],result['myid'] ];
+			p=JSON.stringify(p);
+			if(list_orther.indexOf(p) === -1 ){
+				list_orther.push(p);
+			}
+			$cookieStore.put("ortherproduct",list_orther);
+
+			for (var i = list_orther.length - 1; i >= 0; i--) {
+				$scope.list_orther.push(JSON.parse(list_orther[i]) );
+			};
+			
+			$scope.list_orther_x=get_repeat_slide(list_orther);
+			
 			//str_replace(array('src="/public','src="http://dienmaycholon.vn/public'), 'src="'.LIVE_ULR.'/img', $product->content)
 			$scope.content=replaceAll(result['content'],'src="/public','src="http://m.dienmaycholon//img');
 			$scope.content=replaceAll($scope.content,'src="http://dienmaycholon.vn/public','src="http://m.dienmaycholon/img');
@@ -55,25 +82,32 @@ angular.module('starter.details', [])
 								$scope.list_element=list_element;
 
 
+								$http.get(PUBLIC_VALUE.URL+"detail_similar/"+all_value[0]+"/"+all_value[2]).success(function(similar){
+									$scope.list_similar=similar;
 
+											for (var i = similar.length - 1; i >= 0; i--) {
 
-								for (var i = compare.length - 1; i >= 0; i--) {
+											//$scope.listproduct_element[i]=[];
+													for (var j = $scope.list_element.length - 1; j >= 0; j--) {
+														$http.get(PUBLIC_VALUE.URL+"get_element_product/"+similar[i]['myid']+"/"+list_element[j]["id"])
+															.success(function(e){
+																	$scope.listproduct_element.push(e)
+																	//console.log($scope.listproduct_element)
+															});	
 
-									//$scope.listproduct_element[i]=[];
-										for (var j = list_element.length - 1; j >= 0; j--) {
-											$http.get(PUBLIC_VALUE.URL+"get_element_product/"+compare[i]+"/"+list_element[j]["id"])
-											.success(function(e){
-													$scope.listproduct_element.push(e)
-													
-											});	
+													};
+											
+											};
+								});
 
-										};
-								
-								};
+						
 
 						});	
 
 			
+			$http.get(PUBLIC_VALUE.URL+"getproduct/"+$scope.product['cid_cate']+"/9").success(function(result){
+						$scope.list_tt=result;
+				});
 
 		});
 
@@ -88,13 +122,32 @@ angular.module('starter.details', [])
 		$http.get(PUBLIC_VALUE.URL+"detail_element/"+all_value[0]).success(function(result){
 			$scope.list_element=result;
 		});
+
+
 		
 		$http.get(PUBLIC_VALUE.URL+"detail_price/"+all_value[0]).success(function(pri){
 				$scope.old_new=pri;
 				
 			});
 
+		$http.get(PUBLIC_VALUE.URL+"detail_question/"+all_value[0]+"/4").success(function(pri){
+				$scope.list_question=pri;
+				
+			});
 
+		$http.get(PUBLIC_VALUE.URL+"detail_review/"+all_value[0]).success(function(result){
+			$scope.list_review=result;
+			$scope.total_reivew=result.length;
+
+			
+			var sum=0;
+			for (var i = result.length - 1; i >= 0; i--) {
+				sum=sum + parseInt(result[i]['rate']);
+			};
+			$scope.total_rate=sum;
+			$scope.total_avg_rate=Math.round(sum/result.length);
+
+		});
 		$http.get(PUBLIC_VALUE.URL+"detail_buy/"+all_value[0]).success(function(b){
 				$scope.buytogether=b;
 
@@ -137,14 +190,229 @@ angular.module('starter.details', [])
 			}
 			
 		}
+
+
+		//Reivew 
+
+		var fisrt_like=[];
+		var first_unlike=[];
+		$scope.clicklikes=function(id_review){
+			if(fisrt_like.indexOf(id_review) > -1 ){
+				return ;
+			}
+
+
+			for (var i = $scope.list_review.length - 1; i >= 0; i--) {
+				if($scope.list_review[i]['id']==id_review){
+					fisrt_like.push(id_review);
+					$scope.list_review[i]['likes']=parseInt($scope.list_review[i]['likes'])+1;
+
+					$http.get(PUBLIC_VALUE.URL+"detail_pluslike/"+id_review+"/1");
+					break;
+				}
+			};
+		}
+		$scope.clickunlikes=function(id_review){
+			if(first_unlike.indexOf(id_review) > -1){
+				return;
+			}
+
+			for (var i = $scope.list_review.length - 1; i >= 0; i--) {
+				if($scope.list_review[i]['id']==id_review){
+					first_unlike.push(id_review);
+					$scope.list_review[i]['unlikes']=parseInt($scope.list_review[i]['unlikes'])+1;
+					$http.get(PUBLIC_VALUE.URL+"detail_pluslike/"+id_review+"/2");
+					break;
+				}
+			};
+		}
+
+
+		$scope.popup_review=function(){
+
+			$scope.datareview={};
+
+			var myPopup=	$ionicPopup.show({
+				title:"Đánh giá của khách hàng",
+				subTitle:"Vui lòng nhập nội dung",
+				template:"Đánh giá: <div  ng-controller='RatingController as rating' ng-init='datareview.rating=5'>  <star-rating ng-model='datareview.rating' on-rating-select='5' ></star-rating> </div> <br />"
+						 +"Tiêu đề: <input type='text' ng-model='datareview.title' /> <br />"	
+						 +"Ghi chú: <input type='text' ng-model='datareview.content' />",
+			  	scope:$scope,
+			  	buttons:[{
+			  			text:"Đóng"
+			  		},
+			  		{
+			  			text:"<b>ĐÁNH GIÁ</b>",
+			  			type:'button-dark',
+			  			onTap:function(e){
+			  				
+			  				if(!$scope.datareview.title && !$scope.datareview.content){
+			  					e.preventDefault();
+			  				}else{
+
+			  					return $scope.datareview;
+			  				}
+			  				
+			  				
+			  			}
+			  		}
+			  	]
+			})
+			.then(function(res){
+				if(res){
+							$http.post(PUBLIC_VALUE.URL+"detail_save_reivew/"+all_value[0],res).then(function(r){
+			  						if(r.data=='1'){
+			  							$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Cảm ơn bạn đã đánh giá sản phẩm!",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+			  						}else{
+			  							if(r.data=='2'){
+			  								$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Vui lòng đăng nhập để dùng chức năng này!",
+			  								buttons:[{text:"Đóng"}]
+			  									});
+
+			  							
+
+				  						}else{
+				  							$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Vui lòng nhập đầy đủ thông tin!",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+				  						}
+			  						}
+			  					});
+				}
+			});
+
+		
+
+			
+
+
+
+		}
+		//End review
+
+		//commend
+		$scope.popup_commend=function(){
+			$scope.datacommend={};
+			var myPopup=	$ionicPopup.show({
+				title:"Bạn có thắc mắc cần chúng tôi giải đáp? Hãy hỏi chúng tôi tại đây!",
+				subTitle:"Vui lòng nhập nội dung",
+				template:" <input type='text' ng-model='datacommend.value' /> <br />"	,
+			  	scope:$scope,
+			  	buttons:[{
+			  			text:"Đóng"
+			  		},
+			  		{
+			  			text:"<b>Gửi câu hỏi</b>",
+			  			type:'button-dark',
+			  			onTap:function(e){
+			  				
+			  				if(!$scope.datacommend.value){
+			  					e.preventDefault();
+			  				}else{
+
+			  					return $scope.datacommend;
+			  				}
+			  				
+			  				
+			  			}
+			  		}
+			  	]
+			})
+			.then(function(res){
+				if(res){
+							$http.post(PUBLIC_VALUE.URL+"detail_save_commend/"+all_value[0],res).then(function(r){
+			  						if(r.data=='1'){
+			  							$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Cảm ơn bạn đã gửi câu hỏi!",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+			  						}else{
+			  							if(r.data=='2'){
+			  								$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Vui lòng đăng nhập để dùng chức năng này!",
+			  								buttons:[{text:"Đóng"}]
+			  									});
+
+			  							
+
+				  						}else{
+				  							$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Vui lòng nhập đầy đủ thông tin!",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+				  						}
+			  						}
+			  					});
+				}
+			});
+
+		}
+		//end commend
+
+
+
+	//End if	
 	}
+
+
+
 	$scope.show_detail=false;
 	$scope.my_show_detail=function(){
 		$scope.show_detail=!$scope.show_detail;
 	}
 
 	
+	/*	 $http.get(PUBLIC_VALUE.URL+"getnamequestion/"+$scope.initquestion).success(function(r){
+			$scope.getnamequestion=r;	
+		});*/
+
+	
+	
+
+	
 })
+
+
+
+
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, 'g'), replace);
+}
+function myparse(s){
+		s = s.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+		s = s.replace(/[\u0000-\u0019]+/g,""); 
+		var o = JSON.parse(s);
+		return 0;
+}
+ function get_repeat_slide(array_repeat){
+	var result=new Array();
+	var dem=0;
+	result.push(dem);
+	for (var i = 1;i < array_repeat.length - 1; i++) {
+		if(i%3==0){
+			dem=dem+3
+			result.push(dem);
+				
+		}
+	};
+	return result;
 }
