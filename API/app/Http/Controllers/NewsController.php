@@ -1,84 +1,33 @@
 <?php namespace App\Http\Controllers;
 
+use App\News;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Cache;
+use Response;
+use DB;
+use App\Template;
 
 use Illuminate\Http\Request;
 
 class NewsController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
+	//List art_categories
+	public function getlistcatenews(){
+		$a=News::List_Cate_News();
+		
+		//Cách 1
+		$value = Cache::pull('art_categories');
+		return Response::json($value);
 	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+	//List art_article
+	public function getlistnews($id){
+		$a=News::List_News($id);
+		return Response::json($a);
 	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+	//Details news
+	public function getdetailnews($id){
+		$a = News::get_Details_News($id);
+		return Response::json($a);
 	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 }

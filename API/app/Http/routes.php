@@ -51,6 +51,15 @@ Route::get('/detail_buy/{id}', 'DetailController@getbuytogether');
 Route::get('/detail_element/{id}', 'DetailController@getelement');
 Route::get('/detail_cate/{id}', 'DetailController@getcate');
 
+/**
+ * News
+ */
+//List art_categories
+Route::get('/getlistcatenews', 'NewsController@getlistcatenews');
+//List art_article
+Route::get('/getlistnews/{id}', 'NewsController@getlistnews');
+//List details art_article
+Route::get('/getdetailnews/{id}', 'NewsController@getdetailnews');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
