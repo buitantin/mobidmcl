@@ -64,6 +64,15 @@ Route::get('/list_location', 'UserController@listlocation');
 Route::get('/list_state/{id}', 'UserController@liststate');
 Route::get('/save_users', 'UserController@saveusers');
 
+/**
+ * News
+ */
+//List art_categories
+Route::get('/getlistcatenews', 'NewsController@getlistcatenews');
+//List art_article
+Route::get('/getlistnews/{id}', 'NewsController@getlistnews');
+//List details art_article
+Route::get('/getdetailnews/{id}', 'NewsController@getdetailnews');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
