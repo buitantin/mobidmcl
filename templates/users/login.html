@@ -12,18 +12,22 @@
 	    				<div>
 	    					<label>
 							    
-							    <input placeholder="Họ và Tên" name="name" type="text" value="">
+							    <input placeholder="Tên đăng nhập && Email" ng-model="login.username" name="name" type="text" >
+							    <p style="color:red" ng-if="myerror['username']" ng-bind="myerror['username']">
+							    </p>
 						    </label>
 						    <label>
 						    	
-						     	<input placeholder="Email" name="email" type="text" value="">
+						     	<input placeholder="Mật khẩu" name="passowrd" ng-model="login.password" type="password" value="">
+						     	 <p style="color:red" ng-if="myerror['passowrd']" ng-bind="myerror['passowrd']">
+							    </p>
 						    </label>
 						    
 	    				</div>				    	
 					</div>
 					<div class="list step3">
-						<div class="list buy">						
-							<a href="">Đăng nhập</a>
+						<div class="list buy" ng-click="clicklogin()">						
+							<a href="javascript:;">Đăng nhập</a>
 						</div>				
 					</div>
 				</div>

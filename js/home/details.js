@@ -3,6 +3,7 @@ angular.module('starter.details', [])
 .controller("DetailCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
 	
 
+	$ionicScrollDelegate.scrollTop();
 
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;

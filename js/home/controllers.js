@@ -66,35 +66,61 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$http, $state, $ionicActionSheet, $timeout){
+.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$cookieStore,$http, $state, $ionicActionSheet, $timeout){
 			  //$scope.Mr_Data=Mr_Data;
 
 			  $scope.toggleLeft=function(){
 				  $ionicSideMenuDelegate.toggleLeft();
 			  };
-	  
+	  		
 			  $scope.show = function() {
-			    var hideSheet = $ionicActionSheet.show({
-			      buttons: [
-			        { text: '<b>Đăng ký</b>' },
-			        { text: '<b>Đăng nhập</b>' }
-			      ],
-			   //   destructiveText: '<img src="http://dienmaycholon.vn/public/default/img/login-via-facebook.png" />',
-			      titleText: 'Đăng ký - Đăng nhập',
-			      cancelText: 'Đóng',
-			      cancel: function() {
-			           // add cancel code..
-			         },
-			      buttonClicked: function(index) {
-			      	if(index==0){
-			      		$state.go("signup");
-			      	}
-			      	if(index==1){
-			      		$state.go("login");
-			      	}
-			        return true;
-			      }
-			    });
+
+			  	if(!$cookieStore.get("dmclaccount")){
+				    var hideSheet = $ionicActionSheet.show({
+				      buttons: [
+				        { text: '<b>Đăng ký</b>' },
+				        { text: '<b>Đăng nhập</b>' }
+				      ],
+				   //   destructiveText: '<img src="http://dienmaycholon.vn/public/default/img/login-via-facebook.png" />',
+				      titleText: 'Đăng ký - Đăng nhập',
+				      cancelText: 'Đóng',
+				      cancel: function() {
+				           // add cancel code..
+				         },
+				      buttonClicked: function(index) {
+				      	if(index==0){
+				      		$state.go("signup");
+				      	}
+				      	if(index==1){
+				      		$state.go("login");
+				      	}
+				        return true;
+				      }
+				    });
+				}else{
+					user=$cookieStore.get("dmclaccount");
+					var hideSheet = $ionicActionSheet.show({
+				      buttons: [
+				        { text: '<b>'+user['fullname']+'</b>' },
+				        { text: '<b>Thoát</b>' }
+				      ],
+				   //   destructiveText: '<img src="http://dienmaycholon.vn/public/default/img/login-via-facebook.png" />',
+				      titleText: "Chào bạn:",
+				      cancelText: 'Đóng',
+				      cancel: function() {
+				           // add cancel code..
+				         },
+				      buttonClicked: function(index) {
+				      	if(index==0){
+				      		$state.go("profile");
+				      	}
+				      	if(index==1){
+				      		$state.go("logout");
+				      	}
+				        return true;
+				      }
+				    });
+				}
 			  };
 
 		})
@@ -610,6 +636,81 @@ angular.module('starter.controllers', [])
 	}else{
 		window.location.href="/?error=";
 	}
+
+
+})
+.controller("SearchFormCtr",function($scope,$http,$state){
+			$scope.searchform=function(){
+					$state.go("search",{"search":$scope.search.data} );
+			}
+	})
+.controller("SearchCtr",function($scope,$http,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
+	
+	$ionicScrollDelegate.scrollTop();
+
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	$scope.ValidateData=ValidateData;
+	$scope.search={};
+	$scope.listproduct=[];
+	$scope.pageSize=10;
+
+	$scope.show_paginate_prev=false;
+	$scope.show_paginate_next=true;
+
+
+	
+
+
+	var v= $stateParams.search || "";
+    $scope.mypage=1;
+	$scope.word=v;
+					$http.get(PUBLIC_VALUE.URL+"search?search="+v).success(function(r){
+								$scope.listproduct=r;
+								if(r.total < 10 ){
+									$scope.show_paginate_next=false;
+								}
+								
+						});
+				$scope.loadNextPage=function(){
+							$ionicLoading.show();
+							$ionicScrollDelegate.scrollTop();
+							$scope.show_paginate_prev=true;
+							$scope.mypage=parseInt($scope.mypage)+1;
+								$http.get(PUBLIC_VALUE.URL+"search?search="+v+"&page="+$scope.mypage).success(function(r){
+										$scope.listproduct=r;
+										if(r.total==r.to){
+											$scope.show_paginate_next=false;
+										}
+										$ionicLoading.hide();
+								})
+								.error(function(){
+										$ionicLoading.hide();
+								});
+								
+								
+						}
+				$scope.loadPrePage=function(){
+							
+							$ionicScrollDelegate.scrollTop();
+							$scope.show_paginate_next=true;
+							if(parseInt($scope.mypage)>1){
+								$ionicLoading.show();
+								$scope.mypage=parseInt($scope.mypage)-1;
+								$http.get(PUBLIC_VALUE.URL+"search?search="+v+"&page="+$scope.mypage).success(function(r){
+										$scope.listproduct=r;
+										$ionicLoading.hide();
+								}).error(function(){$ionicLoading.hide();});
+								
+								
+						
+								
+							}
+							if(parseInt($scope.mypage)==1){
+								$scope.show_paginate_prev=false;
+							}
+				}			
+							
+					
 
 
 })

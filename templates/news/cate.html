@@ -1,0 +1,45 @@
+
+				<div class="content_news">
+				
+						
+					<div class="list" >
+					
+						<div >
+							<div class="title">{{cate['name']}}</div>
+							<div class='card padding'>
+
+                       				    từ {{list_news.from}}-{{list_news.to}} của {{list_news.total}} tin tức
+							</div>
+							<div class="list" ng-repeat="news in list_news.data">							
+								<div class="item item-thumbnail-left">
+				    				<img src="http://m.dienmaycholon.vn/img/picture/news/big/dienmay_{{news['id']}}.png">
+				    					<p>
+				    						<a href="/khuyen-mai/{{news['id']}}/{{ValidateData.toAlias(news['name'])}}" class="title_news">
+				    						{{news['name']}}	    					</a>
+				    					</p>
+				    					<div class="news_form_date">
+				    						Từ {{news['date_from']}} đến {{news['date_to']}}
+				    					</div>
+				    					<a href="/khuyen-mai/{{news['id']}}/{{ValidateData.toAlias(news['name'])}}" class="tag-blue">
+				    						Xem chi tiết
+				    					</a>
+				    				<p></p>
+				    			</div>
+							</div>
+						
+
+							
+						</div>
+					</div>
+
+
+			
+						<button class="button icon-right ion-chevron-right  button-block button-dark" ng-click="loadNextPage()" ng-show='show_paginate_next' ng-click='loadNextPage()'>
+          						  Trang trước
+      					  </button>
+
+		    	<button class="button icon-left ion-chevron-left button-block button-dark" ng-click="loadPrePage()" ng-show='show_paginate_prev' ng-click='loadNextPage()'>
+          					Trang sau
+      					  </button>
+ 					
+				</div>

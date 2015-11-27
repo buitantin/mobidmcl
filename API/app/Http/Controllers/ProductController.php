@@ -8,6 +8,7 @@ use Cache;
 use Response;
 use DB;
 use App\Template;
+use App\MrValidateData;
 
 use Illuminate\Http\Request;
 
@@ -55,6 +56,44 @@ class ProductController extends Controller {
 	//	});
 		
 		
+	}
+
+	public function search(Request $request){
+		$MrValidateData=new MrValidateData();
+			$key=$request->get("search");
+			$page=$request->get("page",1);
+			$sql="";
+			if($key!=""){
+					$key=MrValidateData::inject($key);
+					$key=trim($key);
+		
+					$key=DB::raw("'%$key%'");
+
+					$key=str_replace(" ","%",$key);
+
+					$sql=" AND ((pro_product.name LIKE $key OR pro_product.code LIKE $key) )";
+			}
+			return Product::select(
+
+						array(
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,1) AS discountcoupon"),
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
+								DB::raw("get_review(pro_product.id,1) AS rating"),
+							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
+							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+								"pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
+								,"pro_supplier_product.id AS cid_res","pro_supplier_product.cid_supplier"
+							)
+						)
+						->whereRaw("pro_supplier_product.status='1' AND pro_product.status='1' AND pro_product.is_status_cate='1' AND pro_product.is_status_series='1'  $sql")
+						->join("pro_supplier_product",function($join){
+							$join->on("pro_product.id","=","pro_supplier_product.cid_product");
+						})
+						->orderBy("pro_supplier_product.date_mod","DESC")
+						->paginate(10);
+						
+
 	}
 	public function list_product_cate($id,$limit)
 	{

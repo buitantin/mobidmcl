@@ -57,13 +57,22 @@ Route::get('/detail_review/{id}', 'DetailController@getreview');
 Route::get('/detail_pluslike/{id}/{opt}', 'DetailController@pluslike');
 Route::post('/detail_save_reivew/{id}', 'DetailController@postreview');
 
+//For search
+Route::get('/search', 'ProductController@search');
+
 
 
 //For user
 Route::get('/list_location', 'UserController@listlocation');
 Route::get('/list_state/{id}', 'UserController@liststate');
-Route::get('/save_users', 'UserController@saveusers');
+Route::post('/save_users', 'UserController@saveusers');
+Route::post('/save_facebook_user', 'UserController@saveuserfacebook');
+Route::post('/save_profile', 'UserController@saveprofile');
+Route::get('/thoat', 'UserController@logout');
+Route::post('/login', 'UserController@login');
 
+
+Route::get('/detailnewscate/{id}', 'NewsController@detailnewscate');
 /**
  * News
  */
@@ -71,6 +80,8 @@ Route::get('/save_users', 'UserController@saveusers');
 Route::get('/getlistcatenews', 'NewsController@getlistcatenews');
 //List art_article
 Route::get('/getlistnews/{id}', 'NewsController@getlistnews');
+Route::get('/getlistnewslimit/{id}/{limit}', 'NewsController@getlistnewslimit');
+
 //List details art_article
 Route::get('/getdetailnews/{id}', 'NewsController@getdetailnews');
 

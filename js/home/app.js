@@ -5,9 +5,11 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCookies', 'starter.controllers', 'starter.services','starter.details','starter.users'])
+angular.module('starter', ['ionic','ngCookies','ngOpenFB', 'starter.controllers', 'starter.services','starter.details','starter.users','starter.page','starter.news'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,ngFB) {
+  ngFB.init({appId:'149331555423303'});
+  
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -74,8 +76,87 @@ $httpProvider.defaults.withCredentials = true;
                controller:"UserLoginCtr"
             }
         )
+         .state("profile",
+            {
+               url:"/thong-tin-ca-nhan",
+               templateUrl:"/templates/users/profile.html",
+               controller:"UserProfileCtr"
+            }
+        )
+         .state("logout",
+            {
+               url:"/thoat",
+               controller:"UserLogoutCtr"
+            }
+        )
+        
+        //for page
 
+         .state("checkorder",
+            {
+               url:"/kiem-tra-don-hang",
+               templateUrl:"/templates/page/checkorder.html",
+               controller:"CheckorderCtr"
+            }
+        )
+          .state("installment",
+            {
+               url:"/danh-sach-mua-tra-gop",
+               templateUrl:"/templates/page/installment.html",
+               controller:"InstallmentCtr"
+            }
+        )
+          .state("cardmember",
+              {
+                url:"/quyenloi-the-thanh-vien",
+                templateUrl:"/templates/page/cardmember.html",
+                controller:"CardmemberCtr"
+              }
+            )
          
+
+
+        //for search
+
+        .state("search",
+          {
+            url : "/tim-kiem?:search",
+            templateUrl:"/templates/front/search.html",
+            controller:"SearchCtr"
+
+          }
+        ) 
+
+        //for news
+         
+        .state("newslist",
+          {
+            url : "/tin-khuyen-mai",
+            templateUrl:"/templates/news/list.html",
+            controller:"NewsCtr"
+
+          }
+        ) 
+         .state("newscate",
+          {
+            url : "/tin-tuc/:id/:alias",
+            templateUrl:"/templates/news/cate.html",
+            controller:"NewsCateCtr"
+
+          }
+        ) 
+           .state("newsdetail",
+          {
+            url : "/khuyen-mai/:id/:alias",
+            templateUrl:"/templates/news/detail.html",
+            controller:"NewsDetailCtr"
+
+          }
+        ) 
+
+
+
+
        .state("parent",
         {
           url:"/:parent",

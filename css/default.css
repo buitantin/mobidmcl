@@ -1,3 +1,8 @@
+.css_news_content_view .news_content_main, .css_news_content_view .news_content_main img, .css_news_content_view .news_content_main table {
+    width: 100% !important;
+    vertical-align: top;
+    height: 40%;
+}
 
 .my-similar{
       position: relative;

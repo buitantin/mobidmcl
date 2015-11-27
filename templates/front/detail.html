@@ -131,14 +131,11 @@
 					<div class="list" ng-if="list_gift">
 						Quà tặng cho sản phẩm <i class="iconmobile-mt"></i>
 						<ul class='list'>
-								<li ng-if="list_gift['gift']['description']">
-									{{list_gift['gift']['description']}}
+								<li ng-if="list_gift['gift']['description']" ng-bind-html="list_gift['gift']['description']">
 								</li>
-								<li ng-if="list_gift['press']['description']">
-									{{list_gift['press']['description']}}
+								<li ng-if="list_gift['press']['description']" ng-bind-html="list_gift['press']['description']">
 								</li>
-								<li ng-repeat="text in list_gift">
-									{{text['name']}}
+								<li ng-repeat="text in list_gift" ng-bind-html="text['name']">
 								</li>
 								
 						</ul>

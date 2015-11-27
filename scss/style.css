@@ -175,6 +175,8 @@
     border-bottom: 1px solid #e7e7e7;
     margin: 10px;
     margin-bottom: 0; }
+    .has-header .content-product-detail .list .thankspage .tag-red {
+      color: red; }
     .has-header .content-product-detail .list.step1 p .name_product {
       font-weight: 600;
       font-size: 18pt; }
@@ -189,6 +191,11 @@
       font-size: 12pt; }
     .has-header .content-product-detail .list.step1 p .num-star {
       color: #ff6c00; }
+    .has-header .content-product-detail .list.step1 a .image_cate {
+      padding: 10px;
+      width: 100%; }
+    .has-header .content-product-detail .list.step1 .header_bar {
+      border-top: none; }
     .has-header .content-product-detail .list.step2 {
       padding: 5px;
       color: #888888; }
@@ -214,6 +221,100 @@
               color: #1163ac; }
           .has-header .content-product-detail .list.step2 table tr td span.price-tk {
             color: #fb4c36; }
+      .has-header .content-product-detail .list.step2 .row .col .color_one {
+        color: red;
+        font-weight: bold; }
+      .has-header .content-product-detail .list.step2 .row .col .status {
+        color: #ff6600; }
+      .has-header .content-product-detail .list.step2 .item {
+        font: normal 12px;
+        color: #4d4d4f; }
+        .has-header .content-product-detail .list.step2 .item.activated {
+          background-color: #fff !important; }
+        .has-header .content-product-detail .list.step2 .item small .color_default {
+          color: #ff492b; }
+        .has-header .content-product-detail .list.step2 .item small .tag-pay, .has-header .content-product-detail .list.step2 .item small .tag-green {
+          color: #019100;
+          font-size: 12px;
+          vertical-align: middle;
+          font-weight: 100; }
+        .has-header .content-product-detail .list.step2 .item .item-price {
+          font-size: 13px;
+          border: 0px;
+          margin-top: 10px;
+          border-top: 1px solid #ddd; }
+        .has-header .content-product-detail .list.step2 .item .color_default {
+          color: #ff492b;
+          font-weight: bolder;
+          font-size: 13px; }
+        .has-header .content-product-detail .list.step2 .item .input-label {
+          -webkit-box-flex: 1;
+          -webkit-flex: 1 0 100px;
+          -moz-box-flex: 1;
+          -moz-flex: 1 0 100px;
+          -ms-flex: 1 0 100px;
+          flex: 1 0 100px;
+          display: table;
+          padding: 6px 10px 7px 0px;
+          max-width: 200px;
+          width: 35%;
+          color: #7F7F7F;
+          font-size: 14px; }
+        .has-header .content-product-detail .list.step2 .item select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 6px 48px 16px 16px;
+          max-width: 65%;
+          border: none;
+          background: #fff;
+          color: #333;
+          text-indent: 0.01px;
+          text-overflow: '';
+          white-space: nowrap;
+          font-size: 14px;
+          cursor: pointer;
+          direction: rtl; }
+      .has-header .content-product-detail .list.step2.cart {
+        border-bottom: none; }
+        .has-header .content-product-detail .list.step2.cart .form-option {
+          color: #4c4c4c; }
+          .has-header .content-product-detail .list.step2.cart .form-option input {
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 10px 0; }
+          .has-header .content-product-detail .list.step2.cart .form-option select {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 7px;
+            margin: 10px 0; }
+          .has-header .content-product-detail .list.step2.cart .form-option.step3 .col div label {
+            font-weight: 900 !important;
+            color: #000; }
+    .has-header .content-product-detail .list.list_chinhanh .item .row .col .rote {
+      font-weight: bold;
+      border: 1px solid #ff6c00;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      display: block;
+      line-height: 28px;
+      position: absolute;
+      margin-left: -6px;
+      vertical-align: middle;
+      margin-top: 6px;
+      border-radius: 15px;
+      -moz-border-radius: 15px;
+      -webkit-border-radius: 15px;
+      color: #ff6c00; }
+    .has-header .content-product-detail .list.list_chinhanh .hidden-class .padding-left strong {
+      color: #ff6c00; }
+    .has-header .content-product-detail .list.list_chinhanh .hidden-class .padding-left p {
+      color: #000;
+      padding: 0; }
     .has-header .content-product-detail .list.step3 {
       border-bottom: none; }
       .has-header .content-product-detail .list.step3 p span {
@@ -952,6 +1053,77 @@
       font-size: 14px;
       font-family: Arial;
       color: #4d4d4f; }
+
+.content_news .list {
+  padding: 0;
+  margin-bottom: 0; }
+  .content_news .list .title {
+    background-color: #eee;
+    padding: 10px;
+    font-family: "Avantgarde", Arial;
+    border-bottom: 1px solid #cdcdcd; }
+  .content_news .list .list .title_news, .content_news .list .list .tag-blue {
+    text-decoration: none;
+    font-size: 14px; }
+  .content_news .list .list .news_form_date {
+    font-size: 13px; }
+  .content_news .list .list #news_content_view .row .col .images_style {
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 5%; }
+  .content_news .list .list #news_content_view .row .col .detail_style_tg {
+    width: 94%;
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px; }
+  .content_news .list .list #news_content_view .padding .images_style {
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 5%; }
+  .content_news .list .list #news_content_view .padding ul {
+    padding: 5px; }
+    .content_news .list .list #news_content_view .padding ul li {
+      display: inline-block;
+      width: 49%; }
+      .content_news .list .list #news_content_view .padding ul li a {
+        color: #4e5052; }
+        .content_news .list .list #news_content_view .padding ul li a.active {
+          color: #ff6c00; }
+  .content_news .list .list #news_content_view .tag-blue {
+    color: #1163ac;
+    font-size: 17px; }
+  .content_news .list .list #news_content_view .not_position .padding .row .icon-local-big {
+    width: 51px;
+    height: 51px;
+    background-position: -20px -54px;
+    background-image: url("../images/icon-sprite.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle; }
+  .content_news .list .list #news_content_view .not_position .padding .row .icon-flag-big {
+    width: 51px;
+    height: 51px;
+    background-position: -130px -54px;
+    background-image: url("../images/icon-sprite.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle; }
+  .content_news .list .list #news_content_view .not_position .padding .row .icon-clock-big {
+    width: 51px;
+    height: 51px;
+    background-position: -74px -55px;
+    background-image: url("../images/icon-sprite.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle; }
+  .content_news .list .view_all {
+    color: #1163ac;
+    line-height: 30px;
+    text-align: right;
+    width: 93%;
+    display: inline-block;
+    font-weight: bold;
+    text-decoration: none; }
 
 @media (min-width: 60em) {
   .bar-positive .ui-title {

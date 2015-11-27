@@ -50,7 +50,10 @@ angular.module('starter.services', [])
 			},
 			convertString:function(str)
 			{
+				if(typeof str === "string"){
 
+
+				str=str.toLowerCase();
 
    				 var translate = {
 					    'à':'a','á':'a','ả':'a','ã':'a','ạ':'a',
@@ -81,9 +84,23 @@ angular.module('starter.services', [])
 				    };
 					
 					for(var t in translate){
-						str=str.replace(t,translate[t]);
+						str=str.split(t).join(translate[t]) ;
 					}
+
+					var cha=[",", "”","–","~","`","!","@","#","$","%",'%',"^","&","*","(",")","-","_","=","+","{","[","]","}","|","\\",":",";","'","\"","<",",",">",".","?","/"];
+						for (var i = cha.length - 1; i >= 0; i--) {
+							
+							//str=str.replace(cha[i],"");
+							str=str.split(cha[i]).join("");
+						};
+
+							
+						
 					return str;
+
+				}else{
+					return '0';
+				}
 			  },
 			  toIcon:function(string){
 			  		return this.repAll (this.convertString(string) ).toLowerCase();

@@ -1,0 +1,32 @@
+
+				<div class="content_news">
+					<div class="list" ng-repeat="cate in list_cate">
+						<div ng-if="cate['value']">
+							<div class="title">{{cate['data']['name']}}</div>
+
+							<div class="list" ng-repeat="news in cate['value']">							
+								<div class="item item-thumbnail-left">
+				    				<img src="http://m.dienmaycholon.vn/img/picture/news/big/dienmay_{{news['id']}}.png">
+				    					<p>
+				    						<a href="/khuyen-mai/{{news['id']}}/{{ValidateData.toAlias(news['name'])}}" class="title_news">
+				    						{{news['name']}}	    					</a>
+				    					</p>
+				    					<div class="news_form_date">
+				    						Từ {{news['date_to']}} đến {{news['date_from']}} 
+				    					</div>
+				    					<a href="/khuyen-mai/{{news['id']}}/{{ValidateData.toAlias(news['name'])}}" class="tag-blue">
+				    						Xem chi tiết
+				    					</a>
+				    				<p></p>
+				    			</div>
+							</div>
+						
+
+							<a href="/tin-tuc/{{cate['data']['id']}}/{{ValidateData.toAlias(cate['data']['name'])}}" class="tag-blue" class="view_all">Xem tất cả...</a>
+						</div>
+					</div>
+
+
+			
+
+				</div>

@@ -1,0 +1,56 @@
+<div class="content_news">
+					<div class="list">
+						<div class="title" ng-bind="news['name']"></div>
+
+						<div class="list">							
+							
+
+
+
+						<div id="news_content_view" class="css_news_content_view">
+							<div class="padding news_content_main" ng-bind-html="news['summary']">
+								
+							</div>
+						</div>
+
+
+
+						</div>
+
+
+
+						<div class="list">
+							<div class="title">Bài viết khác</div>
+							<div class="list" ng-repeat="n in list_orther">							
+								<div class="item item-thumbnail-left">
+				    				<img ng-src="http://m.dienmaycholon.vn/img/picture/news/big/dienmay_{{n['id']}}.png" style="height:70px;">
+				    					<p>
+				    						<a href="/khuyen-mai/{{n['id']}}/{{ValidateData.toAlias(n['name'])}}" class="title_news" ng-bind="n['name']"></a>
+				    								    					
+				    					</p>
+				    					<div class="news_form_date">
+				    						Từ {{n['date_from']}} đến {{n['date_to']}}
+				    					</div>
+				    					<a href="/khuyen-mai/{{n['id']}}/{{ValidateData.toAlias(n['name'])}}"   class="tag-blue">
+				    						Xem chi tiết
+				    					</a>
+				    				<p></p>
+				    			</div>
+							</div>
+							
+							
+
+						</div>
+
+					</div>
+
+
+
+				</div>
+
+				<script>
+				if(window.innerWidth <= 600) {
+				   			document.getElementById("news_content_view").classList.add("css_news_content_view");
+				  } 
+				
+				</script>

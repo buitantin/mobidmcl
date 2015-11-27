@@ -1,0 +1,74 @@
+
+			<div class="list content-product-detail">				
+
+			    <div class="bar-balanced header_bar ">
+					<strong class="bt_title">
+						Thông tin cá nhân
+					</strong>
+						
+			    </div>		    
+				
+				<div class='not_position'>
+					<div class="  cart">					
+	    				<div class='list'>
+	    					<label class="item item-input ">						    
+							    <input disabled="disabled" placeholder="Tên đăng nhập" name="name" type="text" ng-model='signup.username'>
+							     <p  style="color:red" ng-if="myerror['username']">
+						    			{{myerror['username']}}
+						 		   </p>
+						    </label>
+						   
+
+						
+						    <label class="item item-input ">
+						    	<input disabled="disabled"  placeholder="Email" name="email" type="email" ng-model='signup.email'>
+						    	<p  style="color:red" ng-if="myerror['email']">
+						    			{{myerror['email']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input placeholder="Họ tên" name="fullname" type="text" ng-model='signup.fullname' >
+						    	<p  style="color:red" ng-if="myerror['fullname']">
+						    			{{myerror['fullname']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input placeholder="Điện thoại" name="phone" string-to-number type="text" ng-model='signup.phone'>
+						    	 	<p  style="color:red" ng-if="myerror['phone']">
+						    			{{myerror['phone']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input ">
+						    	<input  placeholder="Ngày sinh" name="birthday" type="text" ng-model='signup.birthday'>
+						    </label>
+						    <label class="item item-input item-select">
+						    	<span class="input-label">Tỉnh/Thành phố</span>
+						    	<select name="city" ng-model='signup.city' ng-change="change_cities()">
+						    		<option ng-repeat="l in list_location" selected="{{(mycity==l['id'])? 'selected':''}}" ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
+						    	</select>
+						    	<p  style="color:red;width:100%" ng-if="myerror['city']">
+						    			{{myerror['city']}}
+						 		   </p>
+						    </label>
+						    <label class="item item-input item-select">
+						    	<span class="input-label">Quận/Huyện</span>
+						    	<select name="distict" ng-model='signup.distict'>
+						    		<option   ng-repeat="l in list_state" selected="{{(mydistict==l['id'])? 'selected':''}}" ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
+						    	</select>
+						    	<p  style="color:red;width:100%" ng-if="myerror['state']">
+						    			{{myerror['state']}}
+						 		   </p>
+						    </label>
+						  
+	    				</div>				    	
+					</div>
+					<div class="list step3">
+						<div class="list buy" ng-click="profilesubmit()">						
+							<a href="javascript:;">Cập nhật</a>
+						</div>				
+					</div>
+				</div>
+				
+			</div>
+			
+

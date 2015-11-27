@@ -1,15 +1,15 @@
                <div class="list list-news">
                             <p class="news">
-                                <a href="#/tin" title="Tin Khuyến Mãi">Tin khuyến mãi</a>
-                                <a href="#" title="Mua trả góp">Mua trả góp</a>
-                                <a href="#" title="Thẻ thành viên">Thẻ thành viên</a>
+                                <a href="/tin-khuyen-mai" title="Tin Khuyến Mãi">Tin khuyến mãi</a>
+                                <a href="/danh-sach-mua-tra-gop" title="Mua trả góp">Mua trả góp</a>
+                                <a href="/quyenloi-the-thanh-vien" title="Thẻ thành viên">Thẻ thành viên</a>
                                </p>                
                      </div>
-              <div class="list list-inset">
+                <div class="list list-inset" ng-controller="SearchFormCtr">
                               <label class="item item-input">           
-                                <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
+                                <input type="text" ng-model="search.data"  placeholder="Nhập từ khóa tìm kiếm...">
                                 
                               </label>
-                              <div class="iconmobile-search"></div>
+                              <div class="iconmobile-search" ng-click='searchform()'></div>
                 </div>
                 <div class='list list-inset'></div>

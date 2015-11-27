@@ -1,0 +1,91 @@
+
+
+
+
+			<div class="list list-main-sub-product">
+				<div class='padding'>
+                           {{listproduct.from}}-{{listproduct.to}} của {{listproduct.total}} kết quả tìm kiếm cho từ khóa "<strong style='color:red'>{{word}}</strong>"</div>
+		    	<div class='row' ng-repeat="product in listproduct.data | limitTo:pageSize">
+	    			<div class="left">
+	    				 <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0' >
+
+			                         <img title="{{product['name']}}" alt="{{product['name']}}" src="{{LINK_IMG}}product{{product['myid']}}/small/product_{{product['myid']}}_1.png" />
+			                         
+                         </a>
+	    			</div>
+    				<div class="right">
+	    				 <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_1_0'  class='title_product ddd'>
+
+		                             {{product['name']}}
+		                          </a>
+
+
+	    				  <div  ng-controller="RatingController as rating">
+                           <star-rating ng-model="product['rating']" readonly="rating.isReadonly"></star-rating>
+                            <small class=''>
+                              ({{product['countrating']}})
+                            </small>
+                           
+                          </div>
+
+
+	    				 <div ng-if="product['coupons']" >
+                                      
+                                         
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
+                                          </strong>
+                                     
+                                      <div class="coupon-box-2">
+                                                    <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{product['coupons']}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="product['discountcoupon']"></span>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                            	  </div>
+                                <div ng-if="!product['coupons']" >
+                                  <div ng-if="product['isprice']=='1'">
+                                     
+
+                                      <div class='button-price button button-clear button-stable'   to-Price="product['saleprice']">
+				    				
+					    				</div>
+					    				
+					    				<strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+					    			
+					    				</strong>
+					    		<div class="iconmobile-giamgia" ng-if="product['saleprice']/product['discount'] > 30"
+					    		to-dis="(product['saleprice']/product['discount'])"
+					    		></div>
+                                  </div>
+                                   <div ng-if="product['isprice']!='1'">
+                                      <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      
+                                      </div>
+                                      <div>
+                                        <img  class='auto_images dau_gia'   src='http://m.dienmaycholon.vn/public/default/img/dau_gia_2.png'  />
+                                      </div>
+                                        
+                                  </div>
+                                </div>
+
+    				</div>
+		    	</div>
+		    	<button class="button icon-right ion-chevron-right  button-block button-dark" ng-click="loadNextPage()" ng-show='show_paginate_next' ng-click='loadNextPage()'>
+          						  Trang trước
+      					  </button>
+
+		    	<button class="button icon-left ion-chevron-left button-block button-dark" ng-click="loadPrePage()" ng-show='show_paginate_prev' ng-click='loadNextPage()'>
+          					Trang sau
+      					  </button>
+ 					
+
+		    	
+		    		
+			</div>
+
+
+		

@@ -1,9 +1,39 @@
 angular.module("starter.users",[])
-.controller("UserLoginCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
+.controller("UserLoginCtr",function($scope,$q,$http,$state,PUBLIC_VALUE,$ionicLoading,$ionicPopup,$cookieStore,$ionicScrollDelegate){
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
-	$scope.ValidateData=ValidateData;
+	$scope.login={};
+	$scope.myerror=[];
+	if($cookieStore.get("dmclaccount")){
+		var uc=$cookieStore.get("dmclaccount");
+		$scope.my_check_user=uc['fullname'];
+		$state.go("profile");
+	}
+	$scope.clicklogin=function(){
+		$scope.myerror=[];
+		$ionicLoading.show();
+		$http.post(PUBLIC_VALUE.URL+"login",$scope.login).success(function(r){
+				if(!r['error']){
+							$cookieStore.put("dmclaccount",r);
+								$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Đăng nhập thành công!",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+							$scope.my_check_user=r['fullname'];
+							$state.go("profile");
 
-
+						
+			    	
+				
+				}else{
+					$scope.myerror=r;
+				}
+				$ionicLoading.hide();
+		})
+		.error(function(){
+				$ionicLoading.hide();
+		})
+	}
 
 })
 .controller("UserSignupCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
@@ -53,13 +83,14 @@ angular.module("starter.users",[])
 		if(Object.keys(myerror)==0){
 
 			$http.post(PUBLIC_VALUE.URL+"save_users",$scope.signup).success(function(r){
-				console.log(r)
-					if(r.data=='1'){
+					if(r=='1'){
 										$ionicPopup.show({
 			  								title:"Thông báo",
 			  								template:"Đăng ký thành công!",
 			  								buttons:[{text:"Đóng"}]
 			  							});
+					}else{
+						$scope.myerror=r;
 					}
 									
 			})
@@ -80,5 +111,159 @@ angular.module("starter.users",[])
 	$http.get(PUBLIC_VALUE.URL+"list_location").success(function(r){
 		$scope.list_location=r;
 	});
+
+})
+.controller("FacebookCtr",function($scope,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup){
+	$scope.my_check_user=null;
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	$scope.ValidateData=ValidateData;
+	if($cookieStore.get("dmclaccount")){
+		var user=$cookieStore.get("dmclaccount");
+		$scope.my_check_user=user['fullname'];
+	}
+	
+
+	$scope.facebooklogin=function(){
+		 ngFB.login({scope: 'email,publish_actions'}).then(
+	        function (response) {
+	            if (response.status === 'connected') {
+		               	   ngFB.api({
+						        path: '/me',
+						        params: {fields: 'id,name,email'}
+						    }).then(
+					        function (user) {
+					         	
+					         	$http.post(PUBLIC_VALUE.URL+"/save_facebook_user",user).success(function(result){
+					         			if(!result['error']){
+					         				$cookieStore.put("dmclaccount",result);
+					         				//console.log(result)
+					         				$ionicPopup.show({
+							                	title:"Facebook",
+							                	template:"Đăng nhập Facebook thành công.",
+							                	buttons:[
+							                		{text:"Đóng"}
+							                	]
+
+							                });
+							                $scope.my_check_user=result['fullname'];
+							                $state.go("profile");
+
+					         			}
+					         	});
+
+					        },
+					        function (error) {
+					        		$ionicPopup.show({
+					                	title:"Facebook",
+					                	template:"Đăng nhập facebook không thành công. Vui lòng thử lại:"+error.error_description,
+					                	buttons:[
+					                		{text:"Đóng"}
+					                	]
+
+					                });
+					        });
+	              
+	            } else {
+	                $ionicPopup.show({
+	                	title:"Facebook",
+	                	template:"Đăng nhập facebook không thành công. Vui lòng thử lại",
+	                	buttons:[
+	                		{text:"Đóng"}
+	                	]
+
+	                });
+	            }
+	        });
+
+
+			
+	}
+
+	$scope.mylogout=function(){
+		$scope.my_check_user=null;
+		$state.go("logout");
+	}
+
+})
+.controller("UserProfileCtr",function($scope,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup,$ionicLoading){
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	$scope.ValidateData=ValidateData;
+
+	if($cookieStore.get("dmclaccount")){
+		$scope.list_state=[];
+		$scope.signup={};
+		var user=$cookieStore.get("dmclaccount");
+		$scope.signup=user;
+
+
+		$scope.change_cities=function(){
+			$ionicLoading.show();
+			$http.get(PUBLIC_VALUE.URL+"list_state/"+$scope.signup.city).success(function(r){
+				$scope.list_state=r;
+				$ionicLoading.hide();
+			});
+		}
+		$http.get(PUBLIC_VALUE.URL+"list_location").success(function(r){
+			$scope.list_location=r;
+			$scope.mycity=user['city'];
+		});
+
+		if(user['city']!=null){
+			$http.get(PUBLIC_VALUE.URL+"list_state/"+user['city']).success(function(r){
+				$scope.list_state=r;
+				$scope.mydistict=user['distict'];
+			});
+		}
+
+		$scope.profilesubmit=function(){
+			$ionicLoading.show();
+			$http.post(PUBLIC_VALUE.URL+"save_profile",$scope.signup).success(function(r){
+				
+					$ionicLoading.hide();
+				if(r=='1'){
+				
+					user['phone']	=$scope.signup.phone;
+					user['fullname']	=$scope.signup.fullname;
+					user['birthday']	=$scope.signup.birthday;
+					user['city']	=$scope.signup.city;
+					user['distict']	=$scope.signup.distict;
+
+					$cookieStore.put("dmclaccount",user);
+
+					 $ionicPopup.show({
+	                	title:"Thông tin cá nhân",
+	                	template:"Cập nhật thành công.",
+	                	buttons:[
+	                		{text:"Đóng"}
+	                	]
+
+	                 });
+				}else{
+					if(r=='2'){
+
+					}else{
+						$scope.myerror=r;
+					}
+				}
+
+					
+
+			});
+		}	
+
+
+	}else{
+		$state.go("login");
+	}
+})
+.controller("UserLogoutCtr",function($scope,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup,$ionicLoading){
+	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
+	$scope.ValidateData=ValidateData;
+	$http.get(PUBLIC_VALUE.URL+"thoat").success(function(r){
+		$cookieStore.remove("dmclaccount");
+		$state.go("home");
+	
+	});
+	
 
 })
