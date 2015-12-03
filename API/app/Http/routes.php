@@ -27,6 +27,8 @@ Route::get('/promotion/{limit}', 'ProductController@promotion');
 Route::get('/producthot/{limit}', 'ProductController@producthot');
 Route::get('/getproduct/{cate}/{limit}', 'ProductController@getproduct');
 
+
+
 Route::get('/productnew/{limit}', 'ProductController@productnew');
 Route::get('/getcate/{id}', 'ProductController@getcate');
 Route::get('/getlistcate/{id}', 'ProductController@getlistcate');
@@ -60,7 +62,8 @@ Route::post('/detail_save_reivew/{id}', 'DetailController@postreview');
 //For search
 Route::get('/search', 'ProductController@search');
 
-
+//For ORder
+Route::get('/order_detail/{id}/{supplier}', 'OrderController@detail');
 
 //For user
 Route::get('/list_location', 'UserController@listlocation');

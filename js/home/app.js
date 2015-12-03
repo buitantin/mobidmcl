@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCookies','ngOpenFB', 'starter.controllers', 'starter.services','starter.details','starter.users','starter.page','starter.news'])
+angular.module('starter', ['ionic','ngCookies','ngOpenFB', 'starter.controllers', 'starter.services','starter.details','starter.users','starter.page','starter.news','starter.order'])
 
 .run(function($ionicPlatform,ngFB) {
   ngFB.init({appId:'149331555423303'});
@@ -127,6 +127,15 @@ $httpProvider.defaults.withCredentials = true;
           }
         ) 
 
+        //for order
+        .state("firstcart",
+            {
+              url:"/gio-hang/don-hang",
+              templateUrl:"/templates/order/first.html",
+              controller:"FirstCtr"
+            }
+          )
+
         //for news
          
         .state("newslist",
@@ -153,6 +162,7 @@ $httpProvider.defaults.withCredentials = true;
 
           }
         ) 
+
 
 
 

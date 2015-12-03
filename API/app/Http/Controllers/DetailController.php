@@ -38,6 +38,7 @@ class DetailController extends Controller {
 							  		,"pro_supplier_product.stock_num"
 							  		,"pro_product.is_sample"
 							  		,"pro_product.is_shopping"
+							  		,"pro_supplier_product.is_tranc"
 							  		,"pro_supplier_product.content"
 							  		,"m.name AS name_supplier"
 								,"pro_supplier_product.id AS cid_res","pro_supplier_product.cid_supplier"
