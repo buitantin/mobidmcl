@@ -1,48 +1,57 @@
 angular.module("starter.order",[])
-.controller("FirstCtr",function($scope,$state,$cookieStore,$ionicScrollDelegate,$http,PUBLIC_VALUE){
+.controller("FirstCtr",function($scope,$state,$q,$cookieStore,$ionicScrollDelegate,$http,PUBLIC_VALUE){
 	$ionicScrollDelegate.scrollTop();
 	$scope.list_product=[];
 	var tam=[];
 	if($cookieStore.get("orderdmcl")){
 
 		var list_product=$cookieStore.get("orderdmcl") || [];
-		console.log(list_product)
+		var xx=[];
 		var total_cart=0;
 		for (var i = list_product.length - 1; i >= 0; i--) {
 			if(list_product[i].id==undefined){
 				 var delete_order1=delete_order(list_product);
 				 $cookieStore.put("orderdmcl",delete_order1);
 			}else{
-				$http.get(PUBLIC_VALUE.URL+"order_detail/"+list_product[i].id+"/"+list_product[i].supplier).success(function(result){
-					
+				var y=	$http.get(PUBLIC_VALUE.URL+"order_detail/"+list_product[i].id+"/"+list_product[i].supplier).success(function(result){
 					tam.push(result);
-					
-				
-				})
+				});
+				xx.push(y);
 
 
 			}
 			
 		};
 
-		for (var i = tam.length - 1; i >= 0; i--) {
-			console.log(tam[i]);
-		/*	result.data['limit']=list_product[i].limit;
-				if(result['price']=='1'){
-						total_cart=parseInt(result['discount'])*uu+total_cart;
-					}else{
-						total_cart=parseInt(result['saleprice'])*uu+total_cart;
+	
+		$q.all(xx).then(function(x){
+			$scope.list_product=tam;
+			angular.forEach(x,function(val,key){
+					$scope.list_product[key]['limit']=list_product[key].limit;
+					
+			});
+		});
+		$scope.changelimitorder=function(id,l){
+			if(l!=null && l != undefined && angular.isNumber(l) && l > 0){
+				angular.forEach(list_product,function(val,key){
+					if(val.id==id){
+						list_product[key].limit=l;		
 					}
-					$scope.total_cart=total_cart;*/
-		};
+				});
+				$cookieStore.put("orderdmcl",list_product);
+			}
+		}
+			
+		$scope.istypesNumber=function($event){
+			$event.preventDefault();
+			return true;
 
-
-		$scope.list_product=tam;
+		}
 		
-
-		angular.forEach(tam,function(val,key){
+/*
+			angular.forEach($scope.list_product,function(val,key){
   				console.log(val);
- 		   });
+ 		    });*/
 	}else{
 		$state.go("home");
 	}
@@ -88,6 +97,19 @@ angular.module("starter.order",[])
 
 	}
 })
+
+.directive('onlyDigits', function () {
+    return {
+      require: 'ngModel',
+      restrict: 'A',
+      link: function (scope, element, attr, ctrl) {
+     		
+   		}
+    };
+});
+
+
+
 function check_key(obj,k){
 	for (var i = obj.length - 1; i >= 0; i--) {
 		if(obj[i].id==k){

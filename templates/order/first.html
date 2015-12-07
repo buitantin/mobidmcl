@@ -50,11 +50,11 @@
 
 						</small>
 						<div>
-							<label class="item-price item item-input item-select">
+							<label class="item-price3 item item-input ">
 								<div class="input-label">Số lượng</div>
 
 
-								<input ng-minlength="1" ng-maxlength="100" class='product_limit' type="number" ng-value="product['limit']"  >
+								<input maxlength='3' ng-minlength="1" ng-maxlength="11" class='product_limit' type="number" ng-init="productlimit=product['limit']" ng-model="productlimit" ng-change="changelimitorder(product['myid'],productlimit)" step='1' only-Digits>
 									
 
 
