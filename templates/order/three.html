@@ -1,19 +1,12 @@
 <div class="list content-product-detail">
-				<div class="list">
-					<p class="thankspage">
-	                    Xin chào: <b>Nguyen Van A</b>.<br/>
-	                    <br/>
-	                    Cảm ơn quý khách đã tham quan và mua sắm trực tuyến tại dienmaycholon.vn!<br/></br/>
-	                    Chúc mừng quý khách đã đặt hàng thành công trên website của Siêu Thị Điện Máy - Nội Thất Chợ Lớn theo số đơn hàng: <span class="tag-red">312312312312312</span><br/></br/>
-	                    Đơn hàng của Quý Khách sẽ được xử lý trong vòng 24 giờ kể từ khi đặt hàng thành công (riêng chiều thứ 7 và chủ nhật trong vòng 48 giờ).<br/></br/>
-	                    Quý Khách vui lòng kiểm tra email: <span class="tag-red">abc@gmail.com</span>(inbox & spam) để cập nhật thông tin xác nhận đơn hàng từ <b>dienmaycholon.vn</b>.<br/></br/>
-	                    Mọi thắc mắc Quý Khách vui lòng liên hệ với chúng tôi <span class="tag-red"><b>(08) 3856 3388</b></span> để được phục vụ tốt hơn.<br/></br/>
-	                    Chúc Quý Khách và Gia Đình có thêm nhiều niềm vui với những sản phẩm hoàn hảo đã mua sắm tại <b>dienmaycholon.vn</b>.
-	                </p>
-				</div>
+				<div class="list step1 cart" ng-controller="BannerorderCtr" >
+			    	<a ng-repeat="banner in mybanner" href="{{banner.link}}">
+                            <img alt="" style="max-height:200px" class="image_cate" ng-src="http://m.dienmaycholon.vn/img/picture/popup/dienmay_{{banner.id}}.png">
+                    </a>
+			    </div>
 				<div class="bar-balanced header_bar ">
 					<strong class="bt_title">
-						Thông tin mua hàng
+						Thông tin bên mua hàng
 					</strong>						
 			    </div>
 			    <div class="list step2 cart">
@@ -23,44 +16,47 @@
 			    				<div>
 			    					<label>
 									    Họ và Tên:								    
-								    </label> Nguyên Văn A
+								    </label> {{list_form.name}}
 								    </div>
 								<div>
 									<label>
 								    	Email:								     	
-								    </label> abc@gmail
+								    </label> {{list_form.email}}
 								</div>
 								<div>
 									<label>
 									    Điện thoại:									    
-								    </label> 3123123123
+								    </label> {{list_form.phone}}
 								</div>
 								<div>
 									<label>
 									    Thời gian muốn lấy hàng:										
-									</label> 10-11-2015
+									</label> 
+									<p  ng-bind="list_form.getdate | date:'dd/MM/yyyy'">
+									</p>
+									
 								</div>
 			    			</div>
 			    			<div class="col">
 			    				<div>
 			    					<label>
 									    Địa chỉ:							    
-								    </label> bcd p kapodka kpas ka kaosk aoskdap apos d
+								    </label> {{list_form.address}}
 								</div>
 								<div>
 									<label>
 								    	Tỉnh/Thành phố:						    	
-								    </label> An giang
+								    </label> {{city.name}}
 								</div>
 								<div>
 									<label>
 								    	Quận/Huyện:								    	
-								    </label> Tân A
+								    </label> {{state.name}}
 								</div>
 								<div>
 									<label>
 									    Ghi chú: 
-								    </label> Giao hàng buổi chiều
+								    </label> {{list_form.note}}
 								</div>
 								    
 			    			</div>
@@ -74,40 +70,78 @@
 					</strong>
 						
 			    </div>
-				<div class="list step2 cart">
-					<a class="item item-thumbnail-left" href="">
-						<img src="http://static.dienmaycholon.vn/product/product2006/small/product_2006_1.png">
-						<h2>DI ĐỘNG NOKIA LUMIA 730</h2>
+		<div ng-controller="OrderdetailproductCtr">
+				<div class="list step2 cart" ng-repeat='product in list_product' >
+					<div class="item item-thumbnail-left">
+						<img ng-src="http://static.dienmaycholon.vn/product/product{{product['product']['myid']}}/small/product_{{product['product']['myid']}}_1.png" alt="{{product['product']['name']}}" title="{{product['product']['name']}}">
+						<h2>{{product['product']['name']}}</h2>
 						<small>
-							<p>Sản xuất bởi <span class="color_default ">NOKIA</span></p>
+							<p>Sản xuất bởi <span class="color_default "><img alt="{{product['product']['name']}}" title="{{product['product']['name']}}" ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{product['product']['cid_series']}}.png"></span></p>
 							<p>
-					      		<strong class="color_default">3.690.000 Đ</strong>
+					      		<strong class="color_default">{{product['product']['price']}}</strong>
 					      	</p>
-					      	<p>
+
+
+					      	<p ng-if="product['product']['is_tranc']==1">
 	                            + Giao hàng <strong>MIỄN PHÍ</strong>
 	                        </p>
+
+	                        <div ng-if="product['product']['isprice']==1"  >
+	                        		<p class="color_default" to-Price="product['product']['discount']"></p>
+	                        </div>
+	                        <div ng-if="product['product']['isprice']!=1" >
+	                        		<p class="color_default" to-Price="product['product']['saleprice']"></p>
+	                        		 <img  class='auto_images'  src='http://m.dienmaycholon.vn/public/default/img/dau_gia.png' />
+	                        </div>
+
 	                        <p>
-	                            <span class="tag-pay">Còn hàng.</span>
+
+	                            <span class="tag-pay" ng-if="product['product']['stock_num'] > 1">Còn hàng.</span>
 	                        </p>
-	                        <p class="color_one">
+
+
+
+	                        <p class="color_one" ng-if="product['product']['discount'] < product['product']['saleprice']">
 	                             Tiết kiệm:<br>
-	                                    300.000 Đ (8%)
+	                             <span to-Price="product['product']['saleprice']-product['product']['discount']"></span>
 							</p>
+
+
 						</small>
-						<label class="item-price item item-input item-select">
-							<div class="input-label">Số lượng</div>
-							<select disabled="">
-								<option>0</option>
-								<option>1</option>
-								<option>20</option>
-							</select>
-						</label>
-					</a>
+						<div>
+							<label class="item-price3 item item-input ">
+								<div class="input-label">Số lượng</div>
+
+
+
+								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+												{{x}}
+										</option>
+								</select>
+									
+
+
+							</label>
+						</div>
+						<div>
+							<a ng-click="detroy(product['product']['myid'])" class="color_default" href="javascript:;">Xóa sản phẩm</a> 
+						</div>
+					</div>
 				</div>
+
+
 				<p>
 					<span class="button button-clear button-assertive">
-					 Tổng cộng (1 sản phẩm): <strong class="abc" style="">3.690.000 Đ</strong>
+					 Tổng cộng ({{count_product}} sản phẩm): <strong class="abc" style="" to-Price="total_cart"></strong>
 					</span>
-				</p>				
-			</div>
-			
+				</p>
+</div>
+<div class="list step3">
+					<div class="list buy" ng-click='four_pay()'>						
+						<a href="javascript:;">HOÀN THÀNH</a>
+					</div>
+					<div class="list call-me" ng-click='continue()'>						
+						<a href="">Tiếp tục mua hàng</a>						
+					</div>					
+				</div>

@@ -13,6 +13,12 @@ class UserController extends Controller {
 	public function listlocation(){
 		return DB::select("SELECT * FROM tm_cities WHERE cid_parent='0'");
 	}
+	
+	public function getlocation($id){
+		$a= 	DB::select("SELECT * FROM tm_cities WHERE id=$id");
+		return Response::json($a[0]);
+	
+	}
 	public function liststate($id){
 		return DB::select("SELECT * FROM tm_cities WHERE cid_parent=$id");
 	}

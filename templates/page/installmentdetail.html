@@ -1,0 +1,101 @@
+<div class="content_news">
+					<div class="list">
+						<div class="title">Chi tiết Mua trả góp ACS</div>
+
+						<div class="list">
+							<div id="news_content_view">							
+								 
+								<div class="row">
+									<div class="col" ng-click='change_instal(1)'>
+									  <a href="/mua-tra-gop?pay=1">
+									  	 		<img class="images_style" src="http://m.dienmaycholon.vn/img/picture/pay/dienmay_1.png">
+									  </a>
+									    <a href="/mua-tra-gop?pay=1" class="detail_style_tg">
+									  	 		<img src="http://m.dienmaycholon.vn/img/default/img/xemchitiet.png">
+									  </a>
+									</div>
+									<div class="col" ng-click='change_instal(2)'>
+									  <a href="/mua-tra-gop?pay=2">
+										 		<img class="images_style" src="http://m.dienmaycholon.vn/img/picture/pay/dienmay_2.png">
+										 </a>
+										  <a href="/mua-tra-gop?pay=2" class="detail_style_tg">
+									  	 		<img src="http://m.dienmaycholon.vn/img/default/img/xemchitiet.png">
+									  </a>
+									</div>
+								</div>
+
+								
+
+
+								<div class="not_position">
+
+									<div id="tag1" class="card padding">
+										<h4 class="tag-blue">Địa chỉ - Tổng quan về {{detail['short_name']}}</h4>
+
+										<div ng-bind-html="detail['info']"></div>
+										<div>
+											<div class="row">
+												<div class="col-20">
+													<span class="icon-local-big"></span>
+												</div>
+												<div class="col">
+													<b>Địa chỉ:</b>{{detail['address']}}
+													<br> <b>Điện thoại:</b>{{detail['phone']}}<br> <b>Website:</b>
+													{{detail['web']}}<br>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-20">
+													<span class="icon-flag-big"></span>
+												</div>
+												<div class="col">
+													<b>Chi nhánh có quầy trả góp:</b><br>
+													{{detail['address_pay']}}
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-20">
+													<span class="icon-clock-big"></span>
+												</div>
+												<div class="col">
+													<b>Thời gian hoạt động:</b><br>{{detail['working_time']}}
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div id="tag2" class="card padding">
+									<h4 class="tag-blue">Thủ tục trả góp</h4>
+										<div class="load-tab-role" style="" ng-bind-html="detail['content_1']">
+											
+										</div>
+									</div>
+								</div>
+
+
+								<div id="tag3" class="card padding">
+									<h4 class="tag-blue"> Quy trình đăng ký </h4>
+									<div class="load-tab-res" style="" ng-bind-html="detail['content_1']">
+										
+									</div>
+
+								</div>
+
+
+
+
+							</div>
+						</div>
+
+
+
+						
+
+					</div>
+
+
+
+				</div>

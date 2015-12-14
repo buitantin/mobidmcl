@@ -1,8 +1,8 @@
 <div class="list content-product-detail">
 				
-				<div class="list step1 cart">
-			    	<a href="#">
-                        <img style="max-height:200px" class="image_cate" src="http://m.dienmaycholon.vn/img/picture/popup/dienmay_16.png">
+				<div class="list step1 cart" ng-controller="BannerorderCtr" >
+			    	<a ng-repeat="banner in mybanner" href="{{banner.link}}">
+                            <img alt="" style="max-height:200px" class="image_cate" ng-src="http://m.dienmaycholon.vn/img/picture/popup/dienmay_{{banner.id}}.png">
                     </a>
 			    </div>
 			    <div class="bar-balanced header_bar ">
@@ -10,6 +10,8 @@
 						Thông tin giao hàng
 					</strong>						
 			    </div>
+
+
 			    <div class="list step2 cart">
 			    	<form>
 			    		<div class="row form-option">
@@ -17,19 +19,34 @@
 			    				<div>
 			    					<label>
 									    <span>Họ và Tên</span>
-									    <input placeholder="Họ và Tên" name="name" type="text" value="">
+									    <input placeholder="Họ và Tên" name="name" type="text" value="" ng-model="orderform.name">
+
+									    <p style="color:red" ng-if="error['name']">
+									    	{{error['name']}}
+									    </p>
 								    </label>
 								    <label>
 								    	<span>Email</span>
-								     	<input placeholder="Email" name="email" type="text" value="">
+								     	<input placeholder="Email" name="email" type="email" ng-model="orderform.email">
+								     	  <p style="color:red" ng-if="error['email']">
+									    	{{error['email']}}
+									    </p>
 								    </label>
 								    <label>
 									    <span>Điện thoại</span>
-									    <input placeholder="Điện thoại" name="phone" type="text" value="">
+									    <input placeholder="Điện thoại" name="phone" type="number" ng-model="orderform.phone">
+									      <p style="color:red" ng-if="error['phone']">
+									    	{{error['phone']}}
+									    </p>
 								    </label>
 								    <label>
 									    <span>Thời gian muốn lấy hàng</span>
-										<input value="10-11-2015" name="getdate" type="text">
+										<input  name="getdate" type="date"
+											ng-model="orderform.getdate"
+										>
+										 <p style="color:red" ng-if="error['getdate']">
+									    	{{error['getdate']}}
+									    </p>
 									</label>
 			    				</div>
 			    			</div>
@@ -37,25 +54,36 @@
 			    				<div>
 			    					<label>
 									    <span>Địa chỉ</span>
-									    <input placeholder="Địa chỉ" name="address" type="text" value="">
+									    <input placeholder="Địa chỉ" name="address" type="text" ng-model="orderform.address">
+									     <p style="color:red" ng-if="error['address']">
+									    	{{error['address']}}
+									    </p>
 								    </label>
+
+
 								    <label>
 								    	<span>Tỉnh/Thành phố</span>
-								    	<select>
-								    		<option value="1" label="An Giang">An Giang</option>
-								    		<option value="2" label="Bà Rịa-Vũng Tàu">Bà Rịa-Vũng Tàu</option>
+								    	<select name="city" ng-model='orderform.city' ng-change="change_cities()">
+								    		<option ng-repeat="l in list_location"  ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
 								    	</select>
+								    	  <p style="color:red" ng-if="error['city']">
+									    	{{error['city']}}
+									    </p>
 								    </label>
 								    <label>
 								    	<span>Quận/Huyện</span>
-								    	<select>
-								    		<option value="1" label="An Giang">An Giang</option>
-								    		<option value="2" label="Bà Rịa-Vũng Tàu">Bà Rịa-Vũng Tàu</option>
-								    	</select>
+								    	<select name="distict" ng-model='orderform.state'>
+						    		<option   ng-repeat="l in list_state" selected="{{(mydistict==l['id'])? 'selected':''}}" ng-value="l['id']" label="{{l['name']}}">{{l['name']}}</option>
+						    	</select>
+						    	  <p style="color:red" ng-if="error['state']">
+									    	{{error['state']}}
+									    </p>
 								    </label>
+
+
 								    <label>
 									    <span>Ghi chú</span>
-									    <input placeholder="Ghi chú" name="note" type="text" value="">
+									    <input placeholder="Ghi chú" name="note" type="text" ng-model="orderform.note">
 								    </label>
 			    				</div>
 			    			</div>
@@ -71,13 +99,13 @@
 			    <ul class="list" style="margin: 10px 25px;">
 				  <li class="item item-checkbox">
 				     <label class="checkbox">
-				       <input type="radio" name="pay" checked="checked" value="1">
+				       <input type="radio" name="pay" checked="checked" value="1" ng-model="orderform.pay">
 				     </label>
 				     Thanh toán tại nhà̀
 				  </li>
 				  <li class="item item-checkbox">
 				     <label class="checkbox">
-				       <input type="radio" name="pay" value="2">
+				       <input type="radio" name="pay" value="2" ng-model="orderform.pay">
 				     </label>
 				     Thanh toán tại siêu thị̣
 				  </li>
@@ -91,48 +119,84 @@
 					</strong>
 						
 			    </div>
-				<div class="list step2 cart">
-					<a class="item item-thumbnail-left" href="">
-						<img src="http://static.dienmaycholon.vn/product/product2006/small/product_2006_1.png">
-						<h2>DI ĐỘNG NOKIA LUMIA 730</h2>
+
+
+				
+<div ng-controller="OrderdetailproductCtr">
+				<div class="list step2 cart" ng-repeat='product in list_product' >
+					<div class="item item-thumbnail-left">
+						<img ng-src="http://static.dienmaycholon.vn/product/product{{product['product']['myid']}}/small/product_{{product['product']['myid']}}_1.png" alt="{{product['product']['name']}}" title="{{product['product']['name']}}">
+						<h2>{{product['product']['name']}}</h2>
 						<small>
-							<p>Sản xuất bởi <span class="color_default ">NOKIA</span></p>
+							<p>Sản xuất bởi <span class="color_default "><img alt="{{product['product']['name']}}" title="{{product['product']['name']}}" ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{product['product']['cid_series']}}.png"></span></p>
 							<p>
-					      		<strong class="color_default">3.690.000 Đ</strong>
+					      		<strong class="color_default">{{product['product']['price']}}</strong>
 					      	</p>
-					      	<p>
+
+
+					      	<p ng-if="product['product']['is_tranc']==1">
 	                            + Giao hàng <strong>MIỄN PHÍ</strong>
 	                        </p>
+
+	                        <div ng-if="product['product']['isprice']==1"  >
+	                        		<p class="color_default" to-Price="product['product']['discount']"></p>
+	                        </div>
+	                        <div ng-if="product['product']['isprice']!=1" >
+	                        		<p class="color_default" to-Price="product['product']['saleprice']"></p>
+	                        		 <img  class='auto_images'  src='http://m.dienmaycholon.vn/public/default/img/dau_gia.png' />
+	                        </div>
+
 	                        <p>
-	                            <span class="tag-pay">Còn hàng.</span>
+
+	                            <span class="tag-pay" ng-if="product['product']['stock_num'] > 1">Còn hàng.</span>
 	                        </p>
-	                        <p class="color_one">
+
+
+
+	                        <p class="color_one" ng-if="product['product']['discount'] < product['product']['saleprice']">
 	                             Tiết kiệm:<br>
-	                                    300.000 Đ (8%)
+	                             <span to-Price="product['product']['saleprice']-product['product']['discount']"></span>
 							</p>
+
+
 						</small>
-						<label class="item-price item item-input item-select">
-							<div class="input-label">Số lượng</div>
-							<select>
-								<option>0</option>
-								<option>1</option>
-								<option>20</option>
-							</select>
-						</label>
-						<div class="color_default">Xóa sản phẩm</div>
-					</a>
+						<div>
+							<label class="item-price3 item item-input ">
+								<div class="input-label">Số lượng</div>
+
+
+
+								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+												{{x}}
+										</option>
+								</select>
+									
+
+
+							</label>
+						</div>
+						<div>
+							<a ng-click="detroy(product['product']['myid'])" class="color_default" href="javascript:;">Xóa sản phẩm</a> 
+						</div>
+					</div>
 				</div>
+
+
 				<p>
 					<span class="button button-clear button-assertive">
-					 Tổng cộng (1 sản phẩm): <strong class="abc" style="">3.690.000 Đ</strong>
+					 Tổng cộng ({{count_product}} sản phẩm): <strong class="abc" style="" to-Price="total_cart"></strong>
 					</span>
 				</p>
-				
+</div>
+
+
+
 				<div class="list step3">
-					<div class="list buy">						
-						<a href="">Thanh toán</a>
+					<div class="list buy" ng-click='three_pay()'>						
+						<a href="javascript:;">Thanh toán</a>
 					</div>
-					<div class="list call-me">						
+					<div class="list call-me" ng-click='continue()'>						
 						<a href="">Tiếp tục mua hàng</a>						
 					</div>					
 				</div>

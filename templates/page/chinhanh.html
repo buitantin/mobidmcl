@@ -1,0 +1,172 @@
+<div class="list content-product-detail">
+				
+
+			    <div class="bar-balanced header_bar ">
+					<strong class="bt_title" id='he-thong-sieu-thi'>
+						Hệ thống siêu thị
+					</strong>
+						
+			    </div>
+			    
+				
+				<div class='not_position'>
+				    <ion-tabs class="tabs-positive ">
+						<ion-tab title="Địa chỉ- bản đồ" >
+							<div class="card padding list">
+								<div>
+								<p><strong>{{detail['name']}}		</strong>
+					  					
+					  								  				</p>
+										<p>
+					  					<strong>
+					  						Địa chỉ:
+					  					</strong>
+					  					{{detail['address']}}					  				</p>
+					  				<p>
+					  					<strong>
+					  						Điện thoại: 
+					  					</strong>
+					  					{{detail['phone']}}						  				</p>
+					  				<p>
+					  					<strong>
+					  						Số fax:
+					  					</strong>
+					  					{{detail['fax']}}						  				</p>
+					  				<p>
+					  					<strong>
+					  						Email:
+					  					</strong>
+					  					{{detail['email']}}								  				</p>
+					  				<p>
+					  					<strong>
+					  						Diện tích:
+					  					</strong>
+					  					{{detail['area']}}									  				</p>
+
+
+								</div>
+				  			<div style="min-width:300px;height:100%;text-align:center" class="padding card">
+
+
+   								<div id="map" style="width:100%;height:400px"></div>
+
+
+												</div>
+				  			</div>
+
+						 </ion-tab>
+
+						
+
+						 <ion-tab title="{{detail['name']}}" >
+					 	 	<div class="card padding list" ng-bind-html="detail['summary']	">
+								
+						    </div>
+						 </ion-tab>						
+					</ion-tabs>
+
+				</div>
+
+				<div class="list list_chinhanh">
+					<div class="item item-icon-right item-divider">
+							<strong>
+								HỆ THỐNG  {{total_bran}} SIÊU THỊ ĐIỆN MÁY CHỢ LỚN
+							</strong>
+					</div>
+					<div class="item item-click-view">
+					 	<div class="row">
+						 	<div class="col">
+						 		
+						 	
+						 	
+
+									<p>
+										<strong>
+											<img src="http://m.dienmaycholon.vn/img/default/img/10-chi-nhanh-tp.png"/>
+
+										</strong>
+									</p>
+						 	</div>
+						 	<div class="col col-10 ">
+						 		<p class=" padding-top"></p>
+						 		<i class="ion-chevron-up" data-pack="default" data-tags="arrow, down"></i>
+						 	</div>
+					 	</div>		
+					</div>
+					<div class="hidden-class" style="overflow: hidden; ">
+						<div class="padding">						  
+							<a class="padding-left" href="#he-thong-sieu-thi" ng-click='change_br(br["id"])' ng-repeat='br in hcm'>
+								<strong>
+									{{br['name']}}						</strong>
+							<p class="padding">
+							{{br['address']}}								</p>
+							</a>
+							
+						</div>
+					</div>
+
+
+					<div class="item item-click-view">
+					 	<div class="row">
+						 	<div class="col  ">
+						 		
+
+									<p>
+										<strong>
+											<img src="http://m.dienmaycholon.vn/img/default/img/10-chi-nhanh-mien-tay.png"/>
+
+										</strong>
+									</p>
+						 	</div>
+						 	<div class="col col-10 ">
+						 		<p class=" padding-top"></p>
+						 		<i class="ion-chevron-up" data-pack="default" data-tags="arrow, down"></i>
+						 	</div>
+					 	</div>		
+					</div>
+					<div class="hidden-class" style="overflow: hidden;">
+						<div class="padding">						  
+							<a class="padding-left" ng-click='change_br(br["id"])' ng-repeat='br in mtay'>
+								<strong>
+									{{br['name']}}						</strong>
+							<p class="padding">
+							{{br['address']}}								</p>
+							</a>
+						</div>
+					</div>
+
+					<div class="item item-click-view">
+					 	<div class="row">
+						 	<div class="col ">
+						 		
+
+									<p>
+										<strong>
+											<img src="http://m.dienmaycholon.vn/img/default/img/2-chi-nhanh-mien-trung.png"/>
+
+										</strong>
+									</p>
+						 	</div>
+						 	<div class="col col-10 ">
+						 		<p class=" padding-top"></p>
+						 		<i class="ion-chevron-up" data-pack="default" data-tags="arrow, down"></i>
+						 	</div>
+					 	</div>		
+					</div>
+					<div class="hidden-class" style="overflow: hidden; ">
+						<div class="padding">						  
+							<a class="padding-left" ng-click='change_br(br["id"])' ng-repeat='br in mtr'>
+								<strong>
+									{{br['name']}}						</strong>
+							<p class="padding">
+							{{br['address']}}								</p>
+							</a>
+						</div>
+					</div>
+
+				</div>
+				
+			</div>
+			
+  
+    

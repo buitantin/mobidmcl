@@ -6,35 +6,47 @@
 								<div class="padding card">
 		                    		<ul class="tt">
 		                    			<li>
-		                    				<a class="" href="">Hướng dẫn đăng ký</a>
+		                    				<a class="" href="/quyenloi-the-thanh-vien/1" >Hướng dẫn đăng ký</a>
 		                    			</li>
 		                    		    <li>
-		                    				<a class="active" href="">Quyền lợi thành viên</a>
+		                    				<a class="active" href="/quyenloi-the-thanh-vien" >Quyền lợi thành viên</a>
 		                    			</li>
-		                    		    <li>
-		                    				<a class="" href="">Tích lũy điểm</a>
-		                    			</li>
-		                    		    <li>
-		                    				<a class="" href="">Ngày hội thành viên</a>
-		                    			</li>
+		                    		   
 									</ul>
 		                    	</div>
+		                    <div ng-if="detail"	>
 		                    	<div class="padding">
 					      		   <strong>Tặng Coupon gia dụng</strong>
-					   			     <img class="images_style" ="" src="http://m.dienmaycholon.vn/img/userupload/images/tangcoupongiadung.jpg">
+					   			    <div ng-bind-html="detail['coupon']">
+					   			    </div>
+					   			    
 					           </div>
 
 					           <div class="padding">
 					      		   <strong>Giảm giá khi mua hàng</strong>
-					   			    <img class="images_style" ="" src="http://m.dienmaycholon.vn/img/userupload/images/giamgiakhimuahang.jpg">               
+					   			    <div ng-bind-html="detail['discount']">
+					   			    </div>         
 					           </div>
 
 					           <div class="padding">
 					      		   <strong>Ưu đãi sinh nhật</strong>					   			   
-									<img class="images_style" ="" src="http://m.dienmaycholon.vn/img/userupload/images/quyenloitvtt.jpg">               
+									  <div ng-bind-html="detail['birthday']">
+					   			    </div>         
 					           </div>
 
 							</div>
+
+							  <div ng-if="detail"	>
+		                    	<div class="padding">
+		                    			<div id="content" class="clearfix content-chi-nhanh" style="width: 919px;">
+                 						   <div class="error_tvtt">Vui lòng quay lại sau khi có chương trình</div>                </div>
+
+
+
+		                    	</div>
+		                    </div>
+						  </div>
+
 						</div>
 							
 					</div>

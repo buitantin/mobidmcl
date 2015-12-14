@@ -3,6 +3,13 @@
     vertical-align: top;
     height: 40%;
 }
+.button-price.button-stable.button-clear{
+  text-decoration: line-through;
+}
+.has-header .footer .list .item-avatar i.iconmobile-mebe {
+    background-position: -692px 2px;
+    height: 33px;
+}
 .item-price3{
   
 }

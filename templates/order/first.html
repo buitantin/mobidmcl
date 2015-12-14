@@ -1,8 +1,8 @@
 <div class="list content-product-detail">
 				
-				<div class="list step1 cart">
-			    	<a href="#">
-                            <img alt="" style="max-height:200px" class="image_cate" src="http://m.dienmaycholon.vn/img/picture/popup/dienmay_16.png">
+				<div class="list step1 cart" ng-controller="BannerorderCtr" >
+			    	<a ng-repeat="banner in mybanner" href="{{banner.link}}">
+                            <img alt="" style="max-height:200px" class="image_cate" ng-src="http://m.dienmaycholon.vn/img/picture/popup/dienmay_{{banner.id}}.png">
                     </a>
 			    </div>
 			    <div class="bar-balanced header_bar ">
@@ -13,38 +13,43 @@
 			    </div>
 
 
-				<div class="list step2 cart" ng-repeat='product in list_product'>
+
+  				
+				
+<div ng-controller="OrderdetailproductCtr">
+				<div class="list step2 cart" ng-repeat='product in list_product' >
 					<div class="item item-thumbnail-left">
-						<img ng-src="http://static.dienmaycholon.vn/product/product{{product['myid']}}/small/product_{{product['myid']}}_1.png" alt="{{product['name']}}" title="{{product['name']}}">
-						<h2>{{product['name']}}</h2>
+						<img ng-src="http://static.dienmaycholon.vn/product/product{{product['product']['myid']}}/small/product_{{product['product']['myid']}}_1.png" alt="{{product['product']['name']}}" title="{{product['product']['name']}}">
+						<h2>{{product['product']['name']}}</h2>
 						<small>
-							<p>Sản xuất bởi <span class="color_default "><img alt="{{product['name']}}" title="{{product['name']}}" ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{product['cid_series']}}.png"></span></p>
+							<p>Sản xuất bởi <span class="color_default "><img alt="{{product['product']['name']}}" title="{{product['product']['name']}}" ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{product['product']['cid_series']}}.png"></span></p>
 							<p>
-					      		<strong class="color_default">{{product['price']}}</strong>
+					      		<strong class="color_default">{{product['product']['price']}}</strong>
 					      	</p>
 
 
-					      	<p ng-if="product['is_tranc']==1">
+					      	<p ng-if="product['product']['is_tranc']==1">
 	                            + Giao hàng <strong>MIỄN PHÍ</strong>
 	                        </p>
 
-	                        <div ng-if="product['isprice']==1"  >
-	                        		<p class="color_default" to-Price="product['discount']"></p>
+	                        <div ng-if="product['product']['isprice']==1"  >
+	                        		<p class="color_default" to-Price="product['product']['discount']-product['coupon']"></p>
 	                        </div>
-	                        <div ng-if="product['isprice']!=1" >
-	                        		<p class="color_default" to-Price="product['saleprice']"></p>
+	                        <div ng-if="product['product']['isprice']!=1" >
+	                        		<p class="color_default" to-Price="product['product']['saleprice']-product['coupon']"></p>
 	                        		 <img  class='auto_images'  src='http://m.dienmaycholon.vn/public/default/img/dau_gia.png' />
 	                        </div>
+
 	                        <p>
 
-	                            <span class="tag-pay" ng-if="product['stock_num'] > 1">Còn hàng.</span>
+	                            <span class="tag-pay" ng-if="product['product']['stock_num'] > 1">Còn hàng.</span>
 	                        </p>
 
 
 
-	                        <p class="color_one" ng-if="product['discount'] < product['saleprice']">
+	                        <p class="color_one" ng-if="product['product']['discount'] < product['product']['saleprice']">
 	                             Tiết kiệm:<br>
-	                             <span to-Price="product['saleprice']-product['discount']"></span>
+	                             <span to-Price="product['product']['saleprice']-product['product']['discount']"></span>
 							</p>
 
 
@@ -54,14 +59,19 @@
 								<div class="input-label">Số lượng</div>
 
 
-								<input maxlength='3' ng-minlength="1" ng-maxlength="11" class='product_limit' type="number" ng-init="productlimit=product['limit']" ng-model="productlimit" ng-change="changelimitorder(product['myid'],productlimit)" step='1' only-Digits>
+
+								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+												{{x}}
+										</option>
+								</select>
 									
 
 
 							</label>
 						</div>
 						<div>
-							<a ng-click="detroy(product['myid'])" class="color_default" href="javascript:;">Xóa sản phẩm</a> 
+							<a ng-click="detroy(product['product']['myid'])" class="color_default" href="javascript:;">Xóa sản phẩm</a> 
 						</div>
 					</div>
 				</div>
@@ -69,12 +79,37 @@
 
 				<p>
 					<span class="button button-clear button-assertive">
-					 Tổng cộng (1 sản phẩm): <strong class="abc" style="" to-Price="total_cart"></strong>
+					 Tổng cộng ({{count_product}} sản phẩm): <strong class="abc" style="" to-Price="total_cart"></strong>
 					</span>
 				</p>
-				
+</div>
+
+
+				<div class="list" ng-if="!check_coupon">
+				  <div class="item item-input-inset">
+				    <label class="item-input-wrapper">
+				      <input type="text" placeholder="Sử dụng mã giảm giá" ng-model='voucher' />
+				    </label>
+				    <button class="button button-small" ng-click='usingCoupon(voucher)'>
+				      SỬ DỤNG
+				    </button>
+				  </div>
+
+				</div>
+				<div class="list" ng-if="check_coupon">
+				  <div class="item item-input-inset">
+				    <label class="item-input-wrapper">
+				    	Sử dụng mã giảm giá:   <strong style='color:red' ng-bind="voucher"></strong>
+				    </label>
+				   
+				  </div>
+
+				</div>
+
+
+
 				<div class="list step3">
-					<div class="list buy">						
+					<div class="list buy" ng-click='second_pay()'>						
 						<a href="">Thanh toán</a>
 					</div>
 					<div class="list call-me" ng-click='continue()'>						

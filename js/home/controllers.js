@@ -48,11 +48,11 @@ angular.module('starter.controllers', [])
 				"vitinh":"vt",
 				"vienthong":"vth",
 				"noithat":"nt",
-				"me&be":"mevabe",
+				"mebe":"mevabe",
 				"dienco":"dc",
 				"trangtri":"trangtri",
-				"thoitrang&phukien":"phukien",
-				"suckhoe&sacdep":"sacdep",
+				"thoitrangphukien":"phukien",
+				"suckhoesacdep":"sacdep",
 			};
 			r=ValidateData.toIcon(r);
 			for(c in cla){

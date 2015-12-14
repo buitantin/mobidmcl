@@ -14,9 +14,11 @@ class IndexController extends Controller {
 		
 		$option=$request->route("option");
 		if($option=='1'){
-			$data=\App\Categories::select(array('id','name'))->whereRaw("cid_parent=$id AND status='1'")->orderBy("id","ASC")->remember(120)->get()->toJson();
+			$data=\App\Categories::select(array('id','name'))
+					->whereRaw("cid_parent=$id AND status='1' AND name NOT LIKE 'Dịch Vụ%'")->orderBy("id","ASC")->remember(120)->get()->toJson();
 		}else{
-			$data=\App\Categories::select()->whereRaw("cid_parent=$id AND status='1'")->orderBy("name","DESC")->remember(120)->get()->toJson();
+			$data=\App\Categories::select()
+					->whereRaw("cid_parent=$id AND status='1' AND name NOT LIKE 'Dịch Vụ%'")->orderBy("name","DESC")->remember(120)->get()->toJson();
 		}
 		
 		return $data;
@@ -28,7 +30,7 @@ class IndexController extends Controller {
 
 	}
 	public function slideshow(){
-		return \App\Slideshow::where("type","=","1")->orderBy("position","DESC")->remember(10)->get()->toJson();
+		return \App\Slideshow::where("type","=","1")->orderBy("position","ASC")->remember(10)->get()->toJson();
 	}
 	public function cachecate(){
 

@@ -99,10 +99,16 @@ $httpProvider.defaults.withCredentials = true;
                controller:"CheckorderCtr"
             }
         )
-          .state("installment",
+        .state("installment",
             {
                url:"/danh-sach-mua-tra-gop",
-               templateUrl:"/templates/page/installment.html",
+               templateUrl:"/templates/page/installment.html"
+            }
+        )
+        .state("installmentdetail",
+            {
+               url:"/mua-tra-gop",
+               templateUrl:"/templates/page/installmentdetail.html",
                controller:"InstallmentCtr"
             }
         )
@@ -113,7 +119,20 @@ $httpProvider.defaults.withCredentials = true;
                 controller:"CardmemberCtr"
               }
             )
-         
+            .state("cardmembers",
+              {
+                url:"/quyenloi-the-thanh-vien/1",
+                templateUrl:"/templates/page/huongdan.html",
+                controller:"CardmemberCtr"
+              }
+            )
+        .state("branch",
+            {
+              url:"/he-thong-sieu-thi",
+              templateUrl:"/templates/page/chinhanh.html",
+              controller:"BranchCtr"
+            }
+          ) 
 
 
         //for search
@@ -135,6 +154,29 @@ $httpProvider.defaults.withCredentials = true;
               controller:"FirstCtr"
             }
           )
+
+          .state("secondcart",
+            {
+              url:"/gio-hang/thanh-toan",
+              templateUrl:"/templates/order/second.html",
+              controller:"SecondCtr"
+            }
+          )
+          .state("threecart",
+              {
+                url:"/gio-hang/xac-nhan",
+                templateUrl:"/templates/order/three.html",
+                controller:"ThreeCtr"
+              }
+          )
+            .state("fourcart",
+              {
+                url:"/gio-hang/hoan-thanh",
+                templateUrl:"/templates/order/four.html",
+                controller:"FourCtr"
+              }
+          )
+
 
         //for news
          

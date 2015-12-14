@@ -35,6 +35,11 @@ class Promotion extends Model {
 	public static function getIDProduct($id_product){
 		return Promotion::whereRaw(DB::raw("cid_product=$id_product AND status='0'") )->first();
 	}
+	public static function getDetail($id_product,$supplier){
+			return Promotion::whereRaw(DB::raw("cid_product=$id_product AND cid_supplier=$supplier AND status='0'") )->first();	
+		
+		
+	}
 	/*
 	 * supplier =1 is DMCL
 	 * $id_supplier_product is ID product of supplier
