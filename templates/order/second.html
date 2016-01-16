@@ -42,7 +42,7 @@
 								    <label>
 									    <span>Thời gian muốn lấy hàng</span>
 										<input  name="getdate" type="date"
-											ng-model="orderform.getdate"
+											ng-model="orderform.getdate" 
 										>
 										 <p style="color:red" ng-if="error['getdate']">
 									    	{{error['getdate']}}
@@ -101,13 +101,13 @@
 				     <label class="checkbox">
 				       <input type="radio" name="pay" checked="checked" value="1" ng-model="orderform.pay">
 				     </label>
-				     Thanh toán tại nhà̀
+				     Thanh toán tại nhà
 				  </li>
 				  <li class="item item-checkbox">
 				     <label class="checkbox">
 				       <input type="radio" name="pay" value="2" ng-model="orderform.pay">
 				     </label>
-				     Thanh toán tại siêu thị̣
+				     Thanh toán tại siêu thị
 				  </li>
 				</ul>
 
@@ -166,11 +166,20 @@
 
 
 
-								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
-										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
-												{{x}}
-										</option>
-								</select>
+								<div ng-if="!product['limit_quantity']">
+									<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+											<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+													{{x}}
+											</option>
+									</select>
+								</div>
+								<div ng-if="product['limit_quantity']">
+									<select  class='product_limit'>
+										<option>1</option>
+									</select>
+
+								 
+								</div>
 									
 
 

@@ -1,5 +1,6 @@
 angular.module("starter.users",[])
 .controller("UserLoginCtr",function($scope,$q,$http,$state,PUBLIC_VALUE,$ionicLoading,$ionicPopup,$cookieStore,$ionicScrollDelegate){
+	$ionicScrollDelegate.scrollTop();
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.login={};
 	$scope.myerror=[];
@@ -14,11 +15,12 @@ angular.module("starter.users",[])
 		$http.post(PUBLIC_VALUE.URL+"login",$scope.login).success(function(r){
 				if(!r['error']){
 							$cookieStore.put("dmclaccount",r);
-								$ionicPopup.show({
+										$ionicPopup.show({
 			  								title:"Thông báo",
 			  								template:"Đăng nhập thành công!",
 			  								buttons:[{text:"Đóng"}]
 			  							});
+			  							$state.reload();
 							$scope.my_check_user=r['fullname'];
 							$state.go("profile");
 
@@ -37,6 +39,7 @@ angular.module("starter.users",[])
 
 })
 .controller("UserSignupCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
+	$ionicScrollDelegate.scrollTop();
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 	$scope.list_state=[];
@@ -104,6 +107,10 @@ angular.module("starter.users",[])
 		$ionicLoading.show();
 		$http.get(PUBLIC_VALUE.URL+"list_state/"+$scope.signup.city).success(function(r){
 			$scope.list_state=r;
+			if(r[0].id != undefined){
+				$scope.signup.state=r[0].id;	
+			}
+			
 			$ionicLoading.hide();
 		});
 	}
@@ -113,7 +120,26 @@ angular.module("starter.users",[])
 	});
 
 })
-.controller("FacebookCtr",function($scope,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup){
+.controller("FacebookCtr",function($scope,PUBLIC_VALUE,$ionicSideMenuDelegate,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup){
+
+					//event when open menu left
+				 $scope.$watch(function() { 
+          			return $ionicSideMenuDelegate.getOpenRatio();
+		        }, 
+		        function(ratio) {
+		            $scope.data=ratio;
+		            if( ratio == 1){
+		            		
+							$http.get(PUBLIC_VALUE.URL + "totalcart").success(function(result){
+						 			$scope.total_cart=result;
+						 	});
+		            }
+
+		        });
+
+				
+	  		
+
 	$scope.my_check_user=null;
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
@@ -121,7 +147,7 @@ angular.module("starter.users",[])
 		var user=$cookieStore.get("dmclaccount");
 		$scope.my_check_user=user['fullname'];
 	}
-	
+					 
 
 	$scope.facebooklogin=function(){
 		 ngFB.login({scope: 'email,publish_actions'}).then(
@@ -185,48 +211,57 @@ angular.module("starter.users",[])
 	}
 
 })
-.controller("UserProfileCtr",function($scope,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup,$ionicLoading){
+.controller("UserProfileCtr",function($scope,$ionicScrollDelegate,PUBLIC_VALUE,$state,$http,ValidateData,$cookieStore,ngFB,$ionicPopup,$ionicLoading){
+	$ionicScrollDelegate.scrollTop();
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 
 	if($cookieStore.get("dmclaccount")){
 		$scope.list_state=[];
-		$scope.signup={};
+		$scope.myprofile={};
 		var user=$cookieStore.get("dmclaccount");
-		$scope.signup=user;
+		$scope.myprofile=user;
+
+		
 
 
 		$scope.change_cities=function(){
 			$ionicLoading.show();
-			$http.get(PUBLIC_VALUE.URL+"list_state/"+$scope.signup.city).success(function(r){
+			$http.get(PUBLIC_VALUE.URL+"list_state/"+$scope.myprofile.city).success(function(r){
 				$scope.list_state=r;
+
 				$ionicLoading.hide();
 			});
 		}
 		$http.get(PUBLIC_VALUE.URL+"list_location").success(function(r){
 			$scope.list_location=r;
+			$scope.myprofile.city=user['city'];
 			$scope.mycity=user['city'];
 		});
 
 		if(user['city']!=null){
+			
+
 			$http.get(PUBLIC_VALUE.URL+"list_state/"+user['city']).success(function(r){
 				$scope.list_state=r;
-				$scope.mydistict=user['distict'];
+				$scope.myprofile.distict=user['distict'];
 			});
 		}
 
 		$scope.profilesubmit=function(){
 			$ionicLoading.show();
-			$http.post(PUBLIC_VALUE.URL+"save_profile",$scope.signup).success(function(r){
+			$http.post(PUBLIC_VALUE.URL+"save_profile",$scope.myprofile).success(function(r){
 				
 					$ionicLoading.hide();
 				if(r=='1'){
-				
-					user['phone']	=$scope.signup.phone;
-					user['fullname']	=$scope.signup.fullname;
-					user['birthday']	=$scope.signup.birthday;
-					user['city']	=$scope.signup.city;
-					user['distict']	=$scope.signup.distict;
+
+					user=$cookieStore.get("dmclaccount");
+
+					user['phone']	=$scope.myprofile.phone;
+					user['fullname']	=$scope.myprofile.fullname;
+					user['birthday']	=$scope.myprofile.birthday;
+					user['city']	=$scope.myprofile.city;
+					user['distict']	=$scope.myprofile.distict;
 
 					$cookieStore.put("dmclaccount",user);
 

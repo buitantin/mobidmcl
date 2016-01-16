@@ -3,6 +3,31 @@
   margin-top:10px;
   max-width:100px;
 }
+.has-header .content-product-detail div.product-detail-gift{
+    padding: 10px !important;
+    line-height: 21px;
+    text-align: left;
+    top: -10px;
+    border-top: 0px !important;
+}
+.has-header .content-product-detail .product-detail-gift .list{
+   font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+.product-detail-gift ul li{
+  width:100%;
+}
+.product-detail-gift ul li p{
+  width:auto;
+  display: inline-block;
+}
+ .has-header .content-product-detail .list.step3 .product-detail-gift ul.listgift li p span{
+  color: #fff;
+}
 .slideshow_main img{
   width:100%;
 }

@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic','ngCookies','ngOpenFB', 'starter.controllers', 'starter.services','starter.details','starter.users','starter.page','starter.news','starter.order'])
 
 .run(function($ionicPlatform,ngFB) {
-  ngFB.init({appId:'149331555423303'});
+  ngFB.init({appId:'149331555423303'});// 149331555423303 live  417754855101919
   
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -35,7 +35,7 @@ angular.module('starter', ['ionic','ngCookies','ngOpenFB', 'starter.controllers'
 $httpProvider.defaults.withCredentials = true;
 */
 
-  // Ionic uses AngularUI Router which uses the concept of states
+  // Ionic uses AngularUI Router which uses the controllerncept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
@@ -54,7 +54,8 @@ $httpProvider.defaults.withCredentials = true;
       )
 
      .state("allcategories",
-        {
+        { 
+
            url:"/tat-ca-danh-muc",
            templateUrl : '/templates/front/menu.html',
            controller: 'HOMECtrl' 
@@ -126,15 +127,45 @@ $httpProvider.defaults.withCredentials = true;
                 controller:"CardmemberCtr"
               }
             )
-        .state("branch",
-            {
-              url:"/he-thong-sieu-thi",
-              templateUrl:"/templates/page/chinhanh.html",
-              controller:"BranchCtr"
-            }
-          ) 
-
-
+            .state("branch",
+                {
+                  url:"/he-thong-sieu-thi",
+                  templateUrl:"/templates/page/chinhanh.html",
+                  controller:"BranchCtr"
+                }
+              )
+            .state("policy",
+                {
+                  url:"/quy-dinh-giao-hang",
+                  templateUrl:"/templates/page/page.html",
+                  controller:"PageCtr"
+                }
+              )
+            .state("info",
+                {
+                  
+                  url:"/gioi-thieu",
+                  templateUrl:"/templates/page/page.html",
+                  controller:"InfoCtr"
+                }
+              )
+             .state("online",
+                {
+                  
+                  url:"/huong-dan-mua-hang-online",
+                  templateUrl:"/templates/page/page.html",
+                  controller:"OnlineCtr"
+                }
+              )
+              .state("member",
+                {
+                  
+                  url:"/quyen-loi-cua-thanh-vien",
+                  templateUrl:"/templates/page/page.html",
+                  controller:"MemberCtr"
+                }
+              )
+            
         //for search
 
         .state("search",

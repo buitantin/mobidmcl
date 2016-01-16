@@ -1,6 +1,6 @@
 angular.module('starter.details', [])
 
-.controller("DetailCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
+.controller("DetailCtr",function($scope,$q,$http,$interval,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
 	
 
 	$ionicScrollDelegate.scrollTop();
@@ -15,9 +15,9 @@ angular.module('starter.details', [])
 	$scope.mylimit=1;
 	$scope.old_new=[];
 	$scope.buytogether=[];
-	$scope.list_element=[];
+	$scope.list_element_detail=[];
 	$scope.get_total_element=0;
-	$scope.list_cate=[];
+	$scope.list_detail_series=[];
 	$scope.listproduct_element=[];
 	$scope.list_similar=[];
 	$scope.list_orther=[];
@@ -34,6 +34,8 @@ angular.module('starter.details', [])
 		
 		$http.get(PUBLIC_VALUE.URL+"detail_product/"+all_value[0]+"/"+all_value[2]).success(function(result){
 
+
+			
 			$scope.product=result;
 			$scope.myrating=result['rating'];
 
@@ -68,61 +70,83 @@ angular.module('starter.details', [])
 				$http.get(PUBLIC_VALUE.URL+"detail_payment/"+$scope.product['cid_cate']).success(function(pay){
 					if(pay[0]){
 						$scope.payment=pay[0];
-						$scope.permin=( ($scope.product['discount']-Math.round($scope.payment['permin']*$scope.product['discount']/100)) * $scope.payment['rate']);
+						$scope.permin= Math.round ( ($scope.product['discount']-Math.round($scope.payment['permin']*$scope.product['discount']/100)) * $scope.payment['rate']);
 		
 					}
 					
 				});
-				$http.get(PUBLIC_VALUE.URL+"detail_cate/"+$scope.product['cid_cate']).success(function(list_product){
-						$scope.list_cate=list_product;
+				$http.get(PUBLIC_VALUE.URL+"detail_series/"+$scope.product['cid_series']+"/"+$scope.product['cid_cate']).success(function(list_product){
+						$scope.list_detail_series=list_product;
 						
 				});
 
-					$http.get(PUBLIC_VALUE.URL+"getelement/"+$scope.product['cid_cate']+"/"+$scope.product['myid'])
+				$http.get(PUBLIC_VALUE.URL+"getelement/"+$scope.product['cid_cate']+"/"+$scope.product['myid'])
 						.success(function(list_element){
-								$scope.list_element=list_element;
-
-
-								$http.get(PUBLIC_VALUE.URL+"detail_similar/"+all_value[0]+"/"+all_value[2]).success(function(similar){
+								$scope.list_element_similar=list_element;
+						});	
+				$http.get(PUBLIC_VALUE.URL+"detail_similar/"+all_value[0]+"/"+all_value[2]).success(function(similar){
 									$scope.list_similar=similar;
-
-											for (var i = similar.length - 1; i >= 0; i--) {
-
-											//$scope.listproduct_element[i]=[];
-													for (var j = $scope.list_element.length - 1; j >= 0; j--) {
-														$http.get(PUBLIC_VALUE.URL+"get_element_product/"+similar[i]['myid']+"/"+list_element[j]["id"])
-															.success(function(e){
-																	$scope.listproduct_element.push(e)
-																	//console.log($scope.listproduct_element)
-															});	
-
-													};
-											
-											};
 								});
 
-						
-
-						});	
 
 			
 			$http.get(PUBLIC_VALUE.URL+"getproduct/"+$scope.product['cid_cate']+"/9").success(function(result){
 						$scope.list_tt=result;
 				});
 
-		});
+			$http.get(PUBLIC_VALUE.URL+"detail_promotion_datetime/"+result['cid_res']+"/"+all_value[2]).success(function(result){
+				$scope.datetimecountdown=result;
 
+					 	var future;
+	                    future = new Date(result['date_end']);
+
+	                    $interval(function () {
+	                        var diff;
+	                        diff = Math.floor((future.getTime() - new Date().getTime()) / 1000);
+
+	                         var days, hours, minutes, seconds;
+			                    days = Math.floor(diff / 86400);
+			                    diff -= days * 86400;
+			                    hours = Math.floor(diff/ 3600) % 24;
+			                    diff -= hours * 3600;
+			                    minutes = Math.floor(diff / 60) % 60;
+			                    diff -= minutes * 60;
+			                    seconds = diff % 60;
+			                    $scope.viewcd=days + '  Ngày   '+hours+":"+minutes+":"+seconds;
+	                    }, 1000);
+
+
+				
+			});
+
+			$http.get(PUBLIC_VALUE.URL+"detail_gift/"+result['cid_res']+"/"+all_value[2]).success(function(result){
+				$scope.list_gift=result;
+			});
+		});
+		//end detail product
 
 		$http.get("http://dienmaycholon.vn/index/jsonimage/id/"+all_value[0]).success(function(result){
 			$scope.list_image=result;
 			$ionicSlideBoxDelegate.update();
-		});
-		$http.get(PUBLIC_VALUE.URL+"detail_gift/"+all_value[0]+"/"+all_value[2]).success(function(result){
-			$scope.list_gift=result;
-		});
+		})
+		.error(function(r){
+			$scope.list_image=["product_"+all_value[0]+"_1.png"];
+			$ionicSlideBoxDelegate.update();
+		})
+		;
+
+
+
+		
+
+
 		$http.get(PUBLIC_VALUE.URL+"detail_element/"+all_value[0]).success(function(result){
-			$scope.list_element=result;
+			$scope.list_element_detail=(result);
+		//console.log(JSON.stringify ( result) );
+
+
 		});
+
 
 
 		
@@ -149,7 +173,7 @@ angular.module('starter.details', [])
 			$scope.total_avg_rate=Math.round(sum/result.length);
 
 		});
-		$http.get(PUBLIC_VALUE.URL+"detail_buy/"+all_value[0]).success(function(b){
+		var success_ajax_buyt=$http.get(PUBLIC_VALUE.URL+"detail_buy/"+all_value[0]).success(function(b){
 				$scope.buytogether=b;
 
 				for (var i = b.length - 1; i >= 0; i--) {
@@ -192,6 +216,8 @@ angular.module('starter.details', [])
 			
 		}
 
+		
+		
 
 		//Reivew 
 
@@ -238,7 +264,7 @@ angular.module('starter.details', [])
 				subTitle:"Vui lòng nhập nội dung",
 				template:"Đánh giá: <div  ng-controller='RatingController as rating' ng-init='datareview.rating=5'>  <star-rating ng-model='datareview.rating' on-rating-select='5' ></star-rating> </div> <br />"
 						 +"Tiêu đề: <input type='text' ng-model='datareview.title' /> <br />"	
-						 +"Ghi chú: <input type='text' ng-model='datareview.content' />",
+						 +"Nội dung: <input type='text' ng-model='datareview.content' />",
 			  	scope:$scope,
 			  	buttons:[{
 			  			text:"Đóng"
@@ -299,7 +325,76 @@ angular.module('starter.details', [])
 
 		}
 		//End review
+		//tra gop
+		$scope.popup_payment=function(){
 
+			$scope.datepayment={};
+			$scope.datepayment.id=all_value[0];
+			var myPopup=	$ionicPopup.show({
+				title:"(*) Quý khách vui lòng nhập đầy đủ thông tin và chọn 'Gửi thông tin'. Thông tin chi tiết về mua hàng trả góp sẽ được gửi đến địa chỉ email của quý khách.",
+				subTitle:"Vui lòng nhập nội dung",
+				template:"Anh chị: <select  ng-model='datepayment.gender' style='width:80px; padding:5px'><option value='0' ng-selected='selected'>Anh</option><option value='1'>Chị</option></select> <br />"
+						 +"Nhập họ và tên: <input type='text' ng-model='datepayment.name' /> <br />"
+						 +"Số điện thoại: <input type='number' ng-model='datepayment.phone' /> <br />"	
+						 +"Email: <input type='text' ng-model='datepayment.email' />"
+						 +"Bạn là:<select ng-model='datepayment.work' style='padding:5px'><option ng-selected='selected' value='0'>Sinh viên</option><option value='1'>Đã đi làm</option></select> <br />"
+						 ,
+			  	scope:$scope,
+			  	buttons:[{
+			  			text:"Đóng"
+			  		},
+			  		{
+			  			text:"<b>Gửi thông tin</b>",
+			  			type:'button-dark',
+			  			onTap:function(e){
+			  				
+			  				if(!$scope.datepayment.gender &&  !$scope.datepayment.work &&  !$scope.datepayment.name && !$scope.datepayment.phone &&  !$scope.datepayment.email){
+			  					$ionicPopup.show({
+				  								title:"Thông báo",
+				  								template:"Vui lòng nhập đầy đủ thông tin!",
+				  								buttons:[{text:"Đóng"}]
+			  								});
+			  					e.preventDefault();
+			  				}else{
+
+			  					return $scope.datepayment;
+			  				}
+			  				
+			  				
+			  			}
+			  		}
+			  	]
+			})
+			.then(function(res){
+						
+							$ionicLoading.show({
+								template:"Loading..."
+							})
+			
+							$http.post(PUBLIC_VALUE.URL+"detail_save_payment",res).success(function(r){
+			  							$ionicPopup.show({
+			  								title:"Thông báo",
+			  								template:"Cảm ơn bạn đã Gửi thông tin",
+			  								buttons:[{text:"Đóng"}]
+			  							});
+			  							$ionicLoading.hide();
+			  					}).error(function(r){
+			  						$ionicLoading.hide();
+			  					});
+
+
+				
+			});
+		
+
+		
+
+			
+
+
+
+		}
+		//end
 		//commend
 		$scope.popup_commend=function(){
 			$scope.datacommend={};
@@ -369,22 +464,110 @@ angular.module('starter.details', [])
 
 
 
-	$scope.show_detail=false;
+	$scope.infoshow='info_special_show';
 	$scope.my_show_detail=function(){
-		$scope.show_detail=!$scope.show_detail;
+		if($scope.infoshow==""){
+			$scope.infoshow='info_special_show';
+		}else{
+			$scope.infoshow='';
+		}
+	}
+		$scope.contentshow='info_special_show';
+	$scope.viewcontentshow=function(){
+		if($scope.contentshow==""){
+			$scope.contentshow='contentshow';
+		}else{
+			$scope.contentshow='';
+		}
 	}
 
-	
-	/*	 $http.get(PUBLIC_VALUE.URL+"getnamequestion/"+$scope.initquestion).success(function(r){
-			$scope.getnamequestion=r;	
-		});*/
+	//buy all product in list together
+	var list_buy_together=[];
+	$q.all([success_ajax_buyt]).then(function(result){
+			angular.forEach(result[0].data,function(val,key){
+				if(val['isprice']=='1'){
+					list_buy_together.push({id:val['myid'],supplier:val['cid_supplier'],price:val['discount']});
+				}else{
+					list_buy_together.push({id:val['myid'],supplier:val['cid_supplier'],price:val['saleprice']});
+				}
+				
+			});
+			list_buy_together.push({id:$scope.product['myid'],supplier:$scope.product['cid_supplier'],price:$scope.product['discount']});
+			
+	});
 
+	$scope.buy_all=function(){
+		
+			var ele_buy=$http.post(PUBLIC_VALUE.URL+"order_save_all",JSON.stringify(list_buy_together) );
+		
+		
+		$q.all([ele_buy]).then(function(result){
+			$state.go("firstcart");
+		});
+		
+
+		//
+	}
 	
+	$scope.change_buy_all=function(id,bool){
+		var is_exists_id=false;
+			angular.forEach(list_buy_together,function(val,key){
+					if(val.id==id){
+						is_exists_id=true;
+					}
+			});
+		if(bool){
+				if(!is_exists_id){
+					angular.forEach($scope.buytogether,function(val,key){
+						 if(val['myid']==id){
+							if(val['isprice']=='1'){
+								list_buy_together.push({id:val['myid'],supplier:val['cid_supplier'],price:val['discount']});
+							}else{
+								list_buy_together.push({id:val['myid'],supplier:val['cid_supplier'],price:val['saleprice']});
+							}
+						}
+					})
+				}
+		}else{
+			if(is_exists_id){
+				var tam=[];
+				angular.forEach(list_buy_together,function(val,key){
+
+					if(val.id!=id){
+						tam.push(val);
+					}
+				});
+				list_buy_together=tam;
+			}
+		}	
+
+				if($scope.product['isprice']=='1'){
+					$scope.get_total_element=Math.round($scope.product['discount']);
+				}else{
+					$scope.get_total_element=Math.round($scope.product['saleprice']);
+				}
+				
+				angular.forEach(list_buy_together,function(val,key){
+						$scope.get_total_element=$scope.get_total_element+val.price*1;
+				});
+				$scope.get_total_element1=$scope.get_total_element;
+	}
 	
 
-	
+	//tooltip gift
+	$scope.viewtooltip=function(na,des){
+		var description="<div style='height:300px'>"+des+"</div>";
+		$ionicPopup.show({
+				title:na,
+				template:description,
+			  	scope:$scope,
+			  	buttons:[{
+			  			text:"Đóng"
+			  		}
+			  	]
+			});
+	}
 })
-
 
 
 

@@ -11,6 +11,7 @@ use DB;
 use App\Template;
 
 
+
 use Illuminate\Http\Request;
 
 class FilterController extends Controller {
@@ -23,6 +24,8 @@ class FilterController extends Controller {
 	public function getcate($id)
 	{
 	
+		return Cache::remember("get_filter_cate_".$id,20,function() use($id){
+
 
 			return		DB::table("pro_product AS a")
 						->selectRaw(DB::raw("b.id,b.name,count(a.id) AS total") )
@@ -33,7 +36,7 @@ class FilterController extends Controller {
 						
 						->groupBy("b.id")
 						->get();
-			
+		});
 
 
 	}
@@ -46,7 +49,9 @@ class FilterController extends Controller {
 	public function getseries($id_child)
 	{
 		//
-			
+		return Cache::remember("get_filter_series_".$id_child,30,function() use($id_child){
+
+
             return DB::table("pro_product AS a")
             		->selectRaw("b.id,b.name,count(a.id) AS total")
             		->whereRaw("a.cid_cate={$id_child}   AND a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'  AND b.status='1'")
@@ -57,7 +62,7 @@ class FilterController extends Controller {
             		->orderBy("b.name","ASC")
             		->get();
 
-
+         });   		
 
 
 
@@ -89,10 +94,10 @@ class FilterController extends Controller {
 			$sql[3]  = "  ".implode(" OR ", $price)."  ";
 		}
 		if(!empty($sql)){
-			$s=" AND (" .implode(" OR ", $sql)." ) ";
+			$s=" AND (" .implode(" AND ", $sql)." ) ";
 		
 		}
-	//	echo $s;exit;
+		//echo $s;exit;
 		$a=Product::Get_Product_Filter($id,$s,$check);
 		return Response::json($a);
 

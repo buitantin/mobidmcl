@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
 				"dientu":"dt",
 				"dienlanh":"dl",
 				"giadung":"gd",
-				"didong-tablet":"dd",
+				"didongtablet":"dd",
 				"vitinh":"vt",
 				"vienthong":"vth",
 				"noithat":"nt",
@@ -55,6 +55,7 @@ angular.module('starter.controllers', [])
 				"suckhoesacdep":"sacdep",
 			};
 			r=ValidateData.toIcon(r);
+			
 			for(c in cla){
 				if(r== c){
 					return cla[c];
@@ -66,13 +67,17 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$cookieStore,$http, $state, $ionicActionSheet, $timeout){
+.controller('HeaderController',function($scope,$ionicSideMenuDelegate,$cookieStore,$http, $state, $ionicActionSheet, $timeout,PUBLIC_VALUE){
 			  //$scope.Mr_Data=Mr_Data;
 
 			  $scope.toggleLeft=function(){
 				  $ionicSideMenuDelegate.toggleLeft();
+				 	
+				  
+				  
 			  };
-	  		
+			  
+
 			  $scope.show = function() {
 
 			  	if(!$cookieStore.get("dmclaccount")){
@@ -134,9 +139,11 @@ angular.module('starter.controllers', [])
 		
 							   });
 })
-.controller("HOMECtrl",function($scope,$http,PUBLIC_VALUE,ValidateData,$ionicScrollDelegate){
+.controller("HOMECtrl",function($scope,$cookieStore,$http,PUBLIC_VALUE,ValidateData,$ionicScrollDelegate){
 	$ionicScrollDelegate.scrollTop();
-
+	if($cookieStore.get("compare")){
+		$cookieStore.remove("compare");	
+	}
 
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
@@ -161,6 +168,7 @@ angular.module('starter.controllers', [])
 		$http.get(PUBLIC_VALUE.URL+"promotionpress/12",{cache:true})		 
 		.success(function(r){
 			$scope.product_press=r;
+			
 		});
 		$http.get(PUBLIC_VALUE.URL+"producthot/9",{cache:true})		 
 		.success(function(r){
@@ -177,14 +185,17 @@ angular.module('starter.controllers', [])
 			return ValidateData.toAlias(alias);
 		}
 })
-.controller("CategoriesCtr",function($scope,$ionicSlideBoxDelegate,$state,$http,$stateParams,PUBLIC_VALUE,ValidateData,Cate,$ionicScrollDelegate){
+.controller("CategoriesCtr",function($scope,$cookieStore,$ionicSlideBoxDelegate,$state,$http,$stateParams,PUBLIC_VALUE,ValidateData,Cate,$ionicScrollDelegate){
 	$ionicScrollDelegate.scrollTop();
-	
+	if($cookieStore.get("compare")){
+		$cookieStore.remove("compare");	
+	}
 
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
 	if($stateParams.parent != undefined){
 
+		 // $rootScope.title="Tất cả danh mục",
 		var id_cate=ValidateData.listcate($stateParams.parent);
 
 			$http.get(PUBLIC_VALUE.URL+"/getcate/"+id_cate)
@@ -227,6 +238,7 @@ angular.module('starter.controllers', [])
 .controller("ChildCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
 	$ionicScrollDelegate.scrollTop();	
 
+	
 
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
@@ -293,10 +305,10 @@ angular.module('starter.controllers', [])
 							}
 
 
-
 				$scope.changeCompare=function(bool,myid)	{
 					
-					
+					compare=$cookieStore.get("compare") || [];
+
 						if(bool){
 
 							if(compare.length < 2){
@@ -314,9 +326,11 @@ angular.module('starter.controllers', [])
 											}
 									]
 								})
+								event.preventDefault();
+								$scope.bool[myid]=false;
 							}
 							
-							$scope.bool[myid]=false;
+							
 						}else{
 							//remove value on compare
 							if(compare.length > 0 ){
@@ -326,7 +340,7 @@ angular.module('starter.controllers', [])
 										tm.push(compare[i]);
 									}
 								};
-								compare=tm;
+								$cookieStore.put("compare",tm);
 							}
 
 						}
@@ -346,7 +360,7 @@ angular.module('starter.controllers', [])
 
 })
 .controller("CompareCtr",function($scope,$http,$stateParams,$ionicPopup,PUBLIC_VALUE,ValidateData,$cookieStore){
-	
+	$scope.namepage="compare";
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	
 	$scope.ValidateData=ValidateData;
@@ -385,40 +399,18 @@ angular.module('starter.controllers', [])
 								$scope.my_parent=parent;
 						});
 
+						
+						
+
 						$http.get(PUBLIC_VALUE.URL+"getelement/"+$scope.my_child['id']+"/"+compare[0])
 						.success(function(list_element){
 								$scope.list_element=list_element;
-
-
-
-
-								for (var i = compare.length - 1; i >= 0; i--) {
-
-									//$scope.listproduct_element[i]=[];
-										for (var j = list_element.length - 1; j >= 0; j--) {
-											$http.get(PUBLIC_VALUE.URL+"get_element_product/"+compare[i]+"/"+list_element[j]["id"])
-											.success(function(e){
-													$scope.listproduct_element.push(e)
-													
-											});	
-
-										};
-									
-									
-
-								};
-
-
-
-									
-
-									
 
 						});	
 
 						for (var i = compare.length - 1; i >= 0; i--) {
 							
-							$http.get(PUBLIC_VALUE.URL+"getdetailproduct/"+compare[i])
+							$http.get(PUBLIC_VALUE.URL+"getcompareproduct/"+compare[i]+"/"+$scope.my_child['id'])
 							.success(function(product){
 									$scope.listproduct.push(product);
 
@@ -464,10 +456,11 @@ angular.module('starter.controllers', [])
 
 })
  
-.controller("FilterCtr",function($scope,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
-	
+.controller("FilterCtr",function($scope,$http,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate,$ionicLoading){
+	$scope.namepage="filter";
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;
 	$scope.ValidateData=ValidateData;
+
 
 
 	if($stateParams.filter != undefined){
@@ -508,7 +501,7 @@ angular.module('starter.controllers', [])
 								});	
 
 								$http.get(PUBLIC_VALUE.URL+"filter_template/"+$scope.my_child['id'])
-								.success(function(s){
+									.success(function(s){
 										$scope.list_template=s;
 								});	
 
@@ -543,17 +536,17 @@ angular.module('starter.controllers', [])
 						$ionicLoading.show({
 							template:"Loading...."
 						})
-						var t='';
-						if($scope.valuetemplate.length > 0){
+						// var t='';
+						// if($scope.valuetemplate.length > 0){
 
-							for (var i = $scope.valuetemplate.length - 1; i >= 0; i--) {
-								if($scope.valuetemplate[i] == null){
-									$scope.valuetemplate.splice(i,1);
-								}
-							};
+						// 	for (var i = $scope.valuetemplate.length - 1; i >= 0; i--) {
+						// 		if($scope.valuetemplate[i] == null){
+						// 			$scope.valuetemplate.splice(i,1);
+						// 		}
+						// 	};
 
-							t=$scope.valuetemplate.join(" OR ");
-						}
+						// 	t=$scope.valuetemplate.join(" OR ");
+						// }
 						
 						
 						var d=JSON.stringify({
@@ -601,11 +594,14 @@ angular.module('starter.controllers', [])
 
 			}
 			$scope.changecheckboxtemplate=function(idx,k,bool){
+
 						if(bool){
-							$scope.valuetemplate[idx+k]="(e.cid_element="+idx+" AND e.val LIKE '"+bool+"' )";
+							//$scope.valuetemplate[idx+k]="(e.cid_element="+idx+" AND e.val LIKE '"+bool+"' )";
+							$scope.valuetemplate.push("(e.cid_element="+idx+" AND e.val LIKE '"+bool+"' )");
 						}else{
-							//$scope.valuetemplate.splice($scope.valuetemplate[idx+k],1);
-							delete $scope.valuetemplate[idx+k];
+							$scope.valuetemplate.splice($scope.valuetemplate.indexOf("(e.cid_element="+idx+" AND e.val LIKE '"+bool+"' )"),1);
+							//delete $scope.valuetemplate[idx+k];
+							
 						}
 						
 
@@ -613,12 +609,12 @@ angular.module('starter.controllers', [])
 			}
 			$scope.changecheckboxprice=function(value,k){
 				if(value){
-					$scope.valueprice[k]=value;
+					$scope.valueprice.push(value);
 				}else{
 				
-					delete $scope.valueprice[k];
+					 $scope.valueprice.splice($scope.valueprice.indexOf(value),1);
 				}
-
+				//console.log($scope.valueprice);
 				
 			}
 
@@ -630,6 +626,10 @@ angular.module('starter.controllers', [])
 		 	$scope.slidePrevious = function() {
 
 	      	  $ionicSlideBoxDelegate.previous();
+	    	}
+
+	    	$scope.removeall=function(){
+	    		$state.reload();
 	    	}
 			
 			
@@ -763,10 +763,14 @@ angular.module('starter.controllers', [])
         function updateStars() {
           scope.stars = [];
           for (var i = 0; i < scope.max; i++) {
-            scope.stars.push({
-              filled: i < scope.ratingValue
-            });
+
+          		scope.stars.push({
+             		 filled: i < scope.ratingValue
+            	});	
+          	
+            
           }
+
         };
         scope.toggle = function(index) {
           if (scope.readonly == undefined || scope.readonly === false){
@@ -777,9 +781,9 @@ angular.module('starter.controllers', [])
           }
         };
         scope.$watch('ratingValue', function(oldValue, newValue) {
-          if (newValue) {
+         // if (newValue) {
             updateStars();
-          }
+         // }
         });
       }
     };

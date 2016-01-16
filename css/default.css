@@ -3,6 +3,139 @@
     vertical-align: top;
     height: 40%;
 }
+#support-online-floating{
+        background-position: -374px -199px;
+    width: 64px;
+    height: 37px;
+    bottom: 20px;
+    position: fixed;
+    right: 9px;
+    z-index: 100000;
+    font-size: 0px;
+    text-indent: -1000px;
+
+}
+.has-header .list-main-sub-product.list-main-sub-product-compare .tem-compare div{
+  overflow: auto; 
+}
+.has-header .list-main-sub-product.list-main-sub-product-compare .tem-compare div:last-child{
+  overflow: hidden; 
+}
+#news_content_view img{
+  width: 100%;
+}
+.bar-positive a.iconmobile-user{
+    background-position: -455px -32px;
+    width: 36px;
+    height: 36px;
+}
+.bar-positive a.iconmobile-cart{
+    background-position: -402px -32px;
+    width: 33px;
+    height: 40px;
+}
+#images_with_persent img{
+  width:100% !important;
+  height:auto !important;
+}
+.info_special_show,.contentshow{
+     height: 184px;
+    overflow: hidden;
+}
+#images_with_persent table{
+  width:100% !important;
+}
+.iconmobile-mt{
+  cursor: pointer;
+}
+.info_special ul li{
+  color:#4d4d4f;
+   color: #4d4d4f;
+    font-size: 14px;
+    
+    line-height: 22px;
+    font-weight: 200;
+    list-style-type: disc;
+}
+.info_special ul {
+    padding-left: 10px;
+    list-style-type: disc;
+        margin-left: 23px;
+}
+.info_special .row .col{
+  font-size:14px;
+    padding: 0px
+}
+.info_special .row .col small{
+
+}
+
+.has-header div.list-cate-menu ul{
+      border: 1px solid #c6c6c6;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border-bottom: 0px;
+}
+.has-header div.list-cate-menu ul:last-child{
+  border-bottom:1px solid #c6c6c6;
+}
+a{
+  text-align: left;
+}
+.tag-green {
+    color: #019100;
+    font-size: 12px;
+    vertical-align: middle;
+    font-weight: 100;
+}
+.has-header .not_position .tabs-positive .tabs .tab-item .tab-title{
+  color:black;
+}
+.auto_images{
+  width:100%;
+  max-width:166px;
+}
+.coupon-header{
+	    color: white;
+    background: #01a201;
+    font-size: 14px;
+    text-align: center;
+    max-width: 200px;
+    font-weight: bold;
+    padding: 2px;
+}
+.coupon-header div{
+	background: white;
+    margin: 4px;
+    display: inline-block;
+    color: black;
+    padding: 3px 7px;
+}
+.coupon-content{
+	color:red;
+	font-size:14px;
+	padding:5px;
+}
+.coupon-content span{
+	 color: #01a201;
+}
+.has-header .not_position  .tabs-positive > .tabs, .tabs.tabs-positive{
+  background: white;
+}
+.has-header .not_position  .tabs-positive > .tabs, .tabs.tabs-positive a{
+  color: black;
+  font-weight: bold;
+
+}
+.has-header .not_position .tabs-positive .tabs{
+  border-top:2px solid #f3f3f3 !important;
+  border-bottom: 3px solid #ddd;
+}
+.has-header .not_position .tabs-positive .tabs .tab-item-active .tab-title
+,.has-header .not_position .tabs-positive .tabs .tab-item .tab-title{
+  font-weight: bold;
+}
 .button-price.button-stable.button-clear{
   text-decoration: line-through;
 }

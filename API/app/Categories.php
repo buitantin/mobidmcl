@@ -1,7 +1,7 @@
 <?php namespace App;
 
 use DB;
-
+use Cache;
 class Categories extends Model {
 
 	//
@@ -10,6 +10,9 @@ class Categories extends Model {
 
 
 	public static function getFilterPrice_Child($id_cate_child,$supplier=0){
+		 return Cache::remember("get_filter_price_child_".$id_cate_child.$supplier,30,function() use($id_cate_child,$supplier){
+
+
 					$MrValidateData=new MrValidateData();
 					$sql_parent="
 						SELECT a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
@@ -116,7 +119,7 @@ class Categories extends Model {
 					$t=$phan_doan1+$t;
 				}
 						return $result;
+		 });
 					
-					
-				}
+	}
 }

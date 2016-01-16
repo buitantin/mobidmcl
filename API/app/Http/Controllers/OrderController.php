@@ -35,8 +35,8 @@ class OrderController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 
 								"pro_product.id AS myid",
 								"pro_product.code","pro_product.sap_code",
@@ -74,11 +74,18 @@ class OrderController extends Controller {
 
 						
 						foreach ($order as $key => $value) {
-							if($value['product']['isprice']=='1'){
-								$total_cart=$total_cart+$value['product']['discount']*$value['order']['limit'];
+							if(!empty($value['coupon'])){
+								$c=$value['coupon'];
 							}else{
-								$total_cart=$total_cart+$value['product']['saleprice']*$value['order']['limit'];
+								$c=0;
 							}
+
+							if($value['product']['isprice']=='1'){
+								$total_cart=$total_cart+$value['product']['discount']*$value['order']['limit']-$c;
+							}else{
+								$total_cart=$total_cart+$value['product']['saleprice']*$value['order']['limit']-$c;
+							}
+							
 						}
 					}
 				}
@@ -102,6 +109,7 @@ class OrderController extends Controller {
 	public function coupon(Request $request){
 		$result=array(0);
 		if($coupon=$request->get("coupon") && Session::has("orderdmcl")){
+			$coupon=$request->get("coupon");
 			$all_product=Session::get("orderdmcl");
 
 			 foreach ($all_product as $key => $product) {
@@ -180,16 +188,47 @@ class OrderController extends Controller {
 				}else{
 					$order[$id]=array(
 							"order"=>array("id"=>$id,"supplier"=>$supplier,"limit"=>$limit,"color"=>$color),
-							"product"=>OrderController::detail_product($id,$supplier)
+							"product"=>OrderController::detail_product($id,$supplier),
+							"limit_quantity"=>Promotion::getProduct_Price($id,$supplier)
 						);
 					Session::put("orderdmcl",$order);
 				}
 			
 		}
 
-		return '';
+		return Session::get("orderdmcl");
 	}
+	public function saveorderall(Request $request){
+		$a= $request->all();
+	
 
+	
+		if(!Session::has("orderdmcl")){
+			Session::put("orderdmcl",array());
+		}
+		if(is_array($a)){
+			foreach ($a as $key => $value) {
+				
+				$order=Session::get("orderdmcl");
+
+				if(array_key_exists($value['id'], $order)){
+					$order[$value['id']]['order']['limit']=1;
+					Session::put("orderdmcl",$order);
+				}else{
+					$order[$value['id']]=array(
+							"order"=>array("id"=>$value['id'],"supplier"=>$value['supplier'],"limit"=>1,"color"=>0),
+							"product"=>OrderController::detail_product($value['id'],$value['supplier']),
+							"limit_quantity"=>Promotion::getProduct_Price($value['id'],$value['supplier'])
+						);
+					Session::put("orderdmcl",$order);
+				}
+
+			}
+			
+		}
+
+		return Session::get("orderdmcl");
+	}
 	public function getlistproduct(){
 
 		if(Session::has("orderdmcl")){
@@ -345,10 +384,13 @@ class OrderController extends Controller {
 	                    
 
 	        		if(!empty($getpromotion->type_promo)){
+	        				
+	        			
+	        		
                     if($getpromotion->type_promo=='2'){
                         if(!empty($Gift['online']) || !empty($Gift['gift'])){
                             $news->cid_gift='1';
-            				if(!empty($Gift['online']))
+            				if(!empty($Gift['online'])  && is_object($Gift['online']))
                                 $gift_online = $Gift['online'];
             					//foreach ($Gift['online'] as $gift_online){
             					$news_gift= new Orgift;
@@ -357,7 +399,7 @@ class OrderController extends Controller {
             					$news_gift->type='0';
             					$news_gift->save();
             				//}
-            				if(!empty($Gift['gift']))
+            				if(!empty($Gift['gift'])  && is_object($Gift['gift']))
             					foreach ($Gift['gift'] as $gift_pr){
             					$news_gift=$TGift->fetchNew();
             					$news_gift->cid_detail=$news->id;
@@ -367,9 +409,9 @@ class OrderController extends Controller {
             				}
                         }
 		                    }elseif($getpromotion->type_promo=='3'){
-		                        if(!empty($Gift['press']) || !empty($Gift['gift'])){
+		                        if(!empty($Gift['press']) || !empty($Gift['gift']) ){
 		                            $news->cid_gift='1';
-		            				if(!empty($Gift['press']))
+		            				if(!empty($Gift['press'])  && is_object($Gift['press']))
 		                                $gift_press =  $Gift['press'];
 		            					//foreach ($Gift['press'] as $gift_press){
 		            					$news_gift=new Orgift;
@@ -378,7 +420,7 @@ class OrderController extends Controller {
 		            					$news_gift->type='0';
 		            					$news_gift->save();
 		            				//}
-		            				if(!empty($Gift['gift']))
+		            				if(!empty($Gift['gift'])  && is_object($Gift['gift']))
 		            					foreach ($Gift['gift'] as $gift_pr){
 		            					$news_gift=new Orgift;
 		            					$news_gift->cid_detail=$news->id;
@@ -390,7 +432,8 @@ class OrderController extends Controller {
 		                    }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
 		                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
 		                            $news->cid_gift='1';
-		            				if(!empty($Gift['text']))
+		            				if(!empty($Gift['text']) && is_object($Gift['text']))
+
 		            					foreach ($Gift['text'] as $gift_text){
 			            					$news_gift=new Orgift;
 			            					$news_gift->cid_detail=$news->id;
@@ -398,7 +441,7 @@ class OrderController extends Controller {
 			            					$news_gift->type='0';
 			            					$news_gift->save();
 		            					}
-		            				if(!empty($Gift['gift']))
+		            				if(!empty($Gift['gift']) && is_object($Gift['gift']))
 		            					foreach ($Gift['gift'] as $gift_pr){
 		            					$news_gift=new Orgift;
 		            					$news_gift->cid_detail=$news->id;
@@ -409,7 +452,7 @@ class OrderController extends Controller {
 		            			}
 		                    }else{
 		                        $news->cid_gift='1';
-		                        if(!empty($Gift['gift']))
+		                        if(!empty($Gift['gift'])  && is_object($Gift['gift']))
 		        					foreach ($Gift['gift'] as $gift_pr){
 		        					$news_gift=new Orgift;
 		        					$news_gift->cid_detail=$news->id;
@@ -437,8 +480,8 @@ class OrderController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 
 								"pro_product.id AS myid",
 								"pro_product.code","pro_product.sap_code",
@@ -466,5 +509,49 @@ class OrderController extends Controller {
 	}
  	public function getBanner(){
  		return Response::json(Coupon::getBanner() ) ; 
+ 	}
+ 	public function checkorder(Request $request){
+ 		if($code=$request->get("code")){
+ 			$code=DB::raw($code);
+ 			$check_order=Ororder::whereRaw("code_order='$code' AND approved != 3 ")->first();
+ 			if(!empty($check_order)){
+ 				$result=array(	
+ 						"order"=>$check_order,
+ 						"detail"=>
+ 							DB::table("or_detail AS a")
+ 								->join("pro_product AS b",function($join){
+ 									$join->on("a.cid_product","=","b.id");
+ 								})
+ 								->selectRaw("b.name,a.dis_price,a.total,a.cid_gift,a.amount,a.cid_order") 
+ 								->whereRaw("cid_order={$check_order->id}")
+ 								->get()
+ 					);
+ 				return Response::json($result);	
+ 			}
+ 		}
+ 		return '';
+ 	}
+ 	public function totalcart(){
+
+ 		$total_cart=0;
+
+ 		if(Session::has("orderdmcl")){
+ 			$order=Session::get("orderdmcl");
+ 			foreach ($order as $key => $value) {
+ 							$c=0;
+ 							if(!empty($value['coupon'])){
+ 									$c=$value['coupon'];
+ 							}
+ 							if($value['product']['isprice']=='1'){
+ 								$total_cart=$total_cart+$value['product']['discount']*$value['order']['limit']-$c;	
+ 							}else{
+ 								$total_cart=$total_cart+$value['product']['saleprice']*$value['order']['limit']-$c;
+ 							}
+							
+						}
+		
+ 		}
+ 		return $total_cart;
+ 						
  	}
 }

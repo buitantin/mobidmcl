@@ -56,16 +56,23 @@
 						</small>
 						<div>
 							<label class="item-price3 item item-input ">
-								<div class="input-label">Số lượng</div>
+								<div class="input-label">Số lượng	</div>
 
 
+								<div ng-if="!product['limit_quantity']">
+									<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+											<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+													{{x}}
+											</option>
+									</select>
+								</div>
+								<div ng-if="product['limit_quantity']">
+									<select  class='product_limit'>
+										<option>1</option>
+									</select>
 
-								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
-										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
-												{{x}}
-										</option>
-								</select>
-									
+								 
+								</div>
 
 
 							</label>
@@ -82,6 +89,16 @@
 					 Tổng cộng ({{count_product}} sản phẩm): <strong class="abc" style="" to-Price="total_cart"></strong>
 					</span>
 				</p>
+				 <div class='list' ng-if="viewcoupon">
+				 						 <div class="coupon-box">
+                                                      <div class="coupon-header">
+                                                      Nhập mã <div>{{viewcoupon}}</div>
+                                                      </div>
+                                                      <div class="coupon-content">
+                                                        Giảm thêm : <span to-Price="viewdiscountwcoupon"></span>
+                                                      </div>
+                                                    </div>
+                </div>
 </div>
 
 
@@ -96,6 +113,10 @@
 				  </div>
 
 				</div>
+
+				
+
+
 				<div class="list" ng-if="check_coupon">
 				  <div class="item item-input-inset">
 				    <label class="item-input-wrapper">

@@ -143,7 +143,7 @@ class UserController extends Controller {
 				}
 				
 				$user->city=$all['city'];
-				$user->distict=$all['state'];
+				$user->distict=$all['distict'];
 				$user->save();
 				Auth::login($user);
 
@@ -184,7 +184,7 @@ class UserController extends Controller {
  						
  			}
 			
-			return Response::json(['error' => '1', 'username' => "Tên đăng nhập hoặt mặt khẩu không chính xác"]);	
+			return Response::json(['error' => '1', 'username' => "Tên đăng nhập hoặc mật khẩu không chính xác"]);	
 		}
 		$error['error']='1';
 		return Response::json($error); 

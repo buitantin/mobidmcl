@@ -28,12 +28,36 @@
                            
                           </div>
 
+                     <div>
+                      <div ng-if="product['stock_num'] > 0 || product['is_shopping']=='1'">
+                          <div ng-if="product['stock_num']<6">
+                              <span class='tag-green'>HÀNG HOT SẮP HẾT</span>
+                          </div>
+                           <div ng-if="product['stock_num']>5">
+                              <span class='tag-green'>CÒN HÀNG</span>
+                          </div>
+                      </div>                                  
+                      <div ng-if="product['stock_num'] <1 && product['is_shopping']!='1'">
+                          <div ng-if="product['is_sample']=='1'">
+                              <span class='tag-green'>HẾT HÀNG</span>
+                          </div>
+                           <div ng-if="product['is_sample']!='1'">
+                              <span class='tag-green'>HÀNG SẮP VỀ</span>
+                          </div>
+                      </div> 
+                       
+                      </span>
+                   </div>
+                                                    
+
 
 	    				 <div ng-if="product['coupons']" >
                                       
                                          
-                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
-                                          </strong>
+                                           <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      </div>
+                                      <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+                                      </strong>
                                      
                                       <div class="coupon-box-2">
                                                     <div class="coupon-box">
@@ -75,11 +99,11 @@
     				</div>
 		    	</div>
 		    	<button class="button icon-right ion-chevron-right  button-block button-dark" ng-click="loadNextPage()" ng-show='show_paginate_next' ng-click='loadNextPage()'>
-          						  Trang trước
+          						  TRANG  SAU
       					  </button>
 
 		    	<button class="button icon-left ion-chevron-left button-block button-dark" ng-click="loadPrePage()" ng-show='show_paginate_prev' ng-click='loadNextPage()'>
-          					Trang sau
+          					TRANG TRƯỚC
       					  </button>
  					
 

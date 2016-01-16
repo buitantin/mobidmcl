@@ -44,15 +44,19 @@ class News extends Model {
 		
 	}
 	public static function List_News_limit($id,$limit){
-		return DB::table("art_article")
+	 return Cache::remember("list_news_limit".$id.$limit,5,function() use($id,$limit){
+
+	 
+				return DB::table("art_article")
 				->selectRaw("id, name, cid_cate, description, summary, date_cre, date_mod, countview, date_to, date_from")
 				->whereRaw("cid_cate= {$id} and status='1'")->limit($limit)->orderBy("id","DESC")->get();
+		})	;
 	}
 	//Detail news
 	public static function get_Details_News($id){
 
 		if(!empty($id) && is_numeric($id)){
-			$a= News::whereRaw("id={$id} AND status='1'")->first();	
+			$a= News::whereRaw("id={$id} AND status='1'")->remember(5)->first();	
 			$a->summary=str_replace('src="/public', 'src="http://m.dienmaycholon.vn/img', $a->summary);
 
 			return $a;
@@ -61,7 +65,7 @@ class News extends Model {
 		
 	}
 	public static function get_Cate($id){
-		$a= DB::table("art_categories")->where("id","=",$id)->get();
+		$a= DB::table("art_categories")->where("id","=",$id)->remember(5)->get();
 		if(!empty($a[0])){
 			return $a[0];
 		}

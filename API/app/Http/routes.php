@@ -11,6 +11,10 @@
 |
 */
 Route::group(array("before"=>"cache", "after"=>"cache"),function(){
+
+		Route::get('/clear_all_cache', 'IndexController@clearcache');
+
+
 		Route::get('/categories/{id}/{option}', 'IndexController@categories');
 		Route::get('/categories_home', 'IndexController@categorieshome');
 		Route::get('/slideshow', 'IndexController@slideshow');
@@ -26,6 +30,7 @@ Route::group(array("before"=>"cache", "after"=>"cache"),function(){
 		Route::get('/promotion/{limit}', 'ProductController@promotion');
 		Route::get('/producthot/{limit}', 'ProductController@producthot');
 		Route::get('/getproduct/{cate}/{limit}', 'ProductController@getproduct');
+		Route::get('/getimage/{id}', 'ProductController@getimage');
 
 
 
@@ -36,6 +41,7 @@ Route::group(array("before"=>"cache", "after"=>"cache"),function(){
 		Route::get('/getelement/{id_cate}/{id_product}', 'ProductController@getelement');
 		Route::get('/gettemplate/{id}/{supplier}', 'ProductController@gettemplate');
 		Route::get('/getdetailproduct/{id}', 'ProductController@getdetailproduct');
+		Route::get('/getcompareproduct/{id}/{cate}', 'ProductController@getcompareproduct');
 
 		Route::get('/get_element_product/{id}/{element}', 'ProductController@get_element_product');
 
@@ -52,13 +58,19 @@ Route::group(array("before"=>"cache", "after"=>"cache"),function(){
 		Route::get('/detail_buy/{id}', 'DetailController@getbuytogether');
 		Route::get('/detail_element/{id}', 'DetailController@getelement');
 		Route::get('/detail_cate/{id}', 'DetailController@getcate');
+		Route::get('/detail_series/{id}/{cate}', 'DetailController@getseries');
+		Route::get('/detail_promotion_datetime/{id}/{supplier}', 'DetailController@getdatetime');
+		
+
 		Route::get('/detail_similar/{id}/{supplier}', 'DetailController@getsimilar');
 		Route::get('/detail_question/{id}/{limit}', 'DetailController@getquestion');
 		Route::get('/getnamequestion/{id}', 'DetailController@getnamequestion');
 		Route::get('/detail_review/{id}', 'DetailController@getreview');
 		Route::get('/detail_pluslike/{id}/{opt}', 'DetailController@pluslike');
 		Route::post('/detail_save_reivew/{id}', 'DetailController@postreview');
-
+		Route::post('/detail_save_commend/{id}', 'DetailController@postcomment');
+		Route::post('/detail_save_payment', 'DetailController@postpayment');
+		
 		//For search
 		Route::get('/search', 'ProductController@search');
 
@@ -66,8 +78,11 @@ Route::group(array("before"=>"cache", "after"=>"cache"),function(){
 		Route::get('/order_detail/{id}/{supplier}', 'OrderController@detail');
 		Route::post('/check_coupon', 'OrderController@coupon');
 		Route::get('/get_value_coupon/{id}/{supplier}', 'OrderController@getcoupon');
-
+		Route::post('/check_order', 'OrderController@checkorder');
+		Route::get('/totalcart', 'OrderController@totalcart');
+		
 		Route::post('/order_save', 'OrderController@saveorder');
+		Route::post('/order_save_all', 'OrderController@saveorderall');
 		Route::get('/order_get_list_product', 'OrderController@getlistproduct');
 		Route::post('/order_detroy', 'OrderController@getdetroy');
 		Route::post('/order_save_limit', 'OrderController@getlimit');
@@ -108,6 +123,10 @@ Route::group(array("before"=>"cache", "after"=>"cache"),function(){
 		Route::get('/get_detail_branch/{id}', 'PageController@getDetailBranch');
 		Route::get('/getinstallment/{id}', 'PageController@getinstallment');
 		Route::get('/getmemberbenefits/{id}', 'PageController@getmemberbenefits');
+		Route::get('/getpolicy', 'PageController@getpolicy');
+		Route::get('/getinfo', 'PageController@getinfo');
+		Route::get('/getonline', 'PageController@getonline');
+		Route::get('/getmember', 'PageController@getmember');
 
 
 		//List details art_article

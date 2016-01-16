@@ -114,11 +114,20 @@
 
 
 
-								<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
-										<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
-												{{x}}
-										</option>
-								</select>
+							<div ng-if="!product['limit_quantity']">
+									<select  class='product_limit' ng-init="productlimit=product['order']['limit']" ng-change="changelimitorder(product['product']['myid'],productlimit)"  ng-model="productlimit">
+											<option ng-repeat='x in  [1,2,3,4,5,6,7,8,9,10] ' value="{{x}}" ng-selected="{{x==product['order']['limit']}}">
+													{{x}}
+											</option>
+									</select>
+								</div>
+								<div ng-if="product['limit_quantity']">
+									<select  class='product_limit'>
+										<option>1</option>
+									</select>
+
+								 
+								</div>
 									
 
 

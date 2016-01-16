@@ -22,8 +22,8 @@ class ProductController extends Controller {
 	public function list_product_cate_parent($id,$limit)
 	{
 		
-
-//return Cache::remember("list_product_cate_parent",10,function($id,$limit){
+		$c=md5($id.$limit);
+		return Cache::remember("list_product_cate_parent_".$c ,5,function() use($id,$limit){
 			$child=Categories::select("id")->whereRaw("cid_parent=$id AND status='1'")->remember(120)->get()->toArray();
 
 			$x=array();
@@ -40,8 +40,8 @@ class ProductController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 								"pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
 								,"pro_supplier_product.id AS cid_res","pro_supplier_product.cid_supplier"
 							)
@@ -53,7 +53,7 @@ class ProductController extends Controller {
 						->orderBy("pro_supplier_product.date_mod","DESC")
 						->limit($limit)->get()->toJson();
 			 }
-	//	});
+		});
 		
 		
 	}
@@ -80,10 +80,14 @@ class ProductController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 								"pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
-								,"pro_supplier_product.id AS cid_res","pro_supplier_product.cid_supplier"
+								,"pro_supplier_product.id AS cid_res","pro_supplier_product.cid_supplier",
+								"pro_product.is_shopping",
+								"pro_supplier_product.stock_num",
+								"pro_product.is_sample"
+								
 							)
 						)
 						->whereRaw("pro_supplier_product.status='1' AND pro_product.status='1' AND pro_product.is_status_cate='1' AND pro_product.is_status_series='1'  $sql")
@@ -98,8 +102,8 @@ class ProductController extends Controller {
 	public function list_product_cate($id,$limit)
 	{
 		
-
-//return Cache::remember("list_product_cate_parent",10,function($id,$limit){
+		$c=md5($id.$limit);
+		return Cache::remember("list_product_cate_parent_".$c,7,function() use($id,$limit){
 		
 			 	
 			 if(!empty($id)){
@@ -110,8 +114,8 @@ class ProductController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 								"pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice","pro_supplier_product.cid_supplier"
 							)
 						)
@@ -121,15 +125,15 @@ class ProductController extends Controller {
 						})
 						->limit($limit)->get()->toJson(); 	
 			 }
-	//	});
+			});
 		
 		
 	}
 	public function getcate($id){
-		return Categories::whereRaw("id=$id AND status='1'")->first()->toJson();
+		return Categories::whereRaw("id=$id AND status='1'")->remember(120)->first()->toJson();
 	}
 	public function getlistcate($id){
-		return Categories::whereRaw("cid_parent=$id AND status='1'")->get()->toJson();
+		return Categories::whereRaw("cid_parent=$id AND status='1'")->remember(120)->get()->toJson();
 	}
 	public function getproduct($cate,$page){
 
@@ -179,8 +183,8 @@ class ProductController extends Controller {
 								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
 								DB::raw("get_review(pro_product.id,1) AS rating"),
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
-							  	DB::raw("get_price(pro_product.id,pro_supplier_product.discount) AS discount"),
-							  	DB::raw("get_sale_price(pro_product.id,pro_supplier_product.saleprice) AS saleprice"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
 								"market_supplier.name AS myname","pro_product.cid_series","pro_supplier_product.cid_supplier","pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
 							)
 						)
@@ -195,6 +199,38 @@ class ProductController extends Controller {
 						->first()->toJson(); 	
 			 }
 
+	}
+	public function getcompareproduct($id,$cate){
+		return array("template"=>Template::Compare_Cate($cate, $id),
+					  "product"=>
+					  Product::select(
+						array(
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,1) AS discountcoupon"),
+								DB::raw("check_coupon(pro_product.id,pro_product.cid_cate,2) AS coupons"),
+								DB::raw("get_review(pro_product.id,1) AS rating"),
+							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
+							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
+							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
+								"market_supplier.name AS myname","pro_product.cid_series","pro_supplier_product.cid_supplier","pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
+							)
+						)
+						->whereRaw("pro_product.id ={$id} AND pro_product.status='1' AND pro_product.is_status_cate='1' AND pro_product.is_status_series='1'  ")
+						->join("pro_supplier_product",function($join){
+							$join->on("pro_product.id","=","pro_supplier_product.cid_product");
+						})
+						->join("market_supplier",function($join){
+							$join->on("market_supplier.id","=","pro_supplier_product.cid_supplier");
+						})
+						
+						->first()
+				);
+	}
+	public function getimage($id){
+		
+		$file=file_get_contents("http://dienmaycholon.vn/cacheMobi/2024.txt");
+	
+		$obj=json_decode($file);
+		return Response::json($obj);
 	}
 	
 }

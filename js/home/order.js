@@ -1,31 +1,104 @@
 angular.module("starter.order",[])
+.controller("CheckorderCtr",function($scope,$q,$http,PUBLIC_VALUE,ValidateData,$ionicPopup){
+	
+    $scope.view_content=false;
+    $scope.check_order=function(){
+
+        if($scope.code!=undefined && $scope.code != ""){
+            $http.post(PUBLIC_VALUE.URL+"check_order",JSON.stringify({code:$scope.code})).success(function(result){
+                if(result!=null && result!=""){
+                    $scope.view_content=true;
+                }else{
+                	$ionicPopup.show({
+                		template:"Mã đơn hàng không chính xác",
+                		title:"Thông báo",
+                		buttons:[
+                			{text:"OK"}
+                		]
+                	})
+                }
+                $scope.content=result;
+
+            })
+        }
+    }
+	$scope.viewStatusOrder=function(st){
+		var comp={
+			"0":"Chưa xác nhận",
+			"1":"Xác nhận đơn hàng",
+			"4":"Đang xử lý",
+			"5":"Đóng gói đơn hàng",
+			"6":"Đang giao hàng",
+			"7":"Đang giao hàng",
+			"2":"Giao hàng thành công",
+			
+
+		}
+	}
+	$scope.viewdate=function(dt){
+		if(dt!="" && dt!=undefined){
+			return dt.slice(0,10);	
+		}
+		return '';
+		
+	}
+	$scope.viewsession=function(s){
+		if(s=='1'){
+			return "Buổi sáng";
+		}else{
+			return "Buổi chiều";	
+		}
+	}
+})
 .controller("BannerorderCtr",function($scope,$http,PUBLIC_VALUE){
 	$http.get(PUBLIC_VALUE.URL+"order_banner").success(function(result){
 		$scope.mybanner=result;
-		console.log(result);
+		
 	})
 
+})
+.controller("TotalCartCtr",function($scope,$q,$http,PUBLIC_VALUE){
+	var total_cart=0;
+	
+	$http.get(PUBLIC_VALUE.URL + "totalcart").success(function(result){
+ 			$scope.total_cart=result;
+
+ 	});
+
+ 		
 })
 .controller("OrderdetailproductCtr",function($scope,$state,$q,$cookieStore,$ionicScrollDelegate,$http,PUBLIC_VALUE,$ionicLoading,$ionicPopup){
 	$ionicScrollDelegate.scrollTop();
 	$scope.list_product=[];
+
 	//var tam=[];
 	var get_list_product=$http.get(PUBLIC_VALUE.URL + "order_get_list_product").success(function(result){
  			$scope.list_product=result;
 
  	});
-
  	$q.all([get_list_product]).then(function(result){
  		var total_cart=0;
  		angular.forEach($scope.list_product ,function(val,key){
- 			if(val['isprice']=='1'){
+ 			if(val['product']['isprice']=='1'){
  				total_cart=parseFloat(val['product']['discount']*val['order']['limit'])+total_cart;
  			}else{
  				total_cart=parseFloat(val['product']['saleprice']*val['order']['limit'])+total_cart;
  			}
  			
+ 						if(val['coupon']!=undefined){
+				 				total_cart=parseFloat(total_cart)-parseFloat(val['coupon'])
+				 			}
+ 			if(val['product']['coupons']!=""){
+ 				$scope.viewcoupon=val['product']['coupons'];
+ 				$scope.viewdiscountwcoupon=val['product']['discountcoupon'];
+ 			}
+ 			
  		});
  		if(total_cart==0){
+ 			
+ 			if($cookieStore.get("coupondmcl")!=undefined){
+ 				$cookieStore.put("coupondmcl",null);
+ 			}
  			$state.go('home');
  		}
  		$scope.total_cart=total_cart;
@@ -48,6 +121,8 @@ angular.module("starter.order",[])
 
 	
 	$scope.detroy=function(id){
+
+
 		var dmcl_list=$http.post(PUBLIC_VALUE.URL+"order_detroy",{id:id});
 
 		$q.all([dmcl_list]).then(function(result){
@@ -58,13 +133,31 @@ angular.module("starter.order",[])
 				 	$q.all([get_list_product]).then(function(result){
 				 		var total_cart=0;
 				 		angular.forEach($scope.list_product ,function(val,key){
-				 			total_cart=parseFloat(val['product']['discount']*val['order']['limit'])+total_cart;
+				 			if(val['product']['isprice']=='1'){
+				 				total_cart=parseFloat(val['product']['discount']*val['order']['limit'])+total_cart;
+				 			}else{
+				 				total_cart=parseFloat(val['product']['saleprice']*val['order']['limit'])+total_cart;
+				 			}
+				 			
+				 			if(val['coupon']!=undefined){
+				 				total_cart=parseFloat(total_cart)-parseFloat(val['coupon'])
+				 			}
 				 		});
+				 		if(total_cart==0){
+					 			if($cookieStore.get("coupondmcl")!=undefined){
+					 				$cookieStore.put("coupondmcl",null);
+					 			}
+
+					 			$state.go('home');
+					 	}
 				 		$scope.total_cart=total_cart;
 				 	});
 		});
 
+																																									
 	}
+
+																																																				
 
 
 })
@@ -84,7 +177,7 @@ angular.module("starter.order",[])
 		$scope.check_coupon=true;
 		$scope.voucher = $cookieStore.get("coupondmcl");
 
-
+		
 	}
 	$scope.usingCoupon=function(voucher){
 		$ionicLoading.show({template:"Đang sử dụng....."} );
@@ -114,7 +207,7 @@ angular.module("starter.order",[])
 
 					 								});
 					 		});
-
+					 		$state.reload();
 					 	}
 					 })
 					 .error(function(){
@@ -152,7 +245,7 @@ angular.module("starter.order",[])
 		$state.go("home");
 	}
 })
-.controller("SecondCtr",function($scope,$state,$q,$cookieStore,$ionicScrollDelegate,$http,PUBLIC_VALUE,$ionicLoading,$ionicPopup){
+.controller("SecondCtr",function($scope,$filter,$state,$q,$cookieStore,$ionicScrollDelegate,$http,PUBLIC_VALUE,$ionicLoading,$ionicPopup){
 	$ionicScrollDelegate.scrollTop();
 		
 	$scope.orderform={};
@@ -161,8 +254,21 @@ angular.module("starter.order",[])
 	var dt = new Date();
 
 	//$scope.orderform.getdate=$filter("date")(Date.now(), 'dd/MM/yyyy');
+	$scope.defaultdate=$filter("date")(Date.now(), 'dd/MM/yyyy');	
 
-
+	if($cookieStore.get("dmclaccount")){
+					var user=$cookieStore.get("dmclaccount");
+				
+					$scope.orderform.name=user.fullname;
+					$scope.orderform.email=user.email;
+					if(user.phone!=undefined){
+						$scope.orderform.phone=parseFloat(user.phone);	
+					}
+					
+					$scope.orderform.address=user.address;
+					$scope.orderform.city=user.city;
+					$scope.orderform.state=user.distict;
+		}
 	
 
 
@@ -210,6 +316,11 @@ angular.module("starter.order",[])
 		$ionicLoading.show();
 		$http.get(PUBLIC_VALUE.URL+"list_state/"+$scope.orderform.city).success(function(r){
 			$scope.list_state=r;
+			
+			if(r[0].id != undefined){
+				$scope.orderform.state=r[r.length-1].id;
+			}
+			
 			$ionicLoading.hide();
 		});
 	}

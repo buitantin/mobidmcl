@@ -103,7 +103,7 @@
 				 		<div><button class="button xacdinh" ng-click="click_filter()"> Xác nhận</button></div>
 				 	</div>
 				 	<div class="action">
-				 		<div><a class="button huybo" href="">Bỏ chọn tất cả</a></div>
+				 		<div><a class="button huybo" href="" ng-click="removeall()">Bỏ chọn tất cả</a></div>
 				 	</div>
 
 				</div>				
@@ -113,7 +113,7 @@
 			<div class="list list-cate-menu">
 				<ul>
 					<li>
-						<a class="" href="#">
+						<a class="" href="/danh-muc/{{my_child['id']}}/{{Validate.toAlias(my_child['name'])}}">
 					      <span>Xem tất cả {{my_child['name']}}</span>
 					      <span class="iconmobile-mt"></span>		      
 					    </a>
@@ -168,8 +168,10 @@
 	    				 <div ng-if="product['coupons']" >
                                       
                                          
-                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['saleprice']">
-                                          </strong>
+                                           <div class='button-price button button-clear button-stable' to-Price="product['saleprice']">
+                                      </div>
+                                      <strong class=' button-price button-price button button-clear button-assertive' to-Price="product['discount']">
+                                      </strong>
                                      
                                       <div class="coupon-box-2">
                                                     <div class="coupon-box">

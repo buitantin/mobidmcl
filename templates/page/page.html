@@ -1,0 +1,34 @@
+<div class="content_news">
+					<div class="list">
+						<div class="title" ng-bind="detail['name']"></div>
+
+						<div class="list">							
+							
+
+
+
+						<div id="news_content_view card padding" class="css_news_content_view">
+							<div class="padding news_content_main" ng-bind-html="detail['content']">
+								
+							</div>
+						</div>
+
+
+
+						</div>
+
+
+
+						
+					</div>
+
+
+
+				</div>
+
+				<script>
+				if(window.innerWidth <= 600) {
+				   			document.getElementById("news_content_view").classList.add("css_news_content_view");
+				  } 
+				
+				</script>

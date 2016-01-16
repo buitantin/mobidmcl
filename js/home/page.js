@@ -1,11 +1,5 @@
 angular.module("starter.page",[])
-.controller("CheckorderCtr",function($scope,$q,$http,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,PUBLIC_VALUE,ValidateData,$cookieStore,$ionicScrollDelegate){
-	
 
-
-	
-
-})
 .controller("InstallmentCtr",function($scope,$location,$http,PUBLIC_VALUE){
     var id=1;
 	if($location.search().pay!=undefined){
@@ -22,7 +16,47 @@ angular.module("starter.page",[])
     }
 
 })
-.controller("CardmemberCtr",function($scope,$http,PUBLIC_VALUE){
+.controller("PageCtr",function($scope,$http,$ionicScrollDelegate,PUBLIC_VALUE){
+   
+        $ionicScrollDelegate.scrollTop();
+
+        $http.get(PUBLIC_VALUE.URL+"getpolicy").success(function(result){
+            $scope.detail=result;
+        })
+   
+})
+.controller("InfoCtr",function($scope,$http,$ionicScrollDelegate,PUBLIC_VALUE){
+        
+        $ionicScrollDelegate.scrollTop();
+
+        $http.get(PUBLIC_VALUE.URL+"getinfo").success(function(result){
+            $scope.detail=result;
+        })
+   
+})
+.controller("OnlineCtr",function($scope,$http,$ionicScrollDelegate,PUBLIC_VALUE){
+        
+        $ionicScrollDelegate.scrollTop();
+
+        $http.get(PUBLIC_VALUE.URL+"getonline").success(function(result){
+            $scope.detail=result;
+        })
+   
+})
+.controller("MemberCtr",function($scope,$http,$ionicScrollDelegate,PUBLIC_VALUE){
+   
+        $ionicScrollDelegate.scrollTop();
+
+        $http.get(PUBLIC_VALUE.URL+"getmember").success(function(result){
+            $scope.detail=result;
+        })
+   
+})
+
+.controller("CardmemberCtr",function($scope,$http,$ionicScrollDelegate,PUBLIC_VALUE){
+
+    $ionicScrollDelegate.scrollTop();
+
     $http.get(PUBLIC_VALUE.URL+"getmemberbenefits/2",{cache:true}).success(function(result){
         $scope.detail=result;
     })
@@ -33,6 +67,7 @@ angular.module("starter.page",[])
   
 })
 .controller("BranchCtr",function($scope,$http,$location,PUBLIC_VALUE,$q,$ionicScrollDelegate){
+    
          $ionicScrollDelegate.scrollTop();
         
         var t1=$http.get(PUBLIC_VALUE.URL+"get_list_branch/1").success(function(reuslt){

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Cache;
 class Promotion extends Model {
 
 	protected	$table="pro_promotion_product";
@@ -44,7 +45,65 @@ class Promotion extends Model {
 	 * supplier =1 is DMCL
 	 * $id_supplier_product is ID product of supplier
 	 */
+	public static function getProduct_Price($id_supplier_product,$supplier='1'){
+
+		$product=Promotion::whereRaw("cid_product=$id_supplier_product AND status='0'")->orderBy("type_promo","ASC")->first();
+
+		if(!empty($product)){
+			
+			//$product=$product[0];
+			//1: deal, 2: online , 3: press, 4:text
+				if($product->type_promo=='1'){
+					$value= DB::select("
+								SELECT	 b.date_end,b.quantity,b.limit_quantity
+								FROM 	pro_promotion_product AS a INNER JOIN promo_deals AS b ON a.cid_promotion=b.id
+								WHERE	 a.cid_product=$id_supplier_product AND a.status='0' AND b.active='1'
+										AND a.cid_promotion={$product->cid_promotion}
+								ORDER BY b.id DESC
+							");
+					return $value;
+				}
+				if($product->type_promo=='2'){
+					
+					$value=  DB::select("
+							SELECT	b.date_end,b.quantity,b.limit_quantity
+									
+							FROM 	pro_promotion_product AS a INNER JOIN promo_online AS b ON a.cid_promotion=b.id
+							WHERE 	a.cid_product=$id_supplier_product AND a.status='0' AND b.active='1'
+									AND a.cid_promotion={$product->cid_promotion}
+							ORDER BY b.id DESC
+							");
+							return $value;
+					
+					
+				}
+				if($product->type_promo=='3'){
+					$press= DB::select("
+							SELECT	b.date_end,b.quantity,b.limit_quantity
+							
+							FROM
+							pro_supplier_product AS s INNER JOIN pro_promotion_product AS a ON a.cid_product=s.id
+							 INNER JOIN promo_press AS b ON a.cid_promotion=b.id
+							WHERE
+								s.id=$id_supplier_product AND a.status='0' AND b.active='1' AND b.type='0'
+							 AND b.price!='0' AND a.cid_promotion={$product->cid_promotion}
+							ORDER BY b.id DESC
+							");
+					return $press;
+					
+				
+				}
+			
+			
 	
+			
+		}
+		
+	
+		return null;
+// 	
+	}
+
 	public function getProduct_Price_Press($id_supplier_product,$supplier='1',$type='all'){
 		if(!$result=$this->memcache->load("getProduct_Price_Press".$id_supplier_product.$supplier.$type)){
 			if($type=='text'){ 	
@@ -76,7 +135,9 @@ class Promotion extends Model {
 		}
 	}
 	public static function List_Promotion_Press($limit=6){
-		
+		return Cache::remember("list_promotion_press",2,function() use($limit){
+
+
 			$data=	$data_product=DB::table('pro_product AS a')
 							  ->join("pro_supplier_product As b",function($join){
 							  		$join->on("b.cid_product","=","a.id");
@@ -105,9 +166,7 @@ class Promotion extends Model {
 							  //->toSql();exit();
 							  ->get();
 							  return ($data);
-
-							
-		;
+			});
 	}
 	public static function List_Promotion_Online($limit=6){
 				$data=	$data_product=DB::table('pro_product AS a')
@@ -247,11 +306,10 @@ class Promotion extends Model {
                 $sql_online = "
                     SELECT 
 
-					d.id AS idpromotion ,d.active,d.name,d.description,d.of_type,
-					s.id,s.cid_product,s.cid_supplier
+					d.name,d.description
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-								INNER JOIN pro_promotion_product as c ON c.cid_product=s.id )
+								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
 								INNER JOIN promo_online as d ON d.id=c.cid_promotion
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='2'
@@ -259,64 +317,69 @@ class Promotion extends Model {
                 ";
                 $v=DB::select($sql_online);
                 if(!empty($v[0])){
-                	$data_product['online']=$v[0];
+                	$data_product['online']=$v;
                 }
             }elseif($type_promo->type_promo=='3'){
+
                 $sql_press = "
                     SELECT 
 
-					c.status,c.cid_product,c.cid_promotion,c.type_promo,
-					d.id AS idpromotion ,d.active,d.name,d.description,d.of_type,
-					s.id,s.cid_product,s.cid_supplier
+					d.name,d.description
+					
 					FROM (  
-							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-								INNER JOIN pro_promotion_product as c ON c.cid_product=s.id )
-								INNER JOIN  promo_press as d ON d.id=c.cid_promotion
+							 pro_product AS a 
+							 INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
+							 INNER JOIN pro_promotion_product as c ON c.cid_product=a.id 
+							 INNER JOIN  promo_press as d ON d.id=c.cid_promotion
+						)
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='3'
 					AND s.cid_product=$id AND s.cid_supplier=$supplier
                 ";
                 $v=DB::select($sql_press);
                 if(!empty($v[0])){
-                	$data_product['press']=$v[0];
+                	$data_product['press']=$v;
                 }
+                
             }elseif($type_promo->type_promo=='4' || $type_promo->type_promo=='1'){
                 $sql="
 					SELECT 
 
-					c.status,c.cid_product,c.cid_promotion,c.type_promo,
-					d.id AS idpromotion ,d.active,d.name,d.description,
-					s.id,s.cid_product,s.cid_supplier
+					d.name,d.description
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-								INNER JOIN pro_promotion_product as c ON c.cid_product=s.id )
+								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
 								INNER JOIN promo_text as d ON d.id=c.cid_promotion
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='4'
 					AND s.cid_product=$id AND s.cid_supplier=$supplier
 				";
 				$v=DB::select($sql);
+
                 if(!empty($v[0])){
-                	$data_product['text']=$v[0];
+                	$data_product['text']=$v;
                 }
             }
                 
 			$sql_gift="
-				SELECT
-				
-				c.cid_product,c.cid_gift,c.cid_supplier,
+				SELECT 
+
 				d.id,d.name,d.amount
-				FROM (   pro_product AS a INNER JOIN pro_gift_product as c ON c.cid_product=a.id )
+				FROM (   pro_product AS a
+					  INNER JOIN pro_supplier_product AS b ON a.id=b.cid_product
+					 INNER JOIN pro_gift_product as c ON c.cid_product=a.id )
 				INNER JOIN pro_gift as d ON d.id=c.cid_gift
 				WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
-				AND c.cid_product=$id AND c.cid_supplier=$supplier
+				AND b.id=$id AND c.cid_supplier=$supplier
 				GROUP BY d.id
 			";		
 
 
 			$v=DB::select($sql_gift);
+
+				
                 if(!empty($v[0])){
-                	$data_product['gift']=$v[0];
+                	$data_product['gift']=$v;
                 }	
 
 			return $data_product;

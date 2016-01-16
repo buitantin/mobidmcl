@@ -12,15 +12,103 @@
 	    				<div>
 	    					<label>
 							    
-							    <input placeholder="Nhập mã đơn hàng" name="code" type="text" value="">
+							    <input placeholder="Nhập mã đơn hàng" ng-model="code" type="text" value="">
 						    </label>						    
 	    				</div>				    	
 					</div>
 					<div class="list step3">
-						<div class="list buy">						
+						<div class="list buy" ng-click='check_order()'>						
 							<a href="">Kiểm tra</a>
 						</div>				
 					</div>
 				</div>
+<div ng-show='view_content'>
+	<div class='card padding'>
+		<h3>Đơn hàng của bạn</h3>
+		<ul>
+            <li>
+                <div class="tab-local">
+                    <div>
+                        <b>Mã đơn hàng:</b> <span style="font-size: 20px; color:#1163ac;">
+                        	{{content['order']['code_order']}}
+                        </span>
+                        <br>
+                        <b>Ngày mua:</b>  {{viewdate(content['order']['date_bill'])}}<br>
+                        <b>Phương thức thanh toán:</b>  {{content['order']['pay_type']}}<br>
+                        <b>Ngày thanh toán:</b> 
+                       {{viewdate(content['order']['date_ship'] ) }}                   <br>
+                        <b>Ghi chú:</b>  {{content['order']['order_info']}}                     </div>
+                </div>
+            </li>
+            <li>
+                <div class="tab-time" >
+                    <div style="height: 100px;">
+                        <b>Tổng giá trị đơn hàng:</b> <span to-Price="content['order']['total_or']"></span>                     <br>
+                        <b>Trạng thái:</b>  {{viewStatusOrder(content['order']['approved'])}}<br>
+                        <b>Đơn hàng thuộc về: </b><a style="color:green;" href="http://dienmaycholon.vn" target="_blank">http://dienmaycholon.vn</a><br><br>
+                      
+                    </div>
+                </div>
+            </li>
+        </ul>
+	</div>		
+	<div class='card padding'>
+		<h3>Chi tiết đơn hàng</h3>
+
+		<div class="tt_hd">
+				<strong class="strSOHD">Mã đơn hàng:</strong>
+				<div class="divMaOrderPU">
+					<i class="divLOrderPU"></i>
+					<div class="divBOrderPU">
+					{{content['order']['code_order']}}</div>
+					<i class="divROrderPU"></i>
+				</div>
+				<p class="pTextLSoDH">
+					Ngày mua: <span >{{viewdate(content['order']['date_bill'])}}</span>
+				</p>
+                <p class="pTextLSoDH">
+					Ngày giao: <span>{{viewdate(content['order']['date_ship'])}} - {{viewsession(content['order']['session'])}}</span>
+				</p>
+			     <p class="pTextLSoDH" '="">
+					Trạng thái: <span style="color: rgb(255, 102, 0);"> Đơn hàng chưa xác nhận. </span>
+				</p>
+                <p class="pTextLSoDH" '="">
+					Phương thức thanh toán: <span> Thanh toán tại nhà </span>
+				</p>
+                <p class="pTextLSoDH">
+					Ghi chú: <span> test </span>
+				</p></div>
+				<div style="clear: both; padding-top:10px; float:right;">Tổng giá trị đơn hàng: <span 	style="color:red; font-size:13px;" to-Price="content['order']['total_or']"></span></div>
+
+				<div class='card padding ' style="width:100%" ng-repeat='d in content["detail"]'>
+							<p>
+								Mã hàng: <span>{{d['cid_order']}}</span>
+							</p>
+							<p>
+								Tên sản phẩm
+												: <span>{{d['name']}}</span>
+							</p>
+							
+							<p>
+								Số
+												lượng: <span>{{d['amount']}}</span>
+							</p>
+							<p>
+								Giá
+												tiền(VNĐ): <span to-Price='d["dis_price"]'></span>
+							</p>
+							<p>
+								Tổng
+												cộng(VNĐ): <span to-Price='d["total"]'></span>
+							</p>
+				</div>	
+		
+
+
+	</div>	
+		
+
+
+</div>	
 				
-			</div>
+</div>

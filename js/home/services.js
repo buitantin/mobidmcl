@@ -22,6 +22,7 @@ angular.module('starter.services', [])
 		return {
 			listcate:function(al){
 				al=al.split("--").join("-");
+			
 				var t={
 					"1":"dien-tu","2":"dien-lanh","9":"gia-dung",
 					"15":"vien-thong","19":"di-dong-tablet"
@@ -107,8 +108,8 @@ angular.module('starter.services', [])
 			  		return this.repAll (this.convertString(string) ).toLowerCase();
 			  },
 			  toAlias:function(string){
-			  	if(string){
-			  	 return this.replaceValue(this.convertString(string)).toLowerCase().replace("---","-") ;
+			  	if(string!=undefined && string != null){
+			  	 return this.replaceValue(this.convertString(string)).toLowerCase().replace("---","-").replace("--","-") ;
 			  	}
 			  },
 			  toPrice:function(number){

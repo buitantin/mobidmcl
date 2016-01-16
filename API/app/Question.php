@@ -14,8 +14,10 @@ class Question extends Model {
 				->join("question_comment AS b",function($join){
 					$join->on("a.id","=","b.cid_content");
 				})
-
-				->selectRaw("a.id,a.cid_user,a.cid_product,a.status,a.content,a.type_user,a.created,a.is_view,a.like,a.unlike,b.cid_content,b.cid_user AS idusercomment,b.type_user AS typeusercomment,b.comment,b.created AS createdcomment,b.status,b.name")
+				->join("tm_customer AS x",function($join){
+					$join->on("x.id","=","a.cid_user");
+				})
+				->selectRaw("x.fullname,a.id,a.cid_user,a.cid_product,a.status,a.content,a.type_user,a.created,a.is_view,a.like,a.unlike,b.cid_content,b.cid_user AS idusercomment,b.type_user AS typeusercomment,b.comment,b.created AS createdcomment,b.status,b.name")
 				->whereRaw("b.status='1' AND a.status='1' AND a.cid_product=$id_product")
 				->orderBy("a.is_view","DESC")
 				->groupBy("a.id")

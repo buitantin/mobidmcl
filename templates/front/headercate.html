@@ -1,16 +1,18 @@
 			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub">
 				
-				<a href='' >
+				<a href='/{{ValidateData.toAlias(my_parent["name"])}}' >
 				<i class='iconmobile-title-danhmuc-sub'></i>
 					{{my_parent['name']}}
 				</a>
 			</div>
 
 			<div class="list titledanhmucsp title-danhmuc title-danhmuc-sub-title">
+				<a href='/danh-muc/{{my_child["id"]}}/{{ValidateData.toAlias(my_child["name"])}}'>
 				{{my_child['name']}}
+				</a>
 				<div>
-					<a class="sosanh {{ ( $location.url().indexOf('so-sanh') > -1 ) ? 'active':''}}" href="/so-sanh/{{my_child['id']}}">So sánh</a>
-					<a class="tieuchi {{ ( $location.url().indexOf('tieu-chi-tim-kiem') > -1 ) ? 'active':''}}" href="/tieu-chi-tim-kiem/{{my_child['id']}}">Tiêu chí tìm kiếm</a>
+					<a class="sosanh {{ (namepage=='compare') ? 'active':''}}" href="/so-sanh/{{my_child['id']}}">So sánh</a>
+					<a class="tieuchi {{ (namepage=='filter') ? 'active':''}}" href="/tieu-chi-tim-kiem/{{my_child['id']}}">Tiêu chí tìm kiếm </a>
 				</div>
 				
 			</div>

@@ -47,13 +47,32 @@
 							</tr>
 							<tr ng-if="product['saleprice']>product['discount']">
 								<td class="text-right">Tiết kiệm:</td>
-								<td><span class="price-tk" to-Price="product['saleprice']-product['discount']"></span> (<span class="price-tk" to-Discount="product['discount']/product['saleprice']*100"></span>) </td>
+								<td><span class="price-tk" to-Price="product['saleprice']-product['discount']"></span> (<span class="price-tk" to-Discount="100-product['discount']/product['saleprice']*100"></span>) </td>
 							</tr>
-							<tr ng-if='product["coupon"]'>
+							<tr ng-if="datetimecountdown['date_end']">
+								<td>
+									Thời gian còn lại:
+								</td>
+								<td>
+
+
+											<div >
+										
+									<button class="button button-outline  button-assertive">
+							 			<span ng-bind='viewcd'>&nbsp;</span>
+									</button>
+											 	</div>
+									
+											 	
+											 	
+									
+								</td>
+							</tr>
+							<tr ng-if='product["coupons"]'>
 								<td></td>
 								<td>
 									
-										 <div class='product["coupont"]'>
+										 <div class='product["coupons"]'>
 
 					    				  <div class="coupon-box-2">
 	                                                    <div class="coupon-box">
@@ -86,7 +105,7 @@
 								<td></td>
 								<td><span class="ship-free">+ Giao hàng <span>MIỄN PHÍ.</span> <a href="/quy-dinh-giao-hang" >Xem chi tiết</a></span></td>
 							</tr>
-							<tr ng-if='product["coupon"]'>
+							<tr ng-if='product["coupons"]'>
 								<td></td>
 								<td>
 									
@@ -128,29 +147,51 @@
 
 
 					<p><span>Bán & giao hàng bởi <a href="">{{product['name_supplier']}}</a>.</span></p>
-					<div class="list" ng-if="list_gift">
+
+
+
+					<div class="list" ng-if="list_gift['gift'] || list_gift['press'] || list_gift['text']">
 						Quà tặng cho sản phẩm <i class="iconmobile-mt"></i>
-						<ul class='list'>
-								<li ng-if="list_gift['gift']['description']" ng-bind-html="list_gift['gift']['description']">
-								</li>
-								<li ng-if="list_gift['press']['description']" ng-bind-html="list_gift['press']['description']">
-								</li>
-								<li ng-repeat="text in list_gift" ng-bind-html="text['name']">
-								</li>
-								
-						</ul>
+						
 						
 					</div>
+					<div ng-if="list_gift['gift'] || list_gift['press'] || list_gift['text']" class="list product-detail  product-detail-gift" >
+						
+						<ul class='list' ng-if="list_gift['press']">
+							<li ng-if="list_gift['press']" ng-repeat="x in list_gift['press']" >
+							-1- <small ng-bind-html="x.description"></small>
+								</li>
+						</ul>
+						<ul class='list' ng-if="list_gift['text']">
+							<li ng-if="list_gift['text']" ng-repeat="x in list_gift['text']" ng-click="viewtooltip(x.name,x.description)">
+									- <small ng-bind-html="x.name"></small>
+								</li>
+						</ul>
+						<ul class='list' ng-if="list_gift['online']">
+							<li ng-if="list_gift['online']" ng-repeat="x in list_gift['online']"  ng-click="viewtooltip(x.name,x.description)">
+									- <small ng-bind-html="x.name"></small>
+								</li>
+						</ul>
+						<ul class='list listgift' ng-if="list_gift['gift']">
+							<li ng-if="list_gift['gift']" ng-repeat="x in list_gift['gift']"  ng-click="viewtooltip(x.name,x.name)">
+									- <small ng-bind-html="x.name"></small>
+								</li>
+						</ul>
 
 
-
+					</div>
 
 					<div class="list">
 						Số lượng
-						<div class="float-right">
+						<div class="float-right" ng-if="!datetimecountdown['limit_quantity']">
 							<i class="iconmobile-daucong" ng-click='change_value(1)'></i>
 							<input  ng-minlength='1' ng-maxlength='100' type="number" ng-change='check_number()' class="number" ng-model='mylimit'/>
 							<i class="iconmobile-dautru" ng-click="change_value(-1)"></i>
+						</div>
+						<div class="float-right" ng-if="datetimecountdown['limit_quantity']">
+							
+							<input   type="number" value="1" disabled="" class="number" ng-model='mylimit'/>
+							
 						</div>
 					</div>
 					<div class="list" ng-if="product['color']">
@@ -165,23 +206,29 @@
 					</div>
 					<div class="list tragop" ng-if="permin">
 						Mua trả góp chỉ từ <span class='text' to-Price="permin"></span>/tháng.
-						<br/><a class='text-click' href="">Nhập thông tin</a>
+						<br/><a class='text-click' href="" ng-click="popup_payment()">Nhập thông tin</a>
 						<i class='iconmobile-mt'></i>
 					</div>
 					<div class="list call-hotline">
 						Gọi <span>(08) 3856 3388</span> để được tư vấn trực tiếp.
 					</div>
 
-					<div class="list buy" ng-controller="ButtonOrder" ng-click="buyproduct(product['myid'],product['cid_supplier'],mylimit,0)">
+					<div   ng-if="product['stock_num'] > 0 || product['is_shopping']=='1'" class="list buy" ng-controller="ButtonOrder" ng-click="buyproduct(product['myid'],product['cid_supplier'],mylimit,0)">
 						<i class='iconmobile-buy'></i>
 						<a href="javascript:;">Đặt mua</a>
 					</div>
-					<div class="list call-me" >
+					
+					<div class="list call-me" ng-href="tel:0838563388">
 						<i class='iconmobile-call-me'></i>
-						<a href="">Gọi lại cho tôi</a>						
+						<a href="tel:0838563388">
+						Gọi lại cho tôi						
+						</a>
 					</div>
+					
 					<div class="list share">
-						Chia sẻ cho bạn bè: <div class="fb-like" style=""></div>
+						Chia sẻ cho bạn bè: <div class="fb-like" style="">
+								<iframe style="position: absolute;width: 94px;height:30px;margin-left: 69px;margin-top:-20px;" src="//www.facebook.com/plugins/share_button.php?href=http://dienmaycholon.vn/chi-tiet-san-pham/54_may-loc-khong-khi-panasonic-fpxj30a_1_54&amp;layout=button_count&amp;appId=878501392189545" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+						</div>
 					</div>
 					<div class="list giacu" ng-if="old_new['new']['price']">
 						<span style='font-weight: 600;'>Mới </span> 
@@ -212,7 +259,7 @@
 						</div>
 						<div class="list list-pro-null">
 							<div class="one">
-								<input type="checkbox" checked="">
+								<input type="checkbox" ng-init="bool=true" ng-model="bool" ng-change="change_buy_all(product['myid'],bool)">
 							</div>
 							<div class="two">
 								Sản phẩm đang xem:<br/>
@@ -224,7 +271,8 @@
 
 						<div class="list list-pro-null" ng-repeat="b in buytogether">
 							<div class="one">
-								<input type="checkbox" >
+								<input type="checkbox" ng-init="bool=true" ng-model="bool" ng-change="change_buy_all(b['myid'],bool)"
+								>
 							</div>
 							<div class="two">
 								<a class="name-pro" href="/chi-tiet-san-pham/{{b['myid']}}_{{ValidateData.toAlias(b['name'])}}_1_0">{{b['name']}}</a><br/>
@@ -238,50 +286,52 @@
 
 						<div class="list list-pro-null buy-group">
 							<p>Tổng giá trị: <span to-Price="get_total_element1"></span></p>
-							<div class="buy-all">Đặt mua tất cả</div>
+							<div class="buy-all" ng-click='buy_all()'>Đặt mua tất cả</div>
 						</div>
 					</div>
 			
 					<!--chi tiet san pham-->
 					
-					<h2  ng-click='my_show_detail()'>Chi tiết về sản phẩm</h2>
-					<div class="list product-detail" ng-show='show_detail'>
-						<div >
+					<h2 >Chi tiết về sản phẩm</h2>
+					<div id="images_with_persent" class="list product-detail" >
+						<div ng-class='infoshow'>
 
 							Thông tin - Tính năng
-							<i class="iconmobile-mt"></i>
-							<div class="" >
+							<i class="iconmobile-mt" ng-click="my_show_detail()"></i>
+							<div class="info_special" >
 
 
-								<div class="list" ng-repeat='e in list_element'>
+								<ul >
+								  <li ng-repeat='(k,e) in list_element_detail'>	
+									  <div>
+									  {{e.name}}
+									  </div>
 
-								  <div class="item item-divider">
-								  {{e['name']}}
-								  </div>
+									  <div  ng-repeat="c in e.value">
+									  	<div class='row'>
+									  		<small class='col'>
+									  			   {{c['name']}}
+									  		</small>
+									  		<small class='col'>
+									  			{{c['val']}}
+									  		</small>
+									  	</div>
+										   
+									  </div>
+									</li>
 
-								  <div class=""  ng-repeat='c in e["value"]'>
-								  	<div class='row'>
-								  		<small class='col'>
-								  			   {{c['name']}} 
-								  		</small>
-								  		<small class='col'>
-								  			{{c['val']}}
-								  		</small>
-								  	</div>
-									   
-								  </div>
-
-
-								</div>
+								</ul>
 								
 							</div>
 							
 						</div>
-						<div>
+						<div ng-if="product['content']!=''">
 							Giới thiệu
-							<i class="iconmobile-mt"></i>
-							<div class="" tin-ng-bind-html="content">
-									
+							<i class="iconmobile-mt" ng-click="viewcontentshow()"></i>
+							<div ng-class='contentshow'>
+								<div class="" ng-bind-html="product['content']">
+										
+								</div>
 							</div>
 							
 						</div>
@@ -296,7 +346,7 @@
 					    	
 					  <div class='row'>
 
-                        <div class='col' ng-repeat='product in list_cate.slice(x,x+3)'>
+                        <div class='col' ng-repeat='product in list_detail_series.slice(x,x+3)'>
                         
 
                             <a href='/chi-tiet-san-pham/{{product["myid"]}}_{{ValidateData.toAlias(product["name"])}}_{{product["cid_supplier"]}}_0'  class="" >
@@ -364,18 +414,19 @@
 
 					<div ng-if="list_similar.length>0" class="list list-main-sub-product list-main-sub-product-compare compare-detail">
 				    	<div class="tbl-so-sanh">
-				    		<div>Hình ảnh & tên sản phẩm</div>
+				    		<div style="height:199px">Hình ảnh & tên sản phẩm</div>
 				    			<div>Đánh giá</div>
 		    					<div>Giá bán</div>
 					    		<div>Giao hàng</div>
 					    		<div>Bán bởi</div>
 					    		<div>Thương hiệu</div>
 
-					    		<div ng-repeat="e in list_element">{{e['name']}}</div>
+					    		<div ng-repeat="e in list_element_similar">{{e['name']}}</div>
 				    	
 
 				    		<div></div>
 				    	</div>
+
 
 
 				    <div class='my-similar'>
@@ -383,37 +434,37 @@
 
 						  <ion-slide data-ng-repeat='x in [0,2] '>
 				    	<div class="tem-compare1 tem-compare" ng-repeat="c in list_similar.slice(x,x+2)" >
-				    		<div>
+				    		<div style="height:199px">
 				    			<a href="">
-			    					<img ng-src='http://dienmaycholon.vn/public/picture/product/product{{c["myid"]}}/small/product_{{c["myid"]}}_1.png' />
+			    					<img ng-src='http://static.dienmaycholon.vn/product/product{{c["product"]["myid"]}}/small/product_{{c["product"]["myid"]}}_1.png' />
 			    				</a><br/>
 			    				<span class='bold'>Sản phẩm đang xem: </span>
 			    				<br/>
 			    				<a href='' class='title_product'>
-			    					{{c['name']}}
+			    					{{c['product']['name']}}
 			    				</a>
 				    		</div>
 				    		<div class="div-star">
 
 				    				 <span  ng-controller="RatingController as rating">
-			                           <star-rating ng-model="c['rating']" readonly="rating.isReadonly"></star-rating>
+			                           <star-rating ng-model="c['product']['rating']" readonly="rating.isReadonly"></star-rating>
 			                            <small class='sl-star'>
-			                              ({{c['countrating']}})
+			                              ({{c["product"]['countrating']}})
 			                            </small>
 			                           
 			                          </span>
 				    		</div>
 				    		<div class="price">
-		    				 <span ng-if="c['coupons']" >
+		    				 <span ng-if="c['product']['coupons']" >
                                       
                                          
-                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="c['saleprice']">
+                                          <strong class=' button-price button-price button button-clear button-assertive' to-Price="c['product']['saleprice']">
                                           </strong>
                                      
                                       <span class="span-box-2">
                                                     <span class="coupon-box">
                                                       <span class="coupon-header">
-                                                      Nhập mã <span>{{product['coupons']}}</span>
+                                                      Nhập mã <span>{{product['product']['coupons']}}</span>
                                                       </span>
                                                    
                                                     </span>
@@ -421,21 +472,21 @@
                             	  </span>
 
 
-                                <span ng-if="!c['coupons']" >
-                                  <span ng-if="c['isprice']=='1'">
+                                <span ng-if="!c['product']['coupons']" >
+                                  <span ng-if="c['product']['isprice']=='1'">
                                      
 
                                     
 					    				
-					    				<strong class=' button-price button-price button button-clear button-assertive' to-Price="c['discount']">
+					    				<strong class=' button-price button-price button button-clear button-assertive' to-Price="c['product']['discount']">
 					    			
 					    				</strong>
-					    		<span class="iconmobile-giamgia" ng-if="c['saleprice']/c['discount'] > 30"
-					    		to-dis="(c['saleprice']/c['discount'])"
+					    		<span class="iconmobile-giamgia" ng-if="c['product']['saleprice']/c['product']['discount'] > 30"
+					    		to-dis="(c['product']['saleprice']/c['product']['discount'])"
 					    		></span>
                                   </span>
-                                   <span ng-if="c['isprice']!='1'">
-                                      <span class='button-price button button-clear button-stable' to-Price="c['saleprice']">
+                                   <span ng-if="c['product']['isprice']!='1'">
+                                      <span class='button-price button button-clear button-stable' to-Price="c['product']['saleprice']">
                                       
                                       </span>
                                     
@@ -444,12 +495,16 @@
                                 </span>
 		    				</div>
 				    		<div>Miễn phí</div>
-				    		<div>{{c['namesupplier']}}</div>
-				    		<div><img ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{c['cid_series']}}.png"/></div>
-				    			<div  ng-repeat="v in listproduct_element" ng-if="v.id == c['myid'] ">
-		    							{{v.value}}
+				    		<div>{{c['product']['namesupplier']}}</div>
+				    		<div><img ng-src="http://m.dienmaycholon.vn/img/picture/series/icon/icon_{{c['product']['cid_series']}}.png"/></div>
+
+				    			<div  ng-repeat="v in c['template']" >
+		    							{{v.val}}
 		    					</div>
-				    		<div><a class="iconmobile-buy-red" href=""></a></div>
+
+
+
+				    		<div><a ng-if="c['product']['stock_num'] > 0 || c['product']['is_shopping']=='1'" class="iconmobile-buy-red" href="" ng-controller="ButtonOrder" ng-click="buyproduct(c['product']['myid'],c['product']['cid_supplier'],1,0)"></a></div>
 				    	</div>
 				    	</ion-slide>
 				    </ion-slide-box>
@@ -460,9 +515,9 @@
 					</div>
 					
 					<!--Phần hỏi đáp -->
-					<h2>Hỏi - Đáp thắc mắc</h2>
+					<h2 ng-if="list_question.length>0">Hỏi - Đáp thắc mắc</h2>
 					
-					<div class="list question">
+					<div  ng-if="list_question.length>0" class="list question">
 
 						<div ng-repeat='q in list_question'>
 							<div class="question-s">
@@ -473,15 +528,15 @@
 									<input type='hidden' ng-model="initquestion"  ng-value="q['cid_user']" ng-init="initquestion=q['cid_user']"/>
 										<span>
 
-										<span ng-bind="getnamequestion"></span> | {{q['created']}}</span></p>
+										<span ng-bind="getnamequestion"></span> {{q['fullname']}} | {{q['created']}}</span></p>
 								</div>
 							</div>
 							<div class="answer">
 								<i class="iconmobile-daucheck"></i>
 								<div>
 									{{q['comment']}}
-									<p><span>{{q['idusercomment']}} | {{q['createdcomment']}}</span></p>
-									<p><a href="">Xem tất cả 4 câu hỏi</a></p>
+									<p><span>Support  | {{q['createdcomment']}}</span></p>
+									<p style=""><a href=""></a></p>
 								</div>
 
 							</div>
@@ -491,25 +546,31 @@
 
 						
 
-						<div style="padding: 6px 10px 0px 10px;">
+						<div style="padding: 6px 10px 0px 10px;display:none">
 							<a href="">Xem tất cả 30 câu hỏi đã được giải đáp
 								<i class="iconmobile-mt"></i>
 							</a>
 						</div>
 					</div>
 					
-					<h2 ng-if="list_review">Đánh giá khách hàng</h2>
-					<div class="list question danhgia" ng-if="list_review">
+					<h2 ng-if="list_review.length>0" >Đánh giá khách hàng</h2>
+					<div  class="list question danhgia" ng-if="list_review.length>0">
 						<div>
 							<span>{{total_rate}} đánh giá</span><br>
-							<span class="star"></span>
+
+							 <div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="total_avg_rate" readonly="rating.isReadonly"></star-rating>
+                              </div>
+
 							<span style='font-weight: 300;'>{{total_avg_rate}} / 5</span>
 							<i class="iconmobile-mt"></i>
 						</div>
 						<div ng-repeat="review in list_review">
 							<span>Bình luận được quan tâm nhất</span><br><br>
 							<span>{{review['title']}}</span><br>
-							<span class="star"></span>
+								<div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="review['rate']" readonly="rating.isReadonly"></star-rating>
+                              </div>
 							<div class="text">
 								{{review['description']}}
 								<p><span class='autor'>Đăng bởi <a href="">{{review['fullname']}}</a> | {{review['created']}}</span></p>
@@ -563,7 +624,7 @@
 			                        <div class='col' ng-repeat='p in list_orther.slice(x,x+3)'>
 
 										  <a href="/chi-tiet-san-pham/{{p[1]}}_{{ValidateData.toAlias(p[0])}}_1_0" class="activated" >
-											 <img ng-src='http://dienmaycholon.vn/public/picture/product/product{{p[1]}}/small/product_{{p[1]}}_1.png' />
+											 <img ng-src='http://static.dienmaycholon.vn/product/product{{p[1]}}/small/product_{{p[1]}}_1.png' />
 										  </a>
 										</div>
 								</div>

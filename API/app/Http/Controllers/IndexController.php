@@ -4,11 +4,14 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Route;
 use Illuminate\Http\Request;
+use Cache;
 
 class IndexController extends Controller {
 
 
-
+	public function clearcache(){
+		Cache::flush();
+	}
 	public function categories(Request $request){
 		$id= $request->route("id");
 		

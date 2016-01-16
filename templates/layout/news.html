@@ -7,7 +7,7 @@
                      </div>
                 <div class="list list-inset" ng-controller="SearchFormCtr">
                               <label class="item item-input">           
-                                <input type="text" ng-model="search.data"  placeholder="Nhập từ khóa tìm kiếm...">
+                                <input type="text" ng-keyup="$event.keyCode == 13 && searchform()"  ng-model="search.data"  placeholder="Nhập từ khóa tìm kiếm...">
                                 
                               </label>
                               <div class="iconmobile-search" ng-click='searchform()'></div>

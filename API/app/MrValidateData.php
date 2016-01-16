@@ -1061,7 +1061,7 @@ class MrValidateData
 		$data=array();
 		
         if(empty($path)){
-            $path = PRODUCTS_PATH;
+            $path = "http://m.dienmaycholon.vn/img/product/";
         }
         if(empty($opt)){
             $opt = "small"; 
