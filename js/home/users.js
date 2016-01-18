@@ -129,7 +129,10 @@ angular.module("starter.users",[])
 		        function(ratio) {
 		            $scope.data=ratio;
 		            if( ratio == 1){
-		            		
+				            	if($cookieStore.get("dmclaccount")){
+									var user=$cookieStore.get("dmclaccount");
+									$scope.my_check_user=user['fullname'];
+								}
 							$http.get(PUBLIC_VALUE.URL + "totalcart").success(function(result){
 						 			$scope.total_cart=result;
 						 	});
@@ -138,7 +141,7 @@ angular.module("starter.users",[])
 		        });
 
 				
-	  		
+
 
 	$scope.my_check_user=null;
 	$scope.LINK_IMG=PUBLIC_VALUE.IMG;

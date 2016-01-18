@@ -105,6 +105,25 @@
 								<td></td>
 								<td><span class="ship-free">+ Giao hàng <span>MIỄN PHÍ.</span> <a href="/quy-dinh-giao-hang" >Xem chi tiết</a></span></td>
 							</tr>
+								<tr ng-if="datetimecountdown['date_end']">
+								<td>
+									Thời gian còn lại:
+								</td>
+								<td>
+
+
+											<div >
+										
+									<button class="button button-outline  button-assertive">
+							 			<span ng-bind='viewcd'>&nbsp;</span>
+									</button>
+											 	</div>
+									
+											 	
+											 	
+									
+								</td>
+							</tr>
 							<tr ng-if='product["coupons"]'>
 								<td></td>
 								<td>
@@ -150,18 +169,18 @@
 
 
 
-					<div class="list" ng-if="list_gift['gift'] || list_gift['press'] || list_gift['text']">
+					<div class="list" ng-if="list_gift['gift'] || (list_gift['press'] && list_gift['press'][0].description)|| list_gift['text']">
 						Quà tặng cho sản phẩm <i class="iconmobile-mt"></i>
 						
 						
 					</div>
-					<div ng-if="list_gift['gift'] || list_gift['press'] || list_gift['text']" class="list product-detail  product-detail-gift" >
+					<div ng-if="list_gift['gift'] || (list_gift['press'] && list_gift['press'][0].description) || list_gift['text']" class="list product-detail  product-detail-gift" >
 						
 						<ul class='list' ng-if="list_gift['press']">
 							<li ng-if="list_gift['press']" ng-repeat="x in list_gift['press']" >
-							-1- <small ng-bind-html="x.description"></small>
+							 <small ng-if="x.description!=''" ng-bind-html="'- '+x.description"></small>
 								</li>
-						</ul>
+						</ul> 
 						<ul class='list' ng-if="list_gift['text']">
 							<li ng-if="list_gift['text']" ng-repeat="x in list_gift['text']" ng-click="viewtooltip(x.name,x.description)">
 									- <small ng-bind-html="x.name"></small>
@@ -438,7 +457,7 @@
 				    			<a href="">
 			    					<img ng-src='http://static.dienmaycholon.vn/product/product{{c["product"]["myid"]}}/small/product_{{c["product"]["myid"]}}_1.png' />
 			    				</a><br/>
-			    				<span class='bold'>Sản phẩm đang xem: </span>
+			    				<span  ng-if="c['product']['myid']==product['myid']" class='bold'>Sản phẩm đang xem: </span>
 			    				<br/>
 			    				<a href='' class='title_product'>
 			    					{{c['product']['name']}}
@@ -547,7 +566,7 @@
 						
 
 						<div style="padding: 6px 10px 0px 10px;display:none">
-							<a href="">Xem tất cả 30 câu hỏi đã được giải đáp
+							<a href="" >Xem tất cả 30 câu hỏi đã được giải đáp
 								<i class="iconmobile-mt"></i>
 							</a>
 						</div>
@@ -599,7 +618,7 @@
 					
 				
 						<div style="padding: 6px 10px 0px 10px;">
-							<a href="">Xem tất cả {{total_reivew}} câu hỏi đã được giải đáp
+							<a href="" ng-click="viewallreview()">Xem tất cả {{total_reivew}} câu hỏi đã được giải đáp
 							<i class="iconmobile-mt"></i>
 							</a>
 						</div>

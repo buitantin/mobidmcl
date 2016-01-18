@@ -1,0 +1,55 @@
+<div class="has-header">
+<div class="list content-product-detail">
+<div class="list step3">
+
+<div  class="list question danhgia" ng-if="list_review.length>0" >
+						<div>
+							<span>{{total_rate}} đánh giá</span><br>
+
+							 <div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="total_avg_rate" readonly="rating.isReadonly"></star-rating>
+                              </div>
+
+							<span style='font-weight: 300;'>{{total_avg_rate}} / 5</span>
+							<i class="iconmobile-mt"></i>
+						</div>
+						<div ng-repeat="review in list_review">
+							<span>Bình luận được quan tâm nhất</span><br><br>
+							<span>{{review['title']}}</span><br>
+								<div  ng-controller="RatingController as rating">
+                               <star-rating ng-model="review['rate']" readonly="rating.isReadonly"></star-rating>
+                              </div>
+							<div class="text">
+								{{review['description']}}
+								<p><span class='autor'>Đăng bởi <a href="">{{review['fullname']}}</a> | {{review['created']}}</span></p>
+								<p>
+
+								<i class='iconmobile-like'></i> 
+								<span class='action' ng-click='clicklikes(review["id"])'>
+									Thích (
+											<span  ng-bind='review["likes"]'>
+											</span>
+										 )
+								</span> 
+								<i class='iconmobile-dislike'></i>
+								<span class='action' ng-click='clickunlikes(review["id"])'>Không thích (
+										<span  ng-bind='review["unlikes"]'>
+											</span>
+										)
+
+								</span>
+
+								</p>
+							</div>
+							<i class="iconmobile-mt"></i>
+						</div>
+
+					
+				
+						
+					</div>
+
+
+					</div>
+					</div>
+					</div>

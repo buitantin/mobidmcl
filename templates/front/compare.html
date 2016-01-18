@@ -88,10 +88,9 @@
 		    				
 		    					{{v.val}}
 		    				
-		    			
 		    		</div>
 		    		
-		    		<div><a class="iconmobile-buy-red" href="" ng-controller="ButtonOrder"	  ng-click="buyproduct(c['product']['myid'],c['product']['cid_supplier'],1,0)"></a></div>
+		    		<div ><a ng-if="c['product']['stock_num'] > 0 || c['product']['is_shopping']=='1'" class="iconmobile-buy-red" href="" ng-controller="ButtonOrder"	  ng-click="buyproduct(c['product']['myid'],c['product']['cid_supplier'],1,0)"></a></div>
 		    	</div>
 
 

@@ -10,6 +10,9 @@
     top: -10px;
     border-top: 0px !important;
 }
+.widthall .popup{
+  width:90%;
+}
 .has-header .content-product-detail .product-detail-gift .list{
    font-size: 14px;
     font-weight: 500;

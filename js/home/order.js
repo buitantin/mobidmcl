@@ -175,6 +175,7 @@ angular.module("starter.order",[])
 	$scope.check_coupon=false;
 	if( $cookieStore.get("coupondmcl")){
 		$scope.check_coupon=true;
+		//console.log('if i had enought coupon , i would buy the product on this ');
 		$scope.voucher = $cookieStore.get("coupondmcl");
 
 		
@@ -360,8 +361,12 @@ angular.module("starter.order",[])
 		$state.go("fourcart");
 	}
 })
-.controller("FourCtr",function($scope,$state,$q,$ionicScrollDelegate,$http,PUBLIC_VALUE){
+.controller("FourCtr",function($scope,$state,$q,$ionicScrollDelegate,$http,PUBLIC_VALUE,$cookieStore){
 	$ionicScrollDelegate.scrollTop();
+
+	if( $cookieStore.get("coupondmcl") ){
+		$cookieStore.remove("coupondmcl");
+	}
 
 	var a=$http.get(PUBLIC_VALUE.URL+"order_get_form").success(function(result){
 		if(result=="" || result==undefined || result== null){

@@ -306,7 +306,7 @@ class Promotion extends Model {
                 $sql_online = "
                     SELECT 
 
-					d.name,d.description
+					d.name,d.description,d.id AS idpromotion
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
 								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
@@ -324,7 +324,7 @@ class Promotion extends Model {
                 $sql_press = "
                     SELECT 
 
-					d.name,d.description
+					d.name,d.description,d.id AS idpromotion
 					
 					FROM (  
 							 pro_product AS a 
@@ -345,7 +345,7 @@ class Promotion extends Model {
                 $sql="
 					SELECT 
 
-					d.name,d.description
+					d.name,d.description,d.id AS idpromotion
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
 								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
@@ -364,7 +364,10 @@ class Promotion extends Model {
 			$sql_gift="
 				SELECT 
 
+				a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
+				c.cid_product,c.cid_gift,c.cid_supplier,
 				d.id,d.name,d.amount
+				
 				FROM (   pro_product AS a
 					  INNER JOIN pro_supplier_product AS b ON a.id=b.cid_product
 					 INNER JOIN pro_gift_product as c ON c.cid_product=a.id )

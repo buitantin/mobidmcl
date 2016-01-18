@@ -366,12 +366,14 @@ class OrderController extends Controller {
 	                    
 	                    $news->sale_price= $value['product']['saleprice'];// ko kèm số lưog
 	                    
-	        			$news->dis_price =$value['product']['discount'];//khong kèm số lượng
+	        			
 	        			
 	        			if(!empty($value['coupon'])){
-	        				$news->total = $value['order']['limit'] * $value['product']['discount']=$value['coupon'];
+	        				$news->total = $value['order']['limit'] * $value['product']['discount']-$value['coupon'];
+	        				$news->dis_price = $value['coupon'];//khong kèm số lượng
 	                    }else{
 	                    	$news->total = $value['order']['limit'] * $value['product']['discount'];
+	                    	$news->dis_price = $value['product']['saleprice']-$value['product']['discount'];//khong kèm số lượng
 	                    }
 	        			
 	        			$news->choose=(!empty($getpromotion->type_promo)?$getpromotion->type_promo :0 );
@@ -385,42 +387,51 @@ class OrderController extends Controller {
 
 	        		if(!empty($getpromotion->type_promo)){
 	        				
-	        			
-	        		
-                    if($getpromotion->type_promo=='2'){
-                        if(!empty($Gift['online']) || !empty($Gift['gift'])){
-                            $news->cid_gift='1';
-            				if(!empty($Gift['online'])  && is_object($Gift['online']))
-                                $gift_online = $Gift['online'];
-            					//foreach ($Gift['online'] as $gift_online){
-            					$news_gift= new Orgift;
-            					$news_gift->cid_detail=$news->id;
-            					$news_gift->cid_gift=$gift_online['idpromotion'];
-            					$news_gift->type='0';
-            					$news_gift->save();
-            				//}
-            				if(!empty($Gift['gift'])  && is_object($Gift['gift']))
-            					foreach ($Gift['gift'] as $gift_pr){
-            					$news_gift=$TGift->fetchNew();
-            					$news_gift->cid_detail=$news->id;
-            					$news_gift->cid_gift=$gift_pr->cid_gift;
-            					$news_gift->type='1';
-            					$news_gift->save();
-            				}
-                        }
-		                    }elseif($getpromotion->type_promo=='3'){
-		                        if(!empty($Gift['press']) || !empty($Gift['gift']) ){
-		                            $news->cid_gift='1';
-		            				if(!empty($Gift['press'])  && is_object($Gift['press']))
-		                                $gift_press =  $Gift['press'];
-		            					//foreach ($Gift['press'] as $gift_press){
-		            					$news_gift=new Orgift;
-		            					$news_gift->cid_detail=$news->id;
-		            					$news_gift->cid_gift=$gift_press->idpromotion;
-		            					$news_gift->type='0';
-		            					$news_gift->save();
+	        			//print_r($getpromotion->type_promo);exit;
+	        		//print_r($Gift);exit;
+                  //  if($getpromotion->type_promo=='2'){
+	                        if(!empty($Gift['online']) || !empty($Gift['gift'])){
+	                            $news->cid_gift='1';
+	            				if(!empty($Gift['online'])  && is_object($Gift['online']))
+	                                $gift_online = $Gift['online'];
+	            					//foreach ($Gift['online'] as $gift_online){
+	            					$news_gift= new Orgift;
+	            					$news_gift->cid_detail=$news->id;
+	            					$news_gift->cid_gift=$gift_online['idpromotion'];
+	            					$news_gift->type='0';
+	            					$news_gift->save();
 		            				//}
 		            				if(!empty($Gift['gift'])  && is_object($Gift['gift']))
+		            					foreach ($Gift['gift'] as $gift_pr){
+			            					$news_gift=$TGift->fetchNew();
+			            					$news_gift->cid_detail=$news->id;
+			            					$news_gift->cid_gift=$gift_pr->cid_gift;
+			            					$news_gift->type='1';
+			            					$news_gift->save();
+		            		    		}
+
+		            				$news->choose=2;
+	                      		  }
+		                //    }elseif($getpromotion->type_promo=='3'){
+		                        if(!empty($Gift['press']) || !empty($Gift['gift']) ){
+		                            $news->cid_gift='1';
+		                            
+		            				if(!empty($Gift['press'])){
+		            					$news->choose=3;
+		            					foreach ($Gift['press'] as $gift_press){
+		            					
+			            					$news_gift=new Orgift;
+			            					$news_gift->cid_detail=$news->id;
+			            					$news_gift->cid_gift=$gift_press->idpromotion;
+			            					$news_gift->type='0';
+			            					$news_gift->save();
+
+		            				    }
+		            				}
+		                               // $gift_press =  $Gift['press'];
+		            					
+		            					
+		            				if(!empty($Gift['gift']) )
 		            					foreach ($Gift['gift'] as $gift_pr){
 		            					$news_gift=new Orgift;
 		            					$news_gift->cid_detail=$news->id;
@@ -429,11 +440,11 @@ class OrderController extends Controller {
 		            					$news_gift->save();
 		            				}
 		                        }
-		                    }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
+		                 //   }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
 		                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
 		                            $news->cid_gift='1';
-		            				if(!empty($Gift['text']) && is_object($Gift['text']))
-
+		            				if(!empty($Gift['text'])){
+		            					$news->choose=4;
 		            					foreach ($Gift['text'] as $gift_text){
 			            					$news_gift=new Orgift;
 			            					$news_gift->cid_detail=$news->id;
@@ -441,7 +452,10 @@ class OrderController extends Controller {
 			            					$news_gift->type='0';
 			            					$news_gift->save();
 		            					}
-		            				if(!empty($Gift['gift']) && is_object($Gift['gift']))
+		            				}
+
+		            				
+		            				if(!empty($Gift['gift']) )
 		            					foreach ($Gift['gift'] as $gift_pr){
 		            					$news_gift=new Orgift;
 		            					$news_gift->cid_detail=$news->id;
@@ -450,17 +464,20 @@ class OrderController extends Controller {
 		            					$news_gift->save();
 		            				}
 		            			}
-		                    }else{
-		                        $news->cid_gift='1';
-		                        if(!empty($Gift['gift'])  && is_object($Gift['gift']))
-		        					foreach ($Gift['gift'] as $gift_pr){
+		                   // }else{
+		                      
+		                        if(!empty($Gift['gift']) ){
+		                        	  $news->cid_gift='1';
+		                        	  foreach ($Gift['gift'] as $gift_pr){
 		        					$news_gift=new Orgift;
 		        					$news_gift->cid_detail=$news->id;
 		        					$news_gift->cid_gift=$gift_pr->cid_gift;
 		        					$news_gift->type='1';
 		        					$news_gift->save();
 		        				}
-		          	          }
+		                        }
+		        					
+		          	         // }
         				$news->save();
         		  }
                 }

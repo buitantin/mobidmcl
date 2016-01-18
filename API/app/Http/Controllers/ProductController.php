@@ -211,7 +211,10 @@ class ProductController extends Controller {
 							  	DB::raw("get_review(pro_product.id,2) AS countrating"),
 							  	DB::raw("get_price(pro_supplier_product.id,pro_supplier_product.discount) AS discount"),
 							  	DB::raw("get_sale_price(pro_supplier_product.id,pro_supplier_product.saleprice) AS saleprice"),
-								"market_supplier.name AS myname","pro_product.cid_series","pro_supplier_product.cid_supplier","pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice"
+								"market_supplier.name AS myname","pro_product.cid_series","pro_supplier_product.cid_supplier",
+								"pro_product.id" ,"pro_product.id AS myid","pro_product.name","pro_product.isprice",
+								"pro_supplier_product.stock_num","pro_product.is_shopping"
+
 							)
 						)
 						->whereRaw("pro_product.id ={$id} AND pro_product.status='1' AND pro_product.is_status_cate='1' AND pro_product.is_status_series='1'  ")

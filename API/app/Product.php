@@ -124,6 +124,7 @@ class Product extends Model {
 									  	DB::raw("get_sale_price(b.id,b.saleprice) AS saleprice"),
 
 								  		"a.id AS myid","a.code","a.sap_code","a.is_hot","a.name",
+								  		'b.stock_num','a.is_shopping',
 								  		"a.cid_series","a.cid_cate","b.id AS cid_res"
 								  		,"a.isprice","b.cid_supplier"
 

@@ -325,6 +325,24 @@ angular.module('starter.details', [])
 
 		}
 		//End review
+
+		//view all review
+		$scope.viewallreview=function(){
+			$ionicPopup.show({
+				title:'<h2 ng-if="list_review.length>0" class="">Đánh giá khách hàng</h2>',
+				templateUrl:"/templates/front/review.html",
+				cssClass:"widthall",
+				scope:$scope,
+				buttons:[{
+						text:"Đóng"
+				}
+				]
+
+
+			})
+		}
+		//end review 
+
 		//tra gop
 		$scope.popup_payment=function(){
 
