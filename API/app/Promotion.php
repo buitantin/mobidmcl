@@ -37,7 +37,7 @@ class Promotion extends Model {
 		return Promotion::whereRaw(DB::raw("cid_product=$id_product AND status='0'") )->first();
 	}
 	public static function getDetail($id_product,$supplier){
-			return Promotion::whereRaw(DB::raw("cid_product=$id_product AND cid_supplier=$supplier AND status='0'") )->first();	
+			return Promotion::whereRaw(DB::raw("cid_product=$id_product AND cid_supplier=$supplier AND status='0'") )->orderBy("type_promo","ASC")->first();	
 		
 		
 	}
@@ -81,12 +81,9 @@ class Promotion extends Model {
 					$press= DB::select("
 							SELECT	b.date_end,b.quantity,b.limit_quantity
 							
-							FROM
-							pro_supplier_product AS s INNER JOIN pro_promotion_product AS a ON a.cid_product=s.id
-							 INNER JOIN promo_press AS b ON a.cid_promotion=b.id
+							FROM pro_promotion_product AS a INNER JOIN promo_press AS b ON a.cid_promotion=b.id
 							WHERE
-								s.id=$id_supplier_product AND a.status='0' AND b.active='1' AND b.type='0'
-							 AND b.price!='0' AND a.cid_promotion={$product->cid_promotion}
+								a.cid_product=$id_supplier_product AND a.status='0' AND b.active='1' AND b.price!='0' AND a.cid_promotion={$product->cid_promotion}
 							ORDER BY b.id DESC
 							");
 					return $press;

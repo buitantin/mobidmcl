@@ -143,7 +143,7 @@ class OrderController extends Controller {
 						}
 						
 					}
-					$promotion=Promotion::getDetail($product['product']['myid'],$product['product']['cid_supplier']);
+					$promotion=Promotion::getDetail($product['product']['cid_res'],$product['product']['cid_supplier']);
 					if($discount=Coupon::check_voucher($coupon,$product['product'] ,$promotion)){
 						Session::put("coupon",$coupon);
 						$result=($discount);
@@ -188,8 +188,8 @@ class OrderController extends Controller {
 				}else{
 					$order[$id]=array(
 							"order"=>array("id"=>$id,"supplier"=>$supplier,"limit"=>$limit,"color"=>$color),
-							"product"=>OrderController::detail_product($id,$supplier),
-							"limit_quantity"=>Promotion::getProduct_Price($id,$supplier)
+							"product"=>OrderController::detail_product($id,$supplier)
+							//"limit_quantity"=>Promotion::getProduct_Price($id,$supplier)
 						);
 					Session::put("orderdmcl",$order);
 				}
@@ -217,8 +217,8 @@ class OrderController extends Controller {
 				}else{
 					$order[$value['id']]=array(
 							"order"=>array("id"=>$value['id'],"supplier"=>$value['supplier'],"limit"=>1,"color"=>0),
-							"product"=>OrderController::detail_product($value['id'],$value['supplier']),
-							"limit_quantity"=>Promotion::getProduct_Price($value['id'],$value['supplier'])
+							"product"=>OrderController::detail_product($value['id'],$value['supplier'])
+							//"limit_quantity"=>Promotion::getProduct_Price($value['id'],$value['supplier'])
 						);
 					Session::put("orderdmcl",$order);
 				}
