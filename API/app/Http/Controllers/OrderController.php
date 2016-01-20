@@ -257,107 +257,73 @@ class OrderController extends Controller {
 	}
 
 	public function four(){
-
-		/*$TDetail=new Application_Model_DbTable_Or_Detail();
-		$TGift=new Application_Model_DbTable_Or_Gift();
-		$TOrder=new Application_Model_DbTable_Or_Order();
-		$TShipping=new Application_Mhpodel_DbTable_Or_Shippingaddress();
-		$TBilling=new Application_Model_DbTable_Or_Billingaddress();*/
-
 		if(!Session::has("orderdmcl") && !Session::has("ordercustomer")){
 			return '1';
 		}
-
 	 	 $filter=new MrValidateData();
-
 		  $number_order = $filter->dateToNumber(date("d-m-Y H:i:s")).$filter->randd(8);
-
 		  $data_payment=Session::get("orderdmcl");
 		  $data_customer=Session::get("ordercustomer");
 		  $salettotal=0;
 		  $total=0;
-		  //$data_coupon=Session::get("coupon");
 		  $array_supplier=array();
 		  foreach ($data_payment as $key => $value) {
 		  		if(!array_key_exists($value['product']['cid_supplier'], $array_supplier)){
 		  			$array_supplier[$value['product']['cid_supplier']]=$value['product']['cid_supplier'];	
 		  		}
-		  		//var_dump($value['product']);exit;
 		  		$salettotal=$value['product']['saleprice']*$value['order']['limit']+$salettotal;
-
 		  		if(!empty($value['coupon'])){
 		  			$total=($value['product']['discount']*$value['order']['limit'] - $value['coupon'] ) +$total;
 		  		}else{
 		  			$total=$value['product']['discount']*$value['order']['limit']+$total;	
 		  		}
-		  		
-
-
 		  }
-		  foreach ($array_supplier as $idnhacungcap) {
-		  
+		  foreach ($array_supplier as $idnhacungcap){		  
 				//OR ORDER
-
 				$news_order               =  new Ororder;
 				$news_order->code_order   =   $number_order;
-        		if(Auth::check()){
-        			$news_order->id_cus       =   Auth::user()->id;	
-        		}
-        	//	var_dump($data_customer);exit
-        		
-        		$news_order->pay_type     =    ($data_customer['pay']=='2') ? "Thanh toán tại siêu thị" :"Thanh toán tại nhà";
-        		$news_order->total_or=$total;//tong gia ban kèm số lượng
-        		$news_order->date_bill    =   date("Y-m-d H:i:s");
-        		$news_order->date_ship    =  (!empty($data_customer['getdate']) ) ? date("Y-m-d H:i:s",strtotime($data_customer['getdate']) ) : date("Y-m-d H:i:s");
+	    		if(Auth::check()){
+	    			$news_order->id_cus       =   Auth::user()->id;	
+	    		}        		
+	    		$news_order->pay_type     =    ($data_customer['pay']=='2') ? "Thanh toán tại siêu thị" :"Thanh toán tại nhà";
+	    		$news_order->total_or=$total;//tong gia ban kèm số lượng
+	    		$news_order->date_bill    =   date("Y-m-d H:i:s");
+	    		$news_order->date_ship    =  (!empty($data_customer['getdate']) ) ? date("Y-m-d H:i:s",strtotime($data_customer['getdate']) ) : date("Y-m-d H:i:s");
 
-        		$news_order->order_info   =   (!empty($data_customer['note']) ? $data_customer['note'] :"");
-        		$news_order->approved     =   '0';
-        		$news_order->dis_price    =   $salettotal-$total;//tong gia giảm kèm số lượng
-        		$news_order->type_payment =   $data_customer['pay'];
-        		$news_order->cid_bank     =   0;
-        	
-                $news_order->flag     =   '1';
-                
-        		$news_order->session      =   1;
-        		$news_order->code_coupon  =   "";
-        		$news_order->code_voucher  =   Session::has("coupon")? Session::get("coupon") : "";
-        		$news_order->mode         =   '0';
-                $news_order->cid_supplier =  $idnhacungcap;
-        		$news_order->save();
+	    		$news_order->order_info   =   (!empty($data_customer['note']) ? $data_customer['note'] :"");
+	    		$news_order->approved     =   '0';
+	    		$news_order->dis_price    =   $salettotal-$total;//tong gia giảm kèm số lượng
+	    		$news_order->type_payment =   $data_customer['pay'];
+	    		$news_order->cid_bank     =   0;
+	    	
+	            $news_order->flag     =   '1';
+	            
+	    		$news_order->session      =   1;
+	    		$news_order->code_coupon  =   "";
+	    		$news_order->code_voucher  =   Session::has("coupon")? Session::get("coupon") : "";
+	    		$news_order->mode         =   '0';
+	            $news_order->cid_supplier =  $idnhacungcap;
+	    		$news_order->save();
+	            
+	            //OR SHIPPING		
+	    		$news_shipping=new Orshipping;
 
+	    		$news_shipping->cid_order=$news_order->id;
+	    		$news_shipping->fullname=$data_customer['name'];
+	    		$news_shipping->phone=$data_customer['phone'];
+	    		$news_shipping->email=$data_customer['email'];
+	    		$news_shipping->address=$data_customer['address'];
+	    		$news_shipping->distict=$data_customer['state'];
+	    		$news_shipping->city=$data_customer['city'];
+	    		$news_shipping->save();
 
+	            //OR DETAIL
+	    		foreach($data_payment as $key=>$value){
+		            if($idnhacungcap == $value['product']['cid_supplier']){
 
-
-                
-                //OR SHIPPING		
-        		$news_shipping=new Orshipping;
-
-        		$news_shipping->cid_order=$news_order->id;
-        		$news_shipping->fullname=$data_customer['name'];
-        		$news_shipping->phone=$data_customer['phone'];
-        		$news_shipping->email=$data_customer['email'];
-        		
-        	
-        		$news_shipping->address=$data_customer['address'];
-        		$news_shipping->distict=$data_customer['state'];
-        		$news_shipping->city=$data_customer['city'];
-        		
-        		$news_shipping->save();
-        		
-        		
-        	
-        		
-        		
-                //OR DETAIL
-        		foreach($data_payment as $key=>$value){
-		          if($idnhacungcap == $value['product']['cid_supplier']){
-
-			          	$Gift=Promotion::getGift($value['product']['myid'],$value['product']['cid_supplier']);
-			          	$getpromotion=Promotion::getDetail($value['product']['myid'],$value['product']['cid_supplier']);
-
-
+			          	$Gift=Promotion::getGift($value['product']['cid_res'],$value['product']['cid_supplier']);
+			          	$getpromotion=Promotion::getDetail($value['product']['cid_res'],$value['product']['cid_supplier']);
 	        			$news= new Ordetail;
-
 	        			$news->cid_order =   $news_order->id;
 	        			$news->cid_product=$value['product']['myid'];
 	        			$news->cid_color=$value['order']['color'];
@@ -365,9 +331,6 @@ class OrderController extends Controller {
 	        			$news->amount=$value['order']['limit'];
 	                    
 	                    $news->sale_price= $value['product']['saleprice'];// ko kèm số lưog
-	                    
-	        			
-	        			
 	        			if(!empty($value['coupon'])){
 	        				$news->total = $value['order']['limit'] * $value['product']['discount']-$value['coupon'];
 	        				$news->dis_price = $value['coupon'];//khong kèm số lượng
@@ -378,114 +341,98 @@ class OrderController extends Controller {
 	        			
 	        			$news->choose=(!empty($getpromotion->type_promo)?$getpromotion->type_promo :0 );
 	        			$news->code_coupon= Session::has("coupon")? Session::get("coupon") : "";
-
-	        			$news->cid_supplier=$value['product']['cid_supplier'];
-	        				
+	        			$news->cid_supplier=$value['product']['cid_supplier'];	        				
 	        			$news->save();
-	                    
-	                    
 
-	        		if(!empty($getpromotion->type_promo)){
-	        				
-	        			//print_r($getpromotion->type_promo);exit;
-	        		//print_r($Gift);exit;
-                  //  if($getpromotion->type_promo=='2'){
-	                        if(!empty($Gift['online']) || !empty($Gift['gift'])){
-	                            $news->cid_gift='1';
-	            				if(!empty($Gift['online'])  && is_object($Gift['online']))
-	                                $gift_online = $Gift['online'];
-	            					//foreach ($Gift['online'] as $gift_online){
-	            					$news_gift= new Orgift;
-	            					$news_gift->cid_detail=$news->id;
-	            					$news_gift->cid_gift=$gift_online['idpromotion'];
-	            					$news_gift->type='0';
-	            					$news_gift->save();
-		            				//}
-		            				if(!empty($Gift['gift'])  && is_object($Gift['gift']))
+		        		if(!empty($getpromotion->type_promo)){
+		        				
+		        			//print_r($getpromotion->type_promo);exit;
+		        			//print_r($Gift);exit;
+	                    	if($getpromotion->type_promo=='2'){
+		                        if(!empty($Gift['online']) || !empty($Gift['gift'])){
+		                            $news->cid_gift='1';
+		            				if(!empty($Gift['online'])  && is_object($Gift['online'])){
+	            					 	$gift_online = $Gift['online'];
+		            					$news_gift= new Orgift;
+		            					$news_gift->cid_detail=$news->id;
+		            					$news_gift->cid_gift=$gift_online['idpromotion'];
+		            					$news_gift->type='0';
+		            					$news_gift->save();
+		            				}
+		            				if(!empty($Gift['gift'])  && is_object($Gift['gift'])){
 		            					foreach ($Gift['gift'] as $gift_pr){
-			            					$news_gift=$TGift->fetchNew();
+			            					$news_gift= new Orgift;
 			            					$news_gift->cid_detail=$news->id;
 			            					$news_gift->cid_gift=$gift_pr->cid_gift;
 			            					$news_gift->type='1';
 			            					$news_gift->save();
 		            		    		}
-
-		            				$news->choose=2;
-	                      		  }
-		                //    }elseif($getpromotion->type_promo=='3'){
+		            				}
+			            					
+		                      	}
+			                }elseif($getpromotion->type_promo=='3'){
 		                        if(!empty($Gift['press']) || !empty($Gift['gift']) ){
-		                            $news->cid_gift='1';
-		                            
+		                            $news->cid_gift='1';		                            
 		            				if(!empty($Gift['press'])){
-		            					$news->choose=3;
-		            					foreach ($Gift['press'] as $gift_press){
-		            					
-			            					$news_gift=new Orgift;
-			            					$news_gift->cid_detail=$news->id;
-			            					$news_gift->cid_gift=$gift_press->idpromotion;
-			            					$news_gift->type='0';
-			            					$news_gift->save();
-
-		            				    }
-		            				}
-		                               // $gift_press =  $Gift['press'];
-		            					
-		            					
-		            				if(!empty($Gift['gift']) )
-		            					foreach ($Gift['gift'] as $gift_pr){
-		            					$news_gift=new Orgift;
+		            					$gift_press =  $Gift['press'];	            					
+		            					$news_gift	=	new Orgift;
 		            					$news_gift->cid_detail=$news->id;
-		            					$news_gift->cid_gift=$gift_pr->cid_gift;
-		            					$news_gift->type='1';
-		            					$news_gift->save();
+		            					$news_gift->cid_gift=$gift_press['idpromotion'];
+		            					$news_gift->type='0';
+		            					$news_gift->save();		            				    
 		            				}
-		                        }
-		                 //   }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
-		                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
-		                            $news->cid_gift='1';
-		            				if(!empty($Gift['text'])){
-		            					$news->choose=4;
-		            					foreach ($Gift['text'] as $gift_text){
+		            				if(!empty($Gift['gift']) ){
+		            					foreach ($Gift['gift'] as $gift_pr){
 			            					$news_gift=new Orgift;
 			            					$news_gift->cid_detail=$news->id;
-			            					$news_gift->cid_gift=$gift_text->idpromotion;
-			            					$news_gift->type='0';
+			            					$news_gift->cid_gift=$gift_pr['cid_gift'];
+			            					$news_gift->type='1';
 			            					$news_gift->save();
 		            					}
-		            				}
-
-		            				
-		            				if(!empty($Gift['gift']) )
-		            					foreach ($Gift['gift'] as $gift_pr){
-		            					$news_gift=new Orgift;
-		            					$news_gift->cid_detail=$news->id;
-		            					$news_gift->cid_gift=$gift_pr->cid_gift;
-		            					$news_gift->type='1';
-		            					$news_gift->save();
-		            				}
-		            			}
-		                   // }else{
-		                      
-		                        if(!empty($Gift['gift']) ){
-		                        	  $news->cid_gift='1';
-		                        	  foreach ($Gift['gift'] as $gift_pr){
-		        					$news_gift=new Orgift;
-		        					$news_gift->cid_detail=$news->id;
-		        					$news_gift->cid_gift=$gift_pr->cid_gift;
-		        					$news_gift->type='1';
-		        					$news_gift->save();
-		        				}
+		            				}	            					
 		                        }
-		        					
-		          	         // }
-        				$news->save();
-        		  }
-                }
-                }
-            }
-            Session::flush();
-            return $number_order;
-
+			                }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
+			                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
+			                            $news->cid_gift='1';
+			            				if(!empty($Gift['text'])){
+			            					foreach ($Gift['text'] as $gift_text){
+				            					$news_gift=new Orgift;
+				            					$news_gift->cid_detail=$news->id;
+				            					$news_gift->cid_gift=$gift_text->idpromotion;
+				            					$news_gift->type='0';
+				            					$news_gift->save();
+			            					}
+			            				}
+			            				
+			            				if(!empty($Gift['gift']) ){
+			            					foreach ($Gift['gift'] as $gift_pr){
+				            					$news_gift=new Orgift;
+				            					$news_gift->cid_detail=$news->id;
+				            					$news_gift->cid_gift=$gift_pr->cid_gift;
+				            					$news_gift->type='1';
+				            					$news_gift->save();
+				            				}
+			            				}		            					
+			            			}
+			                }else{		                      
+		                        if(!empty($Gift['gift']) ){
+		                        	 $news->cid_gift='1';
+		                        	foreach ($Gift['gift'] as $gift_pr){
+			        					$news_gift=new Orgift;
+			        					$news_gift->cid_detail=$news->id;
+			        					$news_gift->cid_gift=$gift_pr->cid_gift;
+			        					$news_gift->type='1';
+			        					$news_gift->save();
+		        					}
+		                        }			        					
+			          	    }
+	        				$news->save();
+	        		  	}
+	            	}
+	            }
+          }
+        Session::flush();
+        return $number_order;
 	}
 
 	public static function detail_product($id,$supplier){

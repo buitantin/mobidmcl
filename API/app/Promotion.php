@@ -292,7 +292,7 @@ class Promotion extends Model {
 		";
 		return	$data_product=$this->TT_DB->fetchAll($sql);
 	}
-	public static function getGift($id,$supplier='1'){//Sử thay đổi 19-01-2015  
+	public static function getGift($id,$supplier='1'){
 
 		$type_promo=Promotion::whereRaw("cid_product=$id AND status='0'")->orderBy("type_promo","ASC")->first();
 
@@ -309,11 +309,11 @@ class Promotion extends Model {
 					d.name,d.description,d.id AS idpromotion
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
+								INNER JOIN pro_promotion_product as c ON c.cid_product=s.id )
 								INNER JOIN promo_online as d ON d.id=c.cid_promotion
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='2'
-					AND s.cid_product=$id AND s.cid_supplier=$supplier
+					AND s.id=$id AND s.cid_supplier=$supplier
                 ";
                 $v=DB::select($sql_online);
                 if(!empty($v[0])){
@@ -329,12 +329,12 @@ class Promotion extends Model {
 					FROM (  
 							 pro_product AS a 
 							 INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-							 INNER JOIN pro_promotion_product as c ON c.cid_product=a.id 
+							 INNER JOIN pro_promotion_product as c ON c.cid_product=s.id 
 							 INNER JOIN  promo_press as d ON d.id=c.cid_promotion
 						)
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='3'
-					AND s.cid_product=$id AND s.cid_supplier=$supplier
+					AND s.id=$id AND s.cid_supplier=$supplier
                 ";
                 $v=DB::select($sql_press);
                 if(!empty($v[0])){
@@ -348,11 +348,11 @@ class Promotion extends Model {
 					d.name,d.description,d.id AS idpromotion
 					FROM (  
 							 pro_product AS a INNER JOIN pro_supplier_product AS s ON a.id=s.cid_product 
-								INNER JOIN pro_promotion_product as c ON c.cid_product=a.id )
+								INNER JOIN pro_promotion_product as c ON c.cid_product=s.id )
 								INNER JOIN promo_text as d ON d.id=c.cid_promotion
 					WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
 					AND d.active='1' AND c.type_promo='4'
-					AND s.cid_product=$id AND s.cid_supplier=$supplier
+					AND s.id=$id AND s.cid_supplier=$supplier
 				";
 				$v=DB::select($sql);
 
