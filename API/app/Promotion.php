@@ -360,8 +360,7 @@ class Promotion extends Model {
                 
 			$sql_gift="
 				SELECT 
-
-				a.id ,a.code,a.sap_code,a.is_hot,a.name,a.is_new,a.is_hot,a.cid_series,a.cid_cate,a.is_home,a.isprice,a.status,a.is_status_series,a.is_status_cate,
+				a.isprice,a.status,
 				c.cid_product,c.cid_gift,c.cid_supplier,
 				d.id,d.name,d.amount
 				
