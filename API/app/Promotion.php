@@ -296,9 +296,6 @@ class Promotion extends Model {
 		$data_product=array();
 
 		if(!empty($type_promo->type_promo)){
-
-
-
             if($type_promo->type_promo=='2'){
                 $sql_online = "
                     SELECT 
@@ -357,33 +354,34 @@ class Promotion extends Model {
                 	$data_product['text']=$v;
                 }
             }
-                
-			$sql_gift="
-				SELECT 
-				a.isprice,a.status,
-				c.cid_product,c.cid_gift,c.cid_supplier,
-				d.id,d.name,d.amount
-				
-				FROM (   pro_product AS a
-					  INNER JOIN pro_supplier_product AS b ON a.id=b.cid_product
-					 INNER JOIN pro_gift_product as c ON c.cid_product=a.id )
-				INNER JOIN pro_gift as d ON d.id=c.cid_gift
-				WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
-				AND b.id=$id AND c.cid_supplier=$supplier
-				GROUP BY d.id
-			";		
-
-
-			$v=DB::select($sql_gift);
-
-				
-                if(!empty($v[0])){
-                	$data_product['gift']=$v;
-                }	
-
-			return $data_product;
 	  }
-	  return null;
+
+	  $sql_gift="
+			SELECT 
+			a.isprice,a.status,
+			c.cid_product,c.cid_gift,c.cid_supplier,
+			d.id,d.name,d.amount
+			
+			FROM (   pro_product AS a
+				  INNER JOIN pro_supplier_product AS b ON a.id=b.cid_product
+				 INNER JOIN pro_gift_product as c ON c.cid_product=a.id )
+			INNER JOIN pro_gift as d ON d.id=c.cid_gift
+			WHERE   a.is_status_series='1' AND a.is_status_cate='1' AND a.status='1'
+			AND b.id=$id AND c.cid_supplier=$supplier
+			GROUP BY d.id
+		";		
+
+
+		$v=DB::select($sql_gift);
+
+		
+        if(!empty($v[0])){
+        	$data_product['gift']=$v;
+        }
+
+        if(count($data_product)>0){
+        	return $data_product;
+        }else return null;
 	}
     
     public function getProduct_filter_khuyenmai($sql=null){

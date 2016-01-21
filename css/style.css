@@ -29,7 +29,7 @@
   display: inline-block;
 }
  .has-header .content-product-detail .list.step3 .product-detail-gift ul.listgift li p span{
-  color: #fff;
+  /*color: #fff;*/
 }
 .slideshow_main img{
   width:100%;

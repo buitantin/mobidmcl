@@ -395,45 +395,44 @@ class OrderController extends Controller {
 		            				}
 		                        }
 			                }elseif($getpromotion->type_promo=='4' || $getpromotion->type_promo=='1'){
-			                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
-			                            $news->cid_gift='1';
-			            				if(!empty($Gift['text'])){
-			            					foreach ($Gift['text'] as $gift_text){
-				            					$news_gift=new Orgift;
-				            					$news_gift->cid_detail=$news->id;
-				            					$news_gift->cid_gift=$gift_text->idpromotion;
-				            					$news_gift->type='0';
-				            					$news_gift->save();
-			            					}
-			            				}
-			            				
-			            				if(!empty($Gift['gift']) ){
-			            					
-				            				for ($i=0; $i < count($Gift['gift']); $i++) { 
-			            						# code...
-			            						$news_gift				=	new Orgift;
-				            					$news_gift->cid_detail	=	$news->id;
-				            					$news_gift->cid_gift	=	$Gift['gift'][$i]->cid_gift;
-				            					$news_gift->type 		=	'1';
-				            					$news_gift->save();
-			            					}
-			            				}		            					
-			            			}
-			                }else{		                      
-		                        if(!empty($Gift['gift']) ){
-		                        	 $news->cid_gift='1';		                        	
-		        					for ($i=0; $i < count($Gift['gift']); $i++) { 
-	            						# code...
-	            						$news_gift				=	new Orgift;
-		            					$news_gift->cid_detail	=	$news->id;
-		            					$news_gift->cid_gift	=	$Gift['gift'][$i]->cid_gift;
-		            					$news_gift->type 		=	'1';
-		            					$news_gift->save();
-	            					}
-		                        }			        					
-			          	    }
-	        				$news->save();
+		                        if(!empty($Gift['text']) || !empty($Gift['gift'])){
+		                            $news->cid_gift='1';
+		            				if(!empty($Gift['text'])){
+		            					foreach ($Gift['text'] as $gift_text){
+			            					$news_gift=new Orgift;
+			            					$news_gift->cid_detail=$news->id;
+			            					$news_gift->cid_gift=$gift_text->idpromotion;
+			            					$news_gift->type='0';
+			            					$news_gift->save();
+		            					}
+		            				}
+		            				
+		            				if(!empty($Gift['gift']) ){
+		            					
+			            				for ($i=0; $i < count($Gift['gift']); $i++) { 
+		            						# code...
+		            						$news_gift				=	new Orgift;
+			            					$news_gift->cid_detail	=	$news->id;
+			            					$news_gift->cid_gift	=	$Gift['gift'][$i]->cid_gift;
+			            					$news_gift->type 		=	'1';
+			            					$news_gift->save();
+		            					}
+		            				}		            					
+		            			}
+			                }
 	        		  	}
+	        		  	if(!empty($Gift['gift']) ){
+                        	 $news->cid_gift='1';		                        	
+        					for ($i=0; $i < count($Gift['gift']); $i++) { 
+        						# code...
+        						$news_gift				=	new Orgift;
+            					$news_gift->cid_detail	=	$news->id;
+            					$news_gift->cid_gift	=	$Gift['gift'][$i]->cid_gift;
+            					$news_gift->type 		=	'1';
+            					$news_gift->save();
+        					}
+                        }
+        				$news->save();
 	            	}
 	            }
           }

@@ -318,7 +318,7 @@
     .has-header .content-product-detail .list.step3 {
       border-bottom: none; }
       .has-header .content-product-detail .list.step3 p span {
-        color: #4d4d4f; }
+        /*color: #4d4d4f;*/ }
         .has-header .content-product-detail .list.step3 p span.text {
           color: #009900; }
         .has-header .content-product-detail .list.step3 p span a {
